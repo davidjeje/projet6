@@ -1,0 +1,85 @@
+#bloc_page
+{
+    width: 100%;
+    margin: auto;
+    background-color: silver;
+}
+
+header
+{
+    
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    height: 20%;
+    flex-wrap: wrap;/*les éléments de ce bloc vont à la ligne quand il n'ont plus de place.*/
+}
+
+nav
+{
+	justify-content: flex-end;
+	width: 25%;
+	height: 100%;
+	border: 1px solid black;
+	margin-bottom:10%;
+
+}
+
+nav ul
+{
+    list-style-type: none;
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+nav li
+{
+    margin-right: 15px;
+}
+
+
+section
+{
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: column;
+	width: 100%;
+	margin-bottom:10%;
+	
+}
+.title 
+{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border: 1px solid black;
+	margin-bottom:10%;
+	height: 400px;
+	background-image: url("images/flocon-neige.jpg");
+}
+
+content
+{
+	height: 150px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	text-align: flex-start;
+	border: 1px solid black;
+	flex-direction: column;
+	margin-bottom:10%;
+	/*background-image: url("images/flocon-neige.jpg");*/
+}
+
+aside
+{
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: column;
+	border: 1px solid black;
+}
+
+footer
+{
+	border: 1px solid black;
+}

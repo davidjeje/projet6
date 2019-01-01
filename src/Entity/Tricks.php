@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TricksRepository")
@@ -35,6 +36,33 @@ class Tricks
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $groupname;
+
+    /**
+     * @ORM\Column(type="string")
+     *
+     * @Assert\NotBlank(message="Ajouter une image au format jpeg ou png.")
+     * @Assert\File(mimeTypes={ "image/jpeg","image/png", "image/jpg, images/jpeg","images/png", "images/jpg" })
+     */
+    private $image;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $DateCreation;
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+   private $DateModification;
+   /**
+     * Un client a potentiellement plusieurs adresses
+     * @ORM\OneToMany(targetEntity="App\Entity\Commentaire", mappedBy="figureId")
+     */
+    private $commentaire;
+
+    public function __construct() 
+    {
+        $this->commentaire = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -85,6 +113,53 @@ class Tricks
     public function setGroupname(?string $groupname): self
     {
         $this->groupname = $groupname;
+
+        return $this;
+    }
+
+    public function getImage() 
+    {
+        return $this->image;
+    }
+
+    public function setImage($image)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    public function getDateCreation() 
+    {
+        return $this->DateCreation;
+    }
+
+    public function setDateCreation($DateCreation)
+    {
+        $this->DateCreation = $DateCreation;
+
+        return $this;
+    }
+
+    public function getDateModification() 
+    {
+        return $this->DateModification;
+    }
+
+    public function setDateModification($DateModification)
+    {
+        $this->DateModification = $DateModification;
+
+        return $this;
+    }
+    public function getcommentaire(): ?string
+    {
+        return $this->commentaire;
+    }
+
+    public function setcommentaire(string $commentaire): self
+    {
+        $this->commentaire = $commentaire;
 
         return $this;
     }
