@@ -22,7 +22,7 @@ class Commentaires
     private $commentaire;
 
     /**
-     * @ORM\Column(type="string", length=10, nullable=true)
+     * @ORM\Column(type="string", length=25, nullable=true)
      */
     private $dateCommentaire;
     /**
@@ -30,7 +30,7 @@ class Commentaires
      */
     /**
      * Les adresses sont liées à un client
-     * @ORM\ManyToOne(targetEntity="App\Entity\Tricks", inversedBy="commentaire")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Tricks", inversedBy="commentaires", cascade={"persist"})
      * @ORM\JoinColumn(name="figureId", referencedColumnName="id")
      */
     
@@ -62,6 +62,18 @@ class Commentaires
     public function setDateCommentaire(?string $dateCommentaire): self
     {
         $this->dateCommentaire = $dateCommentaire;
+
+        return $this;
+    }
+
+    public function getFigureId(): ?Tricks
+    {
+        return $this->figureId;
+    }
+
+    public function setFigureId(?Tricks $figureId): self
+    {
+        $this->figureId = $figureId;
 
         return $this;
     }

@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Users{% endblock %}
+
+{% block body %}
+    
+{% endblock %}
+
+
+{% block slide1 %}
+<h1>Inscription</h1>
+ 
+								<div class="register-top-grid">
+										
+										
+										
+								</div>
+								<div class="clear"> </div>
+								<div class="register-bottom-grid">
+									{{ include('users/_form.html.twig') }}
+
+    <a href="{{ path('users_index') }}">back to list</a>	
+								</div>
+								<div class="clear"> </div>
+								
+						
+
+
+    
+{% endblock %}
+{% block slide2 %}{% endblock %}
+
+    {% block slide3 %}
+        <div class="timers"></div>
+        <div class="slidePrev"><span></span></div>
+        
+        {% endblock %}

@@ -13,7 +13,7 @@ class CommentairesType extends AbstractType
     {
         $builder
             ->add('commentaire')
-            ->add('dateCommentaire')
+            
         ;
     }
 

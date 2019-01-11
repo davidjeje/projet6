@@ -105,12 +105,24 @@ class TricksController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="tricks_show", methods="GET")
+     * @Route("/{id}", name="tricks_show", methods={"GET", "POST"})
      */
-    public function show(Tricks $trick): Response
+    public function show(Tricks $trick, Request $request): Response
     {
+        $commentaires = new Commentaires();
+        $form = $this->createForm(CommentairesType::class, $commentaires);
+        $form->handleRequest($request);
 
-        return $this->render('tricks/show.html.twig', ['trick' => $trick]);
+        if ($form->isSubmitted() && $form->isValid()) 
+        {
+            $date = new \DateTime();
+            $commentaires->setDateCommentaire($date->format("d-m-Y h:i"));
+            $trick->addCommentaire($commentaires);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($trick);
+            $em->flush();
+        }
+        return $this->render('tricks/show.html.twig', ['trick' => $trick,  'form' => $form->createView()]);
     }
 
     /**

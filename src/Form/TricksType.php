@@ -20,6 +20,7 @@ class TricksType extends AbstractType
             ->add('image', FileType::class, array('label' => 'Tricks (png image)','data_class' => null))
             ->add('DateCreation', DateType::class, array( 'widget' => 'single_text',))
             ->add('DateModification', DateType::class, array( 'widget' => 'single_text',))
+            ->add('auteur')
         ;
     }
 

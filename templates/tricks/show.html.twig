@@ -30,10 +30,19 @@ Le snowboard freestyle (anglicisme) ou la planche acrobatique de neige1 (ou arti
 Le snowboardeur qui pratique le snowboard freestyle est appelé freestyleur (freestyler), ou plus généralement rideur (rider). Les épreuves de snowboard freestyle disputées en Coupe du monde, aux championnats du monde et aux Jeux olympiques sont le half-pipe, le slopestyle, le big air et le snowboard-cross... Cette figure est {{ trick.name }}. {{ trick.description }}.</p>
 <p>Cette figure fait partie du groupe {{ trick.groupname }}. La date de création est le {{ trick.DateCreation }} et la date de modification est {{ trick.DateModification }}.</p>
 <br>
-{{ include('tricks/_formcomment.html.twig') }}
+{{ include('commentaires/_form.html.twig') }}
 
     <a href="{{ path('tricks_index') }}">back to list</a>
-            
+
+    <br>
+
+    {% for commentaire in trick.commentaires %}
+    Voici le commentaire:
+    {{commentaire.commentaire}} écrit le {{commentaire.dateCommentaire}}<br>
+    {% endfor %}
+                <a href="{{ path('tricks_edit', {'id': trick.id}) }}">edit</a>
+
+    {{ include('tricks/_delete_form.html.twig') }}
 {% endblock %}
 {% block slide3 %}
     <div class="timers"></div>
@@ -41,48 +50,7 @@ Le snowboardeur qui pratique le snowboard freestyle est appelé freestyleur (fre
         
 {% endblock %}
 {% block content2 %}
-<p></p>
-<h1>{{ trick.name }}</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ trick.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ trick.name }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ trick.description }}</td>
-            </tr>
-            <tr>
-                <th>Level</th>
-                <td>{{ trick.level }}</td>
-            </tr>
-            <tr>
-                <th>Groupname</th>
-                <td>{{ trick.groupname }}</td>
-            </tr>
-            <tr>
-                <th>DateCreation</th>
-                <td>{{ trick.DateCreation }}</td>
-            </tr>
-            <tr>
-                <th>DateModification</th>
-                <td>{{ trick.DateModification }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('tricks_index') }}">back to list</a>
-
-    <a href="{{ path('tricks_edit', {'id': trick.id}) }}">edit</a>
-
-    {{ include('tricks/_delete_form.html.twig') }}
-<p></p>
 <br>
 <p></p>
 {% endblock %}

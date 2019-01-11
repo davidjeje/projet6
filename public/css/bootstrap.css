@@ -641,7 +641,7 @@ blockquote ol:last-child {
   margin-bottom: 0;
 }
 blockquote footer,
-blockquote small,
+
 blockquote .small {
   display: block;
   font-size: 80%;

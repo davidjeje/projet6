@@ -73,6 +73,10 @@ body a{
 .nav ul {
     list-style: none;
 }
+.nav ul li #deco
+{
+	visibility: hidden;
+}
 @media screen and (max-width:800px) {
 	.active {
         display: block;
@@ -592,10 +596,7 @@ p.m_2{
 	font-size: 0.85em;
 	line-height: 2.2em;
 }
-.features{
-	right: 0px;
-	position: absolute;
-}
+
 h3.m_3{
 	color: #000;
 	font-size: 3em;

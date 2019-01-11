@@ -2,8 +2,12 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Entity\Commentaires;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TricksRepository")
@@ -55,14 +59,22 @@ class Tricks
    private $DateModification;
    /**
      * Un client a potentiellement plusieurs adresses
-     * @ORM\OneToMany(targetEntity="App\Entity\Commentaire", mappedBy="figureId")
+     * @ORM\OneToMany(targetEntity="App\Entity\Commentaires", mappedBy="figureId", cascade={"persist"})
      */
-    private $commentaire;
+    private $commentaires;
 
-    public function __construct() 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $auteur;
+
+
+    public function __construct()
     {
-        $this->commentaire = new ArrayCollection();
+        $this->commentaires = new ArrayCollection();
     }
+
+    
 
     public function getId(): ?int
     {
@@ -152,14 +164,47 @@ class Tricks
 
         return $this;
     }
-    public function getcommentaire(): ?string
+    
+
+    /**
+     * @return Collection|Commentaires[]
+     */
+    public function getCommentaires(): Collection
     {
-        return $this->commentaire;
+        return $this->commentaires;
     }
 
-    public function setcommentaire(string $commentaire): self
+    public function addCommentaire(Commentaires $commentaire): self
     {
-        $this->commentaire = $commentaire;
+        if (!$this->commentaires->contains($commentaire)) {
+            $this->commentaires[] = $commentaire;
+            $commentaire->setFigureId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentaire(Commentaires $commentaire): self
+    {
+        if ($this->commentaires->contains($commentaire)) {
+            $this->commentaires->removeElement($commentaire);
+            // set the owning side to null (unless already changed)
+            if ($commentaire->getFigureId() === $this) {
+                $commentaire->setFigureId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getAuteur(): ?string
+    {
+        return $this->auteur;
+    }
+
+    public function setAuteur(string $auteur): self
+    {
+        $this->auteur = $auteur;
 
         return $this;
     }

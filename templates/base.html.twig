@@ -54,6 +54,18 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             });
         });
      </script>
+     <script>
+     	$(document).ready(function() 
+     	{
+     		
+     		$('span .deco').hide();
+     		if (!$form->isSubmitted() && $form->isValid()) 
+     		{
+     			$('#deco').hide();	
+        	}
+        	$('#deco').show();
+     	});
+     </script>
 </head>
 <body>
 	<div class="header">
@@ -67,10 +79,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						  {% block nav %}
 						    <ul class="nav" id="nav">
 						    	<li><a href="{{ path('tricks_index')}}">Accueil</a></li>
-						    	<li><a href="team.html">Figure</a></li>
-						    	<li><a href="{{ path('tricks_connexion')}}">Connexion</a></li>
-						    	<li><a href="{{ path('tricks_inscription') }}">Inscription</a></li>
-						    	<li><a href="shop.html">Déconexion</a></li>
+						    	<li><a href="{{ path('tricks_new')}}">Création d'une Figure</a></li>
+						    	<li><a href="{{ path('login')}}">Connexion</a></li>
+						    	<li><a href="{{ path('users_new') }}">Inscription</a></li>
+						    	<span class="deco"><li><a href="shop.html">Déconexion</a></li></span>
 																
 								<div class="clear"></div>
 							</ul>
