@@ -1,10 +1,14 @@
 <?php
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use App\Entity\Commentaires;
+use App\Entity\Tricks;
 
 /**
  * @ORM\Table(name="user")
@@ -51,8 +55,17 @@ class User implements UserInterface, \Serializable {
      */
     private $roles = array();
 
+    
+
+    /**
+     * Un utilisateur peut créer plusieurs figures
+     * @ORM\ManyToMany(targetEntity="App\Entity\Tricks", mappedBy="auteurId", cascade={"persist"})
+     */
+     private $auteur;
+
     public function __construct() {
         $this->isActive = true;
+        $this->auteur = new ArrayCollection();
         // may not be needed, see section on salt below
         // $this->salt = md5(uniqid('', true));
     }
@@ -149,6 +162,34 @@ class User implements UserInterface, \Serializable {
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Tricks[]
+     */
+    public function getAuteur(): Collection
+    {
+        return $this->auteur;
+    }
+
+    public function addAuteur(Tricks $auteur): self
+    {
+        if (!$this->auteur->contains($auteur)) {
+            $this->auteur[] = $auteur;
+            $auteur->addAuteurId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAuteur(Tricks $auteur): self
+    {
+        if ($this->auteur->contains($auteur)) {
+            $this->auteur->removeElement($auteur);
+            $auteur->removeAuteurId($this);
+        }
 
         return $this;
     }

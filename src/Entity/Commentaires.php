@@ -29,7 +29,7 @@ class Commentaires
      * @ORM\Column(type="integer")
      */
     /**
-     * Les adresses sont liées à un client
+     * Les commentaires sont liés à une figure
      * @ORM\ManyToOne(targetEntity="App\Entity\Tricks", inversedBy="commentaires", cascade={"persist"})
      * @ORM\JoinColumn(name="figureId", referencedColumnName="id")
      */

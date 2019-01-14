@@ -52,18 +52,25 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             $("#flagSwitcher").click(function() {
                 $(".dropdown img.flag").toggleClass("flagvisibility");
             });
+
+
         });
      </script>
      <script>
      	$(document).ready(function() 
      	{
      		
-     		$('span .deco').hide();
-     		if (!$form->isSubmitted() && $form->isValid()) 
+     		$('.deco').toggle();
+
+     		if ($form->isSubmitted() && $form->isValid()) 
      		{
-     			$('#deco').hide();	
+     			$('.deco').show();
+     			if($('#deconecte').click(
+     				function() 
+     				{$('.deco').toggle();
+     				}));	
         	}
-        	$('#deco').show();
+        	
      	});
      </script>
 </head>
@@ -82,7 +89,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						    	<li><a href="{{ path('tricks_new')}}">Création d'une Figure</a></li>
 						    	<li><a href="{{ path('login')}}">Connexion</a></li>
 						    	<li><a href="{{ path('users_new') }}">Inscription</a></li>
-						    	<span class="deco"><li><a href="shop.html">Déconexion</a></li></span>
+						    	<span class="deco"><li><a href="shop.html" id="deconecte">Déconexion</a></li></span>
 																
 								<div class="clear"></div>
 							</ul>
@@ -135,7 +142,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <div class="slide_content">
                     <div class="slide_content_wrap">
                         <h1 class="title">La montagne nous offre le décor ...<br>A nous d'inventer l'histoire qui va avec !</h1>
-                       	<div class="button"><a href="#">Les figures</a></div>
+                       	<div class="button"><a href="#ancre">Les figures</a></div>
                     </div>
                 </div>
                 {% endblock %}

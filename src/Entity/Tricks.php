@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Entity\Commentaires;
+use App\Entity\User;
 
 
 /**
@@ -58,20 +59,25 @@ class Tricks
      */
    private $DateModification;
    /**
-     * Un client a potentiellement plusieurs adresses
+     * Une figure a potentiellement plusieurs commentaires
      * @ORM\OneToMany(targetEntity="App\Entity\Commentaires", mappedBy="figureId", cascade={"persist"})
      */
     private $commentaires;
+    
+    
 
-    /**
-     * @ORM\Column(type="string", length=255)
+     /**
+     * Plusieur figures peut être créées par plusieur user
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="auteur", cascade={"persist"})
+     * @ORM\JoinColumn(name="auteurId", referencedColumnName="id")
      */
-    private $auteur;
+    private $auteurId;
 
 
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
+        $this->auteurId = new ArrayCollection();
     }
 
     
@@ -205,6 +211,32 @@ class Tricks
     public function setAuteur(string $auteur): self
     {
         $this->auteur = $auteur;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getAuteurId(): Collection
+    {
+        return $this->auteurId;
+    }
+
+    public function addAuteurId(User $auteurId): self
+    {
+        if (!$this->auteurId->contains($auteurId)) {
+            $this->auteurId[] = $auteurId;
+        }
+
+        return $this;
+    }
+
+    public function removeAuteurId(User $auteurId): self
+    {
+        if ($this->auteurId->contains($auteurId)) {
+            $this->auteurId->removeElement($auteurId);
+        }
 
         return $this;
     }
