@@ -73,7 +73,7 @@ body a{
 .nav ul {
     list-style: none;
 }
-.nav ul li #deco
+.nav ul li span .deco
 {
 	visibility: hidden;
 }
