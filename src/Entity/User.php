@@ -59,13 +59,13 @@ class User implements UserInterface, \Serializable {
 
     /**
      * Un utilisateur peut créer plusieurs figures
-     * @ORM\ManyToMany(targetEntity="App\Entity\Tricks", mappedBy="auteurId", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\Tricks", mappedBy="auteur", cascade={"persist"})
      */
-     private $auteur;
+     private $trick;
 
     public function __construct() {
         $this->isActive = true;
-        $this->auteur = new ArrayCollection();
+        $this->trick = new ArrayCollection();
         // may not be needed, see section on salt below
         // $this->salt = md5(uniqid('', true));
     }
@@ -169,29 +169,30 @@ class User implements UserInterface, \Serializable {
     /**
      * @return Collection|Tricks[]
      */
-    public function getAuteur(): Collection
+    public function getTrick(): Collection
     {
-        return $this->auteur;
+        return $this->trick;
     }
 
-    public function addAuteur(Tricks $auteur): self
+    public function addTrick(Tricks $trick): self
     {
-        if (!$this->auteur->contains($auteur)) {
-            $this->auteur[] = $auteur;
-            $auteur->addAuteurId($this);
+        if (!$this->trick->contains($trick)) {
+            $this->trick[] = $trick;
+            $trick->addAuteur($this);
         }
 
         return $this;
     }
 
-    public function removeAuteur(Tricks $auteur): self
+    public function removeTrick(Tricks $trick): self
     {
-        if ($this->auteur->contains($auteur)) {
-            $this->auteur->removeElement($auteur);
-            $auteur->removeAuteurId($this);
+        if ($this->trick->contains($trick)) {
+            $this->trick->removeElement($trick);
+            $trick->removeAuteur($this);
         }
 
         return $this;
     }
 
+    
 }

@@ -70,6 +70,8 @@ class TricksController extends AbstractController
                 );
                 $trick->setImage($fileName);
                 $em = $this->getDoctrine()->getManager();
+                $trick->addAuteurId($this->getUser());
+
             $em->persist($trick);
             $em->flush();
             } catch (FileException $e) {

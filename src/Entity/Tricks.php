@@ -68,16 +68,16 @@ class Tricks
 
      /**
      * Plusieur figures peut être créées par plusieur user
-     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="auteur", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="trick", cascade={"persist"})
      * @ORM\JoinColumn(name="auteurId", referencedColumnName="id")
      */
-    private $auteurId;
+    private $auteur;
 
 
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
-        $this->auteurId = new ArrayCollection();
+        $this->auteur = new ArrayCollection();
     }
 
     
@@ -203,41 +203,31 @@ class Tricks
         return $this;
     }
 
-    public function getAuteur(): ?string
+    /**
+     * @return Collection|User[]
+     */
+    public function getAuteur(): Collection
     {
         return $this->auteur;
     }
 
-    public function setAuteur(string $auteur): self
+    public function addAuteur(User $auteur): self
     {
-        $this->auteur = $auteur;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|User[]
-     */
-    public function getAuteurId(): Collection
-    {
-        return $this->auteurId;
-    }
-
-    public function addAuteurId(User $auteurId): self
-    {
-        if (!$this->auteurId->contains($auteurId)) {
-            $this->auteurId[] = $auteurId;
+        if (!$this->auteur->contains($auteur)) {
+            $this->auteur[] = $auteur;
         }
 
         return $this;
     }
 
-    public function removeAuteurId(User $auteurId): self
+    public function removeAuteur(User $auteur): self
     {
-        if ($this->auteurId->contains($auteurId)) {
-            $this->auteurId->removeElement($auteurId);
+        if ($this->auteur->contains($auteur)) {
+            $this->auteur->removeElement($auteur);
         }
 
         return $this;
     }
+
+    
 }

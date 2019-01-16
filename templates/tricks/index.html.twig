@@ -8,31 +8,38 @@
         <div class="container">
             <div class="row ex_box">
             <h3 class="m_2" id="ancre"></h3> 
-        {% for trick in tricks %}
+            {% for trick in tricks %}
                 
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3 team1">
                 <div class="img_section_magnifier2">
-                  <a class="fancybox" href="{{ asset('images/'~trick.image) }}" data-fancybox-group="gallery" title="Lorem ipsum dolor sit amet"><img src="{{ asset('images/'~trick.image) }}" class="img-responsive" alt=""><span> </span>
+                  <a class="fancybox" href="{{ asset('images/'~trick.image) }}" data-fancybox-group="gallery" title="Lorem ipsum dolor sit amet"><img src="{{ asset('images/'~trick.image) }}" class="img-responsive" alt=""></a><span> </span>
                     <div class="img_section_txt"> 
                         
                         <button><a href="{{ path('tricks_show', {'id': trick.id}) }}" >{{trick.name}}</a></button>
-                        <div><button><a href="{{ path('tricks_delete', {'id': trick.id}) }}" data-method="DELETE" data-confirm="etes vous sur" >supprimer</a></button></div>
+                        <div>
+                            {% if is_granted('ROLE_USER') and trick.auteur|length > 0 %}
+
+                                {% if  trick.auteur[0] and app.user == trick.auteur[0] %}
+                            <button><a href="{{ path('tricks_delete', {'id': trick.id}) }}" data-method="DELETE" data-confirm="etes vous sur" >supprimer</a></button> 
+                                {% endif %}
+                            {% endif %}
+                        </div>
                         
                     </div>
-                </a></div>
+                </div>
                 </div>
                 
-               {% endfor %}
-     </div>
+            {% endfor %}
+            </div>
      
-    </div>
-    </div>
+        </div>
+     </div>
     </div>
     <div class="features">
         <div class="container0">
             <div class="col-md-3 col-lg-3 top_box1">
                     
-                   <h4 class="m_4"><div class="but"><a href="#">remonter</a></div></h4>
+                <h4 class="m_4"><div class="but"><a href="#">remonter</a></div></h4>
                    
             </div>
               
@@ -46,7 +53,8 @@
 {% endblock %}
 {% block javascript %}
 <script type="text/javascript">
-        $(document).ready(function() {
+        $(document).ready(function() 
+        {
             /*
              *  Simple image gallery. Uses default settings
              */
@@ -54,4 +62,4 @@
             $('.fancybox').fancybox();
 
         });
-    </script>{% endblock %}
+</script>{% endblock %}
