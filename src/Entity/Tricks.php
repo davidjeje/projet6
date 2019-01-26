@@ -45,8 +45,7 @@ class Tricks
     /**
      * @ORM\Column(type="string")
      *
-     * @Assert\NotBlank(message="Ajouter une image au format jpeg ou png.")
-     * @Assert\File(mimeTypes={ "image/jpeg","image/png", "image/jpg, images/jpeg","images/png", "images/jpg" })
+     * 
      */
     private $image;
 
@@ -64,8 +63,6 @@ class Tricks
      */
     private $commentaires;
     
-    
-
      /**
      * Plusieur figures peut être créées par plusieur user
      * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="trick", cascade={"persist"})
@@ -210,24 +207,20 @@ class Tricks
     {
         return $this->auteur;
     }
-
     public function addAuteur(User $auteur): self
     {
         if (!$this->auteur->contains($auteur)) {
             $this->auteur[] = $auteur;
         }
-
         return $this;
     }
-
     public function removeAuteur(User $auteur): self
     {
         if ($this->auteur->contains($auteur)) {
             $this->auteur->removeElement($auteur);
         }
-
         return $this;
     }
+}
 
     
-}

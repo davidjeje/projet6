@@ -54,9 +54,11 @@ Cette figure fait partie du groupe {{ trick.groupname }}. La date de création e
     {{commentaire.commentaire}} écrit le {{commentaire.dateCommentaire}}<br>
 {% endfor %}
 
-{% if is_granted('ROLE_USER') and app.user == trick.auteur %}
+{% if is_granted('ROLE_USER') and trick.auteur|length > 0 %}
+    {% if  trick.auteur[0] and app.user == trick.auteur[0] %}
     <a href="{{ path('tricks_edit', {'id': trick.id}) }}">Modifier</a>
     {{ include('tricks/_delete_form.html.twig') }}
+    {% endif %}
 {% endif %}
     
 {% endblock %}

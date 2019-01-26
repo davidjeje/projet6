@@ -8,30 +8,28 @@
 
 
 {% block slide1 %}
-<h1>Inscription</h1>
+
+	<h1>Inscription</h1>
  
-								<div class="register-top-grid">
-										
-										
-										
-								</div>
-								<div class="clear"> </div>
-								<div class="register-bottom-grid">
-									{{ include('users/_form.html.twig') }}
+	<div class="register-top-grid">	</div>
 
-    <a href="{{ path('users_index') }}">back to list</a>	
-								</div>
-								<div class="clear"> </div>
+	<div class="clear"> </div>
+
+	<div class="register-bottom-grid">
+		{{ include('users/_form.html.twig') }}
+
+    	<a href="{{ path('users_index') }}">Revenir à la liste</a>	
+	</div>
 								
-						
-
-
-    
+	<div class="clear"> </div>
+														   
 {% endblock %}
+
 {% block slide2 %}{% endblock %}
 
-    {% block slide3 %}
-        <div class="timers"></div>
-        <div class="slidePrev"><span></span></div>
+{% block slide3 %}
+
+    <div class="timers"></div>
+    <div class="slidePrev"><span></span></div>
         
-        {% endblock %}
+{% endblock %}

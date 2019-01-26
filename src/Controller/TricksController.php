@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Tricks;
 use App\Form\TricksType;
+use App\Form\TricksEditType;
 use App\Repository\TricksRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -64,19 +65,20 @@ class TricksController extends AbstractController
 
             // Move the file to the directory where images are stored
             try {
-                $file->move(
-                    $this->getParameter('images_directory'),
-                    $fileName
-                );
-                $trick->setImage($fileName);
-                $em = $this->getDoctrine()->getManager();
-                $trick->addAuteurId($this->getUser());
+                    $file->move($this->getParameter('images_directory'),$fileName );
+                    $trick->setImage($fileName);
+                    $em = $this->getDoctrine()->getManager();
+                    $date = new \DateTime();
+                    $trick->setDateCreation($date->format("d-m-Y h:i"));
+                    $trick->addAuteur($this->getUser());
 
-            $em->persist($trick);
-            $em->flush();
-            } catch (FileException $e) {
+                    $em->persist($trick);
+                    $em->flush();
+                } 
+                catch (FileException $e) 
+                {
                 // ... handle exception if something happens during file upload
-            }
+                }
 
             // updates the 'images' property to store the PDF file name
             // instead of its contents
@@ -88,9 +90,9 @@ class TricksController extends AbstractController
             ;*/
 
             return $this->redirectToRoute('tricks_index');
-        }
+    }
 
-        return $this->render('tricks/new.html.twig', [
+        return $this->render('new.html.twig', [
             'trick' => $trick,
             'form' => $form->createView(),
         ]);
@@ -118,7 +120,7 @@ class TricksController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) 
         {
             $date = new \DateTime();
-            $commentaires->setDateCommentaire($date->format("d-m-Y h:i"));
+            $commentaires->setDateCommentaire($date->format("d-m-Y H:i"));
             $trick->addCommentaire($commentaires);
             $em = $this->getDoctrine()->getManager();
             $em->persist($trick);
@@ -132,28 +134,30 @@ class TricksController extends AbstractController
      */
     public function edit(Request $request, Tricks $trick): Response
     {
-        $form = $this->createForm(TricksType::class, $trick);
+        $form = $this->createForm(TricksEditType::class, $trick);
+        
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $file = $trick->getImage();
+           /* $file = $trick->getImage();*/
             /*$fileName = $fileUploader->upload($file);
             $trick->setImage($fileName);*/
-            $fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();
-
+            /*$fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();*/
+            $date = new \DateTime();
+            $trick->setDateModification($date->format("d-m-Y H:i"));
             // Move the file to the directory where images are stored
-            try {
-                $file->move(
+            /*try {
+                /*$file->move(
                     $this->getParameter('images_directory'),
                     $fileName
-                );
-                $trick->setImage($fileName);
+                );*/
+               /* $trick->setImage($fileName);*/
                 $em = $this->getDoctrine()->getManager();
             $em->persist($trick);
             $em->flush();
-            } catch (FileException $e) {
+            /*} catch (FileException $e) {
                 // ... handle exception if something happens during file upload
-            }
+            }*/
 
             return $this->redirectToRoute('tricks_index', ['id' => $trick->getId()]);
         }

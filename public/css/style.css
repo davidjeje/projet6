@@ -1622,6 +1622,12 @@ div.button
 	bottom: 0;
 	
 }
+div.button.droite
+{
+	position: absolute;
+	right: 20px;
+	bottom: 10px;
+}
 div.but
 {
 	
@@ -1921,8 +1927,10 @@ fieldset.input input[type="submit"]:hover {
  }
  .container0
  {
-	position: static;
-	right: 50px;
+ 	display: flex;
+    justify-content: flex-end;
+	position: absolute;
+	right: 10px;
 	bottom: 0;
  }
 

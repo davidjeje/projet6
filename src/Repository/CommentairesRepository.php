@@ -22,19 +22,18 @@ class CommentairesRepository extends ServiceEntityRepository
     // /**
     //  * @return Commentaires[] Returns an array of Commentaires objects
     //  */
-    /*
-    public function findByExampleField($value)
+    
+    public function nombreCommentaire($firstResult, $maxResult)
     {
         return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
+           ->setfirstResult($firstResult)
+            ->orderBy('c.id', 'DSC')
+            ->setMaxResults($maxResult)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+    
 
     /*
     public function findOneBySomeField($value): ?Commentaires

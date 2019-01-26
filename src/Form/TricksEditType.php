@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 
-class TricksType extends AbstractType
+class TricksEditType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -18,8 +18,7 @@ class TricksType extends AbstractType
             ->add('description')
             ->add('level')
             ->add('groupname')
-            ->add('image', FileType::class, array('label' => 'Tricks (png image)','data_class' => null))
-        
+            
         ;
     }
 

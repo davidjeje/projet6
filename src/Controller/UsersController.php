@@ -12,6 +12,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use App\Entity\Tricks;
+use App\Form\TricksType;
+use App\Repository\TricksRepository;
 
 
 
@@ -36,6 +39,7 @@ class UsersController extends AbstractController
         $user = new User();
         $form = $this->createForm(UsersType::class, $user);
         $form->handleRequest($request);
+        $email = $user->getEmail();
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -48,7 +52,30 @@ class UsersController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
+            $message = (new \Swift_Message('Nous vous souhaitons la bienvenu. Votre compte utilisateur est validé !'))
+            ->setFrom('dada.pepe.alal@gmail.com')
+            ->setTo($email)
+            ->setBody(
+            $this->renderView(
+                // templates/emails/registration.html.twig
+                'users/texte.html.twig',
+                ['name' => $name]
+            ),
+            'text/html'
+        )
+        /*
+         * If you also want to include a plaintext version of the message
+        ->addPart(
+            $this->renderView(
+                'emails/registration.txt.twig',
+                ['name' => $name]
+            ),
+            'text/plain'
+        )
+        */
+    ;
 
+    $mailer->send($message);
             // ... do any other work - like sending them an email, etc
             // maybe set a "flash" success message for the user
             $this->addFlash('success', 'Votre compte à bien été enregistré.');
@@ -63,7 +90,7 @@ class UsersController extends AbstractController
     }
 
     /**
-     * @Route("/login", name="login")
+     * @Route("/login", name="login", methods="GET|POST")
      */
     public function login(Request $request, AuthenticationUtils $authenticationUtils) {
         // get the login error if there is one
@@ -85,6 +112,10 @@ class UsersController extends AbstractController
                     'last_username' => $lastUsername,
                     'error' => $error,
         ]);
+        /*if ($form->isSubmitted() && $form->isValid()) 
+        {
+            return $this->redirectToRoute('tricks_index');
+        }*/
     }
 
     /**
@@ -107,7 +138,7 @@ class UsersController extends AbstractController
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('users_index', ['id' => $user->getId()]);
-        }
+    }
 
         return $this->render('users/edit.html.twig', [
             'user' => $user,
