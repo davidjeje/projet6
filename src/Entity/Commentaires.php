@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -25,6 +27,7 @@ class Commentaires
      * @ORM\Column(type="string", length=25, nullable=true)
      */
     private $dateCommentaire;
+
     /**
      * @ORM\Column(type="integer")
      */
@@ -33,8 +36,20 @@ class Commentaires
      * @ORM\ManyToOne(targetEntity="App\Entity\Tricks", inversedBy="commentaires", cascade={"persist"})
      * @ORM\JoinColumn(name="figureId", referencedColumnName="id")
      */
-    
     private $figureId;
+
+    /**
+     * Plusieurs commentaires peuvent être écrit par un auteur.
+     * @ORM\ManyToOne(targetEntity="App\Entity\User",
+     inversedBy="commentaire", cascade={"persist"})
+     * @ORM\JoinColumn(name="autorId", referencedColumnName="id")
+     */
+    private $autor;
+
+    public function __construct()
+    {
+        $this->autor = new ArrayCollection();
+    }
 
 
     public function getId(): ?int
@@ -77,4 +92,21 @@ class Commentaires
 
         return $this;
     }
+
+    public function getAutor(): ?User
+    {
+        return $this->autor;
+    }
+
+    public function setAutor(?User $autor): self
+    {
+        $this->autor = $autor;
+
+        return $this;
+    }
+
+    
+    
+    
+   
 }
