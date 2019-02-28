@@ -8,6 +8,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <html>
 <head>
 <title>Free Snow Bootstrap Website Template | Home :: w3layouts</title>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link href="{{ asset('css/bootstrap.css') }}" rel='stylesheet' type='text/css' />
 <link href="{{ asset('css/style.css') }}" rel='stylesheet' type='text/css' />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -72,8 +73,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						    	<li><a href="{{ path('tricks_index')}}">Accueil</a></li>
 						    	{% if is_granted('ROLE_USER')  %}
 						    	<li><a href="{{ path('tricks_new') }}">Création d'une Figure</a></li>
-						    	
-						    	<span class="deco"><li><a href="shop.html" id="deconecte">Déconexion</a></li></span>
+						    	<span class="deco"><li><a href="{{ path('users_edit', {'id': app.user.id})}}" >Votre Profil</a></li></span>
+						    	<span class="deco"><li><a href="{{ path('logout')}}" id="deconecte">Déconnexion</a></li></span>
 						    	{% else %}
 						    	<li><a href="{{ path('login')}}">Connexion</a></li>
 						    	<li><a href="{{ path('users_new') }}">Inscription</a></li>
@@ -118,7 +119,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <!-- Text title -->
                         <h1 class="title">Le meilleur<br>Si non rien !!!</h1>
                         <!-- /Text title -->
-                        <div class="button"><a href="#ancre">Les figures</a></div>
+
+                        <div class="n" style="font-size: 24px;"><a href="#ancre"> <i class="fas fa-arrow-down fa-2x"></i></a></div>
+                        
                     </div>
                 </div>
             {% endblock %}
@@ -131,7 +134,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <div class="slide_content">
                     <div class="slide_content_wrap">
                         <h1 class="title">La montagne nous offre le décor ...<br>A nous d'inventer l'histoire qui va avec !</h1>
-                       	<div class="button"><a href="#ancre">Les figures</a></div>
+                       	
+                       	<div class="n" style="font-size: 24px;"><a href="#ancre"> <i class="fas fa-arrow-down fa-2x"></i></a></div>
                     </div>
                 </div>
                 {% endblock %}
@@ -142,6 +146,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <div class="timers"></div>
         <div class="slidePrev"><span></span></div>
         <div class="slideNext"><span></span></div>
+
         {% endblock %}
       </div>
        </div>
@@ -152,27 +157,44 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			 <h3 class="m_2" id="ancre"></h3>
 			<div class="video">
 			</div>
-			
+			<div class="features">
+        		<div class="container0">
+            		<div class="col-md-3 col-lg-3 top_box1" class="droite">
+ 
+            		</div>
+              
+        		</div>
+    		</div>
 		{% endblock %}
 	</div>
+	{% block content2 %}
 	<div class="content-bottom">
 		<div class="shop_top">
 		<div class="container">
-			{% block content2 %}
-			
-			{% endblock %}
+				
 		</div>
 		</div>
 	</div>
+	{% endblock %}
 	<div class="features">
 		<div class="container">
 			{% block container %}
-			        
+			        <div  class="foot hidden-sm hidden-md hidden-lg hidden-xl">
+	    	
+	    	<div class="center" style="font-size: 24px;"><i class="fas fa-bars fa-lg"></i></div>
+	    			{% if is_granted('ROLE_USER')  %}
+	    	<div style="font-size: 24px;"><i class="fas fa-power-off fa-lg"></i></div>
+	    			{% endif %}
+	    	
+	    </div>
 		 	{% endblock %}
 	    </div>
-		<div class="footer">
-			<div class="container">
-				<div class="row">
+	   	
+		<div class="footer hidden-xs">
+			
+			<div class="container ">
+				
+				<div class="row ">
 					{% block footer1 %}
 					<div class="col-md-3">
 						<ul class="footer_box">
@@ -244,6 +266,25 @@ License URL: http://creativecommons.org/licenses/by/3.0/
    				</div>
 			</div>
 		</div>
-		{% block javascript %}{% endblock %}
+		{% block javascript %}
+		<script type="text/javascript">
+    /*$(window).resize(function() 
+    {
+    	if( $(window).width() < 768 )
+    	{
+    		$('.footer').addClass( "hidden-xs" );
+        	$('.foot ').addClass( "visible-xs-*" );
+    	}
+    	else
+    	{
+    		$('.footer').addClass( "hidden-xs" );
+        	$('.foot ').addClass( "visible-xs-*" );
+    	}
+        
+
+        
+    })*/
+</script>
+		{% endblock %}
 </body>	
 </html>
