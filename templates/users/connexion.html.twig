@@ -4,13 +4,17 @@
 				 <div class="login-page">
 					{{form(form)}}
 				  </div>
+				  <br>
+				  <button> <a href="{{ path('forgot')}}">Cliquer ici si vous avez oublier votre mot de passe</a></button>
 </div>
 				<div class="col-md-6">
 				 	<div class="login-title">
 
 					</div>
 			     </div>
-				 
+		{% block slide3 %}
+        
+        {% endblock %}		 
 			 
 	  {% block container %}
 	  {% if error %}
