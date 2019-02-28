@@ -23,7 +23,7 @@ class Tricks
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique = true)
      */
     private $name;
 
@@ -44,8 +44,13 @@ class Tricks
 
     /**
      * @ORM\Column(type="string")
-     *
      * 
+     * @Assert\Image(
+     *     minWidth = 500,
+     *     maxWidth = 500,
+     *     minHeight = 357,
+     *     maxHeight = 357
+     * )
      */
     private $image;
 
@@ -53,10 +58,12 @@ class Tricks
      * @ORM\Column(type="string")
      */
     private $DateCreation;
+
     /**
      * @ORM\Column(type="string", nullable=true)
      */
    private $DateModification;
+   
    /**
      * Une figure a potentiellement plusieurs commentaires
      * @ORM\OneToMany(targetEntity="App\Entity\Commentaires", mappedBy="figureId", cascade={"persist"})
@@ -70,14 +77,22 @@ class Tricks
      */
     private $auteur;
 
+    /**
+     * @ORM\Column(type="array")
+     *
+     * 
+     */
+    private $video = array();
+
+    
+
 
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
         $this->auteur = new ArrayCollection();
+        
     }
-
-    
 
     public function getId(): ?int
     {
@@ -128,18 +143,6 @@ class Tricks
     public function setGroupname(?string $groupname): self
     {
         $this->groupname = $groupname;
-
-        return $this;
-    }
-
-    public function getImage() 
-    {
-        return $this->image;
-    }
-
-    public function setImage($image)
-    {
-        $this->image = $image;
 
         return $this;
     }
@@ -207,6 +210,7 @@ class Tricks
     {
         return $this->auteur;
     }
+
     public function addAuteur(User $auteur): self
     {
         if (!$this->auteur->contains($auteur)) {
@@ -214,6 +218,7 @@ class Tricks
         }
         return $this;
     }
+
     public function removeAuteur(User $auteur): self
     {
         if ($this->auteur->contains($auteur)) {
@@ -221,6 +226,36 @@ class Tricks
         }
         return $this;
     }
+
+    public function getImage()
+    {
+       
+        return $this->image;
+    }
+
+    public function setImage( $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    public function getVideo(): ?array
+    {
+        return $this->video;
+    }
+
+    public function setVideo(array $video): self
+    {
+        $this->video = $video;
+
+        return $this;
+    }
+
+    
+    
+
+   
 }
 
     
