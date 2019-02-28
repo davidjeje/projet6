@@ -19,6 +19,17 @@ class TricksRepository extends ServiceEntityRepository
         parent::__construct($registry, Tricks::class);
     }
 
+    public function nombreTrick($firstResult, $maxResult)
+    {
+        return $this->createQueryBuilder('c')
+           ->setfirstResult($firstResult)
+            ->orderBy('c.id', 'DSC')
+            ->setMaxResults($maxResult)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     // /**
     //  * @return Tricks[] Returns an array of Tricks objects
     //  */
