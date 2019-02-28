@@ -15,11 +15,14 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use App\Entity\Commentaires;
 use App\Form\CommentairesType;
 use App\Repository\CommentairesRepository;
+use App\Entity\User;
+use App\Form\UserType;
+use App\Form\UserShowType;
+use App\Repository\UsersRepository;
 
 
-/**
- * @Route("/tricks")
- */
+
+
 class TricksController extends AbstractController
 {
     /**
@@ -59,12 +62,14 @@ class TricksController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $file = $trick->getImage();
+
             /*$fileName = $fileUploader->upload($file);
             $trick->setImage($fileName);*/
             $fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();
 
             // Move the file to the directory where images are stored
             try {
+                
                     $file->move($this->getParameter('images_directory'),$fileName );
                     $trick->setImage($fileName);
                     $em = $this->getDoctrine()->getManager();
@@ -74,10 +79,14 @@ class TricksController extends AbstractController
 
                     $em->persist($trick);
                     $em->flush();
+                    $this->addFlash('success', 'Votre figure à bien été enregistré.');
+
                 } 
+                
                 catch (FileException $e) 
                 {
-                // ... handle exception if something happens during file upload
+                    $this->addFlash('error', "La figure n'a pas pu être enregistré.");
+
                 }
 
             // updates the 'images' property to store the PDF file name
@@ -111,22 +120,28 @@ class TricksController extends AbstractController
     /**
      * @Route("/{id}", name="tricks_show", methods={"GET", "POST"})
      */
-    public function show(Tricks $trick, Request $request): Response
+    public function show(Tricks $trick, Request $request, CommentairesRepository $CommentairesRepository, UsersRepository $usersRepository, User $user): Response
     {
+         
         $commentaires = new Commentaires();
         $form = $this->createForm(CommentairesType::class, $commentaires);
         $form->handleRequest($request);
+        $commentaireAffichage = $CommentairesRepository->nombreCommentaire(0, 5);
+        //$recentCommentaires = $CommentairesRepository->DscCommentaire();
 
         if ($form->isSubmitted() && $form->isValid()) 
         {
+
             $date = new \DateTime();
             $commentaires->setDateCommentaire($date->format("d-m-Y H:i"));
+            $user->addCommentaire(
+                $commentaires);
             $trick->addCommentaire($commentaires);
             $em = $this->getDoctrine()->getManager();
-            $em->persist($trick);
+            $em->persist($trick, $user, $commentaires);
             $em->flush();
         }
-        return $this->render('tricks/show.html.twig', ['trick' => $trick,  'form' => $form->createView()]);
+        return $this->render('tricks/show.html.twig', ['trick' => $trick,  'form' => $form->createView(), 'user' => $user /*, '$recent' => $recentCommentaires*/,'com'=>$commentaireAffichage]);
     }
 
     /**
@@ -139,26 +154,31 @@ class TricksController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-           /* $file = $trick->getImage();*/
-            /*$fileName = $fileUploader->upload($file);
+            /*$file = $trick->getImage();
+            $fileName = $fileUploader->upload($file);
             $trick->setImage($fileName);*/
             /*$fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();*/
             $date = new \DateTime();
             $trick->setDateModification($date->format("d-m-Y H:i"));
             // Move the file to the directory where images are stored
-            /*try {
+            try 
+            {
                 /*$file->move(
                     $this->getParameter('images_directory'),
                     $fileName
                 );*/
                /* $trick->setImage($fileName);*/
                 $em = $this->getDoctrine()->getManager();
-            $em->persist($trick);
-            $em->flush();
-            /*} catch (FileException $e) {
-                // ... handle exception if something happens during file upload
-            }*/
+                $em->persist($trick);
+                $em->flush();
+                $this->addFlash('success', 'Votre figure à bien été modifié !!!');
+            } 
+            catch (FileException $e) 
+            {
+                $this->addFlash('error', "La figure n'a pas pu être modifié.");
 
+            }
+            
             return $this->redirectToRoute('tricks_index', ['id' => $trick->getId()]);
         }
 
