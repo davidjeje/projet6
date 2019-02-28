@@ -1,3 +1,56 @@
+@media screen and (max-width: 1024px)
+{
+    .header
+    {
+        display: none;
+    }
+}
+/*@media screen and (max-width: 1024px)
+{
+    .footer
+    {
+        display: none;
+    }
+}
+@media screen and (min-width: 1024px)
+{
+    .foot
+    {
+        display: none;
+    }
+}*/
+@media screen and (min-width: 100px) and (max-width: 1024px)
+{
+    .video
+    {
+        display: none;
+    }
+}
+@media screen and (max-width: 54px)
+{
+    .droi
+    {
+        display: none;
+    }
+}
+@media screen and (min-width: 1024px)
+{
+    .vu
+    {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 1024px)
+{
+    .agencement
+    {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        margin: auto;
+    }
+}
 .clear{clear: both;}
 h4, h5, h6,
 h1, h2, h3 {margin-top: 0;}
@@ -1619,14 +1672,31 @@ div.button
 {
 	position: absolute;
 	right: 20px;
-	bottom: 0;
-	
+	bottom: 20px;
 }
-div.button.droite
+div.n
 {
 	position: absolute;
+	right: 0px;
+	bottom: 0;
+}
+div.foot
+{
+	display: flex;
+    justify-content: space-around;
+}
+div.center
+{
+	position: ;
+	right: 0px;
+	bottom: 10;
+}
+ button .droite
+{
+	
+	position: absolute;
 	right: 20px;
-	bottom: 10px;
+	bottom: 0px;
 }
 div.but
 {
@@ -1930,7 +2000,7 @@ fieldset.input input[type="submit"]:hover {
  	display: flex;
     justify-content: flex-end;
 	position: absolute;
-	right: 10px;
+	right: 0px;
 	bottom: 0;
  }
 
