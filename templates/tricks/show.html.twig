@@ -1,7 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block slide1 %}
-<img src="{{ asset('images/'~trick.image) }}" class="img-responsive" alt=""/>
+{% set image = trick.image|default('1.jpg') %}
+
+<img src="{{ asset('images/'~image) }}" class="img-responsive" alt=""/>
     <!-- /Slide image -->
     <!-- Texts container -->
     <div class="slide_content">
@@ -17,12 +19,12 @@
 {% block slide2 %}{% endblock %}
 
 {% block content1 %}
-<div class="video">
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/n0F6hSpxaFc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<button class="vu visible-xs-*">Voir les vidéos</button>
+<div class="video hidden-xs ">
+    
+    {{ trick.video|raw }}
 
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/KoHzXi7Usl8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/8CtWgw9xYRE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    
 </div>
 
 <img src="" class="img-responsive" alt=""/>  
@@ -41,7 +43,7 @@ Cette figure fait partie du groupe {{ trick.groupname }}. La date de création e
 <hr>
 
 {% if is_granted('ROLE_USER')  %}
-    {{ include('commentaires/_form.html.twig') }}
+    {{ include('users/_form.html.twig') }}
 
     <a href="{{ path('tricks_index') }}">Revenir sur la page d'accueil</a>
 {% endif %}
@@ -49,9 +51,12 @@ Cette figure fait partie du groupe {{ trick.groupname }}. La date de création e
     <br>
     <hr>
 
-{% for commentaire in trick.commentaires %}
-    Voici le commentaire:
-    {{commentaire.commentaire}} écrit le {{commentaire.dateCommentaire}}<br>
+
+<a class="fancybox" href="{{ asset('images/'~user.photo) }}" data-fancybox-group="gallery"> <img src="{{ asset('images/'~user.photo) }}" class="img-responsive" alt=""/></a>
+
+    Voici le commentaire de : {{ user.email }}
+{% for commentaire in com %}
+     {{commentaire.commentaire}} écrit le {{commentaire.dateCommentaire}}<br>
 {% endfor %}
 
 {% if is_granted('ROLE_USER') and trick.auteur|length > 0 %}
@@ -64,8 +69,7 @@ Cette figure fait partie du groupe {{ trick.groupname }}. La date de création e
 {% endblock %}
 
 {% block slide3 %}
-    <div class="timers"></div>
-    <div class="slidePrev"><span></span></div>      
+          
 {% endblock %}
 
 {% block content2 %}
@@ -108,4 +112,21 @@ Cette figure fait partie du groupe {{ trick.groupname }}. La date de création e
     <a href="{{ path('tricks_edit', {'id': trick.id}) }}">edit</a>
 
     {{ include('tricks/_delete_form.html.twig') }}
+{% endblock %}
+{% block javascript %}
+<script type="text/javascript">
+    $('.vu').click(function() 
+    {
+        $('.video').toggleClass( "hidden-xs" );
+
+        if($('.vu').html().trim() == 'Voir les vidéos')
+        {
+            $('.vu').html('cacher la vidéo');
+        }
+        else
+        {
+            $('.vu').html('Voir les vidéos');
+        }
+    })
+</script>
 {% endblock %}
