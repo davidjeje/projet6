@@ -27,8 +27,17 @@ class CommentairesRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('c')
            ->setfirstResult($firstResult)
-            ->orderBy('c.id', 'DSC')
+            ->orderBy('c.id', 'DESC')
             ->setMaxResults($maxResult)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function DscCommentaire()
+    {
+        return $this->createQueryBuilder('c')
+            ->orderBy('c.id', 'DESC')
             ->getQuery()
             ->getResult()
         ;
