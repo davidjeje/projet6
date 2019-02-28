@@ -55,17 +55,53 @@ class User implements UserInterface, \Serializable {
      */
     private $roles = array();
 
-    
-
     /**
-     * Un utilisateur peut créer plusieurs figures
+     * Plusieur utilisateur peuvent créer plusieurs figures
      * @ORM\ManyToMany(targetEntity="App\Entity\Tricks", mappedBy="auteur", cascade={"persist"})
      */
      private $trick;
 
+     /**
+     * @ORM\Column(name="token", type="string", unique = true)
+     */
+     private $token;
+
+     
+     /**
+     * Un utilisateur a potentiellement plusieurs commentaires
+     * @ORM\OneToMany(targetEntity="App\Entity\Commentaires", mappedBy="autor", cascade={"persist"})
+     */
+     private $commentaire;
+
+     /**
+     * @ORM\Column(type="string")
+     * 
+     * @Assert\Image(
+     *     minWidth = 40,
+     *     maxWidth = 60,
+     *     minHeight = 40,
+     *     maxHeight = 60
+     * )
+     */
+    private $photo;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $nom;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $prenom;
+     
+
     public function __construct() {
-        $this->isActive = true;
+        $this->isActive = false;
         $this->trick = new ArrayCollection();
+        $this->token = bin2hex(random_bytes(16));
+        $this->commentaire = new ArrayCollection();
+
         // may not be needed, see section on salt below
         // $this->salt = md5(uniqid('', true));
     }
@@ -193,6 +229,91 @@ class User implements UserInterface, \Serializable {
 
         return $this;
     }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function setToken(string $token): self
+    {
+        $this->token = $token;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Commentaires[]
+     */
+    public function getCommentaire(): Collection
+    {
+        return $this->commentaire;
+    }
+
+    public function addCommentaire(Commentaires $commentaire): self
+    {
+        if (!$this->commentaire->contains($commentaire)) {
+            $this->commentaire[] = $commentaire;
+            $commentaire->setAutor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentaire(Commentaires $commentaire): self
+    {
+        if ($this->commentaire->contains($commentaire)) {
+            $this->commentaire->removeElement($commentaire);
+            // set the owning side to null (unless already changed)
+            if ($commentaire->getAutor() === $this) {
+                $commentaire->setAutor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getPhoto(): ?string
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(string $photo): self
+    {
+        $this->photo = $photo;
+
+        return $this;
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): self
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getPrenom(): ?string
+    {
+        return $this->prenom;
+    }
+
+    public function setPrenom(string $prenom): self
+    {
+        $this->prenom = $prenom;
+
+        return $this;
+    }
+
+   
+
+   
+
+   
 
     
 }
