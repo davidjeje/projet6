@@ -3,5 +3,5 @@ swiftmailer:
     spool: { type: 'memory' }
     
     # username is your full Gmail or Google Apps email address
-    #MAILER_URL=gmail://dada.pepe.alal@gmail.com:alanmarivat5@localhost?encryption=tls&auth_mode=oauth
+    
     #MAILER_URL=gmail://localhost:25?encryption=ssl&auth_mode=login&username= David Larose&password= alanmarivat5
