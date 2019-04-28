@@ -69,12 +69,12 @@ class User implements UserInterface, \Serializable {
      
      /**
      * Un utilisateur a potentiellement plusieurs commentaires
-     * @ORM\OneToMany(targetEntity="App\Entity\Commentaires", mappedBy="autor", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Commentaires", mappedBy="autorId", cascade={"persist"})
      */
-     private $commentaire;
+     private $commentaireId;
 
      /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable = true)
      * 
      * @Assert\Image(
      *     minWidth = 40,
@@ -101,6 +101,7 @@ class User implements UserInterface, \Serializable {
         $this->trick = new ArrayCollection();
         $this->token = bin2hex(random_bytes(16));
         $this->commentaire = new ArrayCollection();
+        $this->commentaireId = new ArrayCollection();
 
         // may not be needed, see section on salt below
         // $this->salt = md5(uniqid('', true));
@@ -242,43 +243,12 @@ class User implements UserInterface, \Serializable {
         return $this;
     }
 
-    /**
-     * @return Collection|Commentaires[]
-     */
-    public function getCommentaire(): Collection
-    {
-        return $this->commentaire;
-    }
-
-    public function addCommentaire(Commentaires $commentaire): self
-    {
-        if (!$this->commentaire->contains($commentaire)) {
-            $this->commentaire[] = $commentaire;
-            $commentaire->setAutor($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCommentaire(Commentaires $commentaire): self
-    {
-        if ($this->commentaire->contains($commentaire)) {
-            $this->commentaire->removeElement($commentaire);
-            // set the owning side to null (unless already changed)
-            if ($commentaire->getAutor() === $this) {
-                $commentaire->setAutor(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getPhoto(): ?string
+    public function getPhoto()
     {
         return $this->photo;
     }
 
-    public function setPhoto(string $photo): self
+    public function setPhoto( $photo): self
     {
         $this->photo = $photo;
 
@@ -305,6 +275,37 @@ class User implements UserInterface, \Serializable {
     public function setPrenom(string $prenom): self
     {
         $this->prenom = $prenom;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Commentaires[]
+     */
+    public function getCommentaireId(): Collection
+    {
+        return $this->commentaireId;
+    }
+
+    public function addCommentaireId(Commentaires $commentaireId): self
+    {
+        if (!$this->commentaireId->contains($commentaireId)) {
+            $this->commentaireId[] = $commentaireId;
+            $commentaireId->setAutorId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentaireId(Commentaires $commentaireId): self
+    {
+        if ($this->commentaireId->contains($commentaireId)) {
+            $this->commentaireId->removeElement($commentaireId);
+            // set the owning side to null (unless already changed)
+            if ($commentaireId->getAutorId() === $this) {
+                $commentaireId->setAutorId(null);
+            }
+        }
 
         return $this;
     }
