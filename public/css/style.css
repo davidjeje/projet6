@@ -78,6 +78,15 @@ body a{
     justify-content: flex-end;
     align-items: flex-end;
 }
+
+.icos{
+	top:0;
+    left:0;
+	float:right;
+	display: flex;
+    
+    
+}
 .logo{
 	float:left;
 	margin-right: 2%;
@@ -1649,7 +1658,8 @@ p.cart {
 /*--login--*/
 .login-page {
 	border-right: 1px solid #EEE;
-	padding-right: 5%;
+	padding-right: 30%;
+	padding-left: 30%;
 }
 h4.title {
 	color:#000;
@@ -1679,6 +1689,12 @@ div.n
 	position: absolute;
 	right: 0px;
 	bottom: 0;
+}
+div.nn
+{
+	position: absolute;
+	right: 0px;
+	top: 0;
 }
 div.foot
 {
