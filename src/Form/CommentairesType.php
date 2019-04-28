@@ -6,12 +6,14 @@ use App\Entity\Commentaires;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use App\Entity\User;
 
 class CommentairesType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            
             ->add('commentaire')
             
         ;
