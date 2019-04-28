@@ -1,31 +1,74 @@
 {% extends 'base.html.twig' %}
 {% block slide1 %}
-<div class="col-md-6">
-				 <div class="login-page">
-					{{form(form)}}
-				  </div>
-				  <br>
-				  <button> <a href="{{ path('forgot')}}">Cliquer ici si vous avez oublier votre mot de passe</a></button>
-</div>
-				<div class="col-md-6">
-				 	<div class="login-title">
 
-					</div>
-			     </div>
-		{% block slide3 %}
+    <div class="col-12 slide" style="display: block;">
+        <div class="col-12">
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <div class="login-page">
+            <!-- Material form login -->
+                <div class="card">
+
+                    <h5 class="card-header info-color white-text text-center py-4">
+                        <strong>Se connecter</strong>
+                    </h5>
+
+                    <!--Card content-->
+                    <div class="card-body px-lg-5 pt-0">
+
+                        <!-- Form -->
+    
+                        {{form_start(form)}}
+                        <div class="md-form">
+                            {{ form_label(form._username) }}
+                            {{ form_widget(form._username, {'attr':{'class':'form-control'}}) }}
+                            {{ form_errors(form._username) }}
+                        </div>
+
+      		            <!-- Password -->
+      		            <div class="md-form">
+                            {{ form_label(form._password) }}
+                            {{ form_widget(form._password, {'attr':{'class':'form-control'}}) }} 
+                            {{ form_errors(form._password) }}
+      		            </div>
+
+      		            <div>
+                            <!-- Forgot password -->
+                            <a href="{{ path('forgot')}}">Mot de passe oublié ?</a>
+                        </div>
+      
+
+                        <!--Blue-grey-->
+                        <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit"><a href="{{ path('login')}}"></a>Connexion</button>
+                        {{form_end(form)}}
+	
+                    </div>
+                </div>
+	       </div>
+        </div>	
+
+		<br>
+    </div>
+				
+{% endblock %}
+				 	
+{% block slide3 %}
         
-        {% endblock %}		 
+{% endblock %}		 
 			 
-	  {% block container %}
-	  {% if error %}
+{% block container %}
+	{% if error %}
         <div class="alert alert-danger">
             <ul class="list-unstyled mb-0">
-                <li><span class="initialism form-error-icon badge badge-danger">Error</span> 
+                <li>
+                    <span class="initialism form-error-icon badge badge-danger">Error</span> 
                     <span class="form-error-message">{{ error.messageKey|trans(error.messageData, 'security') }}</span>
                 </li>
             </ul>
         </div>
     {% endif %}
-    {{form(form)}}
-    {% endblock %}
+    
 {% endblock %}
