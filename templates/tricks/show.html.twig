@@ -1,71 +1,81 @@
 {% extends 'base.html.twig' %}
 
 {% block slide1 %}
-{% set image = trick.image|default('1.jpg') %}
+{% set image = trick.image|default('2.jpeg') %}
 
-<img src="{{ asset('images/'~image) }}" class="img-responsive" alt=""/>
-    <!-- /Slide image -->
-    <!-- Texts container -->
-    <div class="slide_content">
-        <div class="slide_content_wrap">
-            <!-- Text title -->
-            <h1 class="title">{{ trick.name }} !!!</h1>
-            <!-- /Text title -->
+    <div class="slide">
+             
+        <!-- Slide image -->
+        <img src="{{ asset('images/'~trick.image) }}" class="img-responsive" alt=""/>
+        <!-- /Slide image -->
+        <!-- Texts container -->
+        <div class="slide_content">
+            <div class="slide_content_wrap">
+                <!-- Text title -->
+                <h1 class="title">{{ trick.name }}</h1>
+                <!-- /Text title -->
+                <div class="nn">
+                    {% if is_granted('ROLE_USER') and trick.auteur|length > 0 %}
+
+                        {% if  trick.auteur[0] and app.user == trick.auteur[0] %}
+                            <a href="{{ path('tricks_edit', {'id': trick.id}) }}"><i class="fas fa-pen"></i></a>
+                                
+                            <a href="{{ path('tricks_delete', {'id': trick.id}) }}"><i class="fas fa-trash"></i></a>
+                             
+                        {% endif %}
+
+                    {% endif %}
+                </div>
+                <a href="{{ path('tricks_edit', {'id': trick.id}) }}"><i class="fas fa-pen"></i></a>
                         
+            </div>
         </div>
-    </div>          
+    </div>
+
 {% endblock %}
 
-{% block slide2 %}{% endblock %}
-
 {% block content1 %}
-<button class="vu visible-xs-*">Voir les vidéos</button>
-<div class="video hidden-xs ">
-    
-    {{ trick.video|raw }}
+    <div class="row">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3" >
+            <button class="vu visible-xs-*">Voir les vidéos</button>
+            <div class="video hidden-xs ">
+                <div class="d-flex flex-row">
+                    <div class="p-2">{{ trick.video|raw }}</div>
+                    <div class="p-2">{{ trick.secondeVideo|raw }}</div>
+                    <div class="p-2">{{ trick.troisiemeVideo|raw }}</div>
+                </div>
+            </div>
 
-    
-</div>
-
-<img src="" class="img-responsive" alt=""/>  
-<br>
-
-<p>
-    <h2>Snowboarder freestyle</h2>
-    <br>
-    Le snowboard freestyle (anglicisme) ou la planche acrobatique de neige1 (ou artistique) est la pratique de la planche à neige de figures, apparue dans les années 1980 et héritière du skateboard. Cette discipline de planche acrobatique consiste pour ses pratiquants à exécuter des figures libres lors de sauts pratiqués à l'aide de structures diverses utilisées comme tremplin. Elle a principalement lieu dans des zones spéciales dédiées comme les snowparks ou en milieu urbain. Elle peut aussi être pratiquée en hors-piste (backcountry en anglais). Cette discipline est considérée comme un sport extrême.
-
-    Le snowboardeur qui pratique le snowboard freestyle est appelé freestyleur (freestyler), ou plus généralement rideur (rider). Les épreuves de snowboard freestyle disputées en Coupe du monde, aux championnats du monde et aux Jeux olympiques sont le half-pipe, le slopestyle, le big air et le snowboard-cross... Cette figure est {{ trick.name }}. {{ trick.description }}.</p>
-<p>
-
-Cette figure fait partie du groupe {{ trick.groupname }}. La date de création est le {{ trick.DateCreation }} et la date de modification est {{ trick.DateModification }}.</p>
-<br>
-<hr>
-
-{% if is_granted('ROLE_USER')  %}
-    {{ include('users/_form.html.twig') }}
-
-    <a href="{{ path('tricks_index') }}">Revenir sur la page d'accueil</a>
-{% endif %}
-
+        </div>
+    </div>
     <br>
     <hr>
+   <!-- Jumbotron -->
+    <div class="jumbotron text-center">
 
+        <!-- Title -->
+        <h4 class="card-title h4 pb-2"><strong> {{ trick.name }}</strong></h4>
 
-<a class="fancybox" href="{{ asset('images/'~user.photo) }}" data-fancybox-group="gallery"> <img src="{{ asset('images/'~user.photo) }}" class="img-responsive" alt=""/></a>
+        <!-- Card image -->
+  
 
-    Voici le commentaire de : {{ user.email }}
-{% for commentaire in com %}
-     {{commentaire.commentaire}} écrit le {{commentaire.dateCommentaire}}<br>
-{% endfor %}
+        <h5 class="indigo-text h5 mb-4">Snowboarder freestyle</h5>
 
-{% if is_granted('ROLE_USER') and trick.auteur|length > 0 %}
-    {% if  trick.auteur[0] and app.user == trick.auteur[0] %}
-    <a href="{{ path('tricks_edit', {'id': trick.id}) }}">Modifier</a>
-    {{ include('tricks/_delete_form.html.twig') }}
-    {% endif %}
-{% endif %}
-    
+        <p class="card-text">
+            Le snowboard freestyle (anglicisme) ou la planche acrobatique de neige1 (ou artistique) est la pratique de la planche à neige de figures, apparue dans les années 1980 et héritière du skateboard. Cette discipline de planche acrobatique consiste pour ses pratiquants à exécuter des figures libres lors de sauts pratiqués à l'aide de structures diverses utilisées comme tremplin. Elle a principalement lieu dans des zones spéciales dédiées comme les snowparks ou en milieu urbain. Elle peut aussi être pratiquée en hors-piste (backcountry en anglais). Cette discipline est considérée comme un sport extrême.
+
+            Le snowboardeur qui pratique le snowboard freestyle est appelé freestyleur (freestyler), ou plus généralement rideur (rider). Les épreuves de snowboard freestyle disputées en Coupe du monde, aux championnats du monde et aux Jeux olympiques sont le half-pipe, le slopestyle, le big air et le snowboard-cross... Cette figure est {{ trick.name }}. {{ trick.description }}.
+        </p>
+        <br>
+        <p>
+            Cette figure fait partie du groupe {{ trick.groupname }}. La date de création est le {{ trick.DateCreation }} et la date de modification est {{ trick.DateModification }}.
+        </p>
+    </div>
+<!-- Jumbotron -->
+{% endblock %}
+
+{% block slide2 %}
+
 {% endblock %}
 
 {% block slide3 %}
@@ -73,60 +83,71 @@ Cette figure fait partie du groupe {{ trick.groupname }}. La date de création e
 {% endblock %}
 
 {% block content2 %}
-<br>
-<p></p>
+
+    {% if is_granted('ROLE_USER')  %}
+        <br>  
+        <br>
+        <br>
+        <hr>
+        {{ include('users/_form.html.twig') }}
+
+        <a href="{{ path('tricks_index') }}">Revenir sur la page d'accueil</a>
+    {% endif %}
+
+    <br>
+    <hr>
+    <div class= "bo">
+        <div class= "row ex_bo">
+
+   
+            {% include 'commentaires/blockCommentaire.html.twig' with {'commentaireAffichage': commentaireAffichage}
+            %}
+        </div>
+
+        <button type= 'button' id='loading'> Voir plus</button>
+    </div> 
+    </br> 
+    </br>  
+    {% include 'paginator/show.html.twig' %}
+  
+
+    {% if is_granted('ROLE_USER') and trick.auteur|length > 0 %}
+        {% if  trick.auteur[0] and app.user == trick.auteur[0] %}
+            <a href="{{ path('tricks_edit', {'id': trick.id}) }}">Modifier</a>
+            {{ include('tricks/_delete_form.html.twig') }}
+        {% endif %}
+    {% endif %}
 {% endblock %}
 
-{% block title %}Snowtricks - TricksName details{% endblock %}
-
-{% block body %}
-    <h1>{{ trick.name }}</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ trick.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ trick.name }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ trick.description }}</td>
-            </tr>
-            <tr>
-                <th>Level</th>
-                <td>{{ trick.level }}</td>
-            </tr>
-            <tr>
-                <th>Groupname</th>
-                <td>{{ trick.groupname }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('tricks_index') }}">back to list</a>
-
-    <a href="{{ path('tricks_edit', {'id': trick.id}) }}">edit</a>
-
-    {{ include('tricks/_delete_form.html.twig') }}
-{% endblock %}
 {% block javascript %}
-<script type="text/javascript">
-    $('.vu').click(function() 
+    <script type="text/javascript">var lastId = 2 </script>
+    <script type="text/javascript"> $("#loading").click(function()
     {
-        $('.video').toggleClass( "hidden-xs" );
+        var trickId = '{{ trick.id }}';
+        var jqxhr = $.post( "{{path('commentaire_ajax')}}", { id: lastId, trickId: trickId }
+        ,function(data) {
+        $('.ex_bo').append( data );
+        lastId = $('.ex_bo > div').length;
+        });
+    }) 
+    </script>
 
-        if($('.vu').html().trim() == 'Voir les vidéos')
+    <script type="text/javascript">
+        $('.vu').click(function() 
         {
-            $('.vu').html('cacher la vidéo');
-        }
-        else
-        {
-            $('.vu').html('Voir les vidéos');
-        }
-    })
-</script>
+            $('.video').toggleClass( "hidden-xs" );
+
+            if($('.vu').html().trim() == 'Voir les vidéos')
+            {
+                $('.vu').html('cacher la vidéo');
+            }
+            else
+            {
+                $('.vu').html('Voir les vidéos');
+            }
+        })
+    </script>
+
 {% endblock %}
+
+
