@@ -1,38 +1,64 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}New Users{% endblock %}
-
-{% block body %}
-    
-{% endblock %}
-
-
 {% block slide1 %}
 
-	<h1>Inscription</h1>
- 
-	<div class="register-top-grid">	</div>
+    <div class="col-12 slide" style="display: block;">
+        <div class="col-12">
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <div class="login-page">
+                <!-- Material form login -->
+                <div class="card">
 
-	<div class="clear"> </div>
+                    <h5 class="card-header info-color white-text text-center py-4">
+                        <strong>inscription</strong>
+                    </h5>
 
-	<div class="register-bottom-grid">
-		<div class="agencement">
-		{{ include('users/_form.html.twig') }}
+                    <!--Card content-->
+                    <div class="card-body w-100">
+                        {{form_start(form)}}
+                        <div class="md-form w-100">
+                            {{ form_label(form.prenom) }}
+                            {{ form_widget(form.prenom, {'attr': {'class': 'form-control', 'id': 'materialLoginFormEmail'} }) }}
+                        </div>
 
-    	<a href="{{ path('users_index') }}">Revenir à la liste</a>
-    	</div>
+                        <div class="md-form w-100">
+                            {{ form_label(form.nom) }}
+                            {{ form_widget(form.nom, {'attr': {'class': 'form-control', 'id': 'materialLoginFormEmail'} }) }} 
+                        </div>
 
-	</div>
-								
-	<div class="clear"> </div>
-														   
+                        <div class="md-form w-100">
+                            {{ form_label(form.email) }}
+                            {{ form_widget(form.email, {'attr': {'class': 'form-control', 'id': 'materialLoginFormEmail'} }) }} 
+                        </div>
+                        <!-- Password -->
+                        <div class="md-form w-100">
+                            {{ form_label(form.plainPassword.first) }}
+                            {{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control', 'id': 'materialLoginFormEmail'} }) }}
+                
+                            <small id="materialRegisterFormPasswordHelpBlock" class="form-text text-muted mb-4">
+                            Au moins 8 caractères
+                            </small>
+                        </div>
+            
+                        <div class="md-form w-100">
+                            {{ form_label(form.plainPassword.second) }} 
+                            {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control', 'id': 'materialLoginFormEmail'} }) }}              
+                        </div>
+                        <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit"><a href="{{ path('users_new')}}"></a>Inscription</button>
+                        {{form_end(form)}}
+                    </div>
+                </div>
+                <br>
+            </div>
+        </div>
+    </div>			
 {% endblock %}
-
-{% block slide2 %}{% endblock %}
-
+				 	
 {% block slide3 %}
-
-    <div class="timers"></div>
-    <div class="slidePrev"><span></span></div>
-        
+{% endblock %}		 
+			 
+{% block container %}  
 {% endblock %}
