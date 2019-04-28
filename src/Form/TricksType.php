@@ -21,26 +21,11 @@ class TricksType extends AbstractType
             ->add('level')
             ->add('groupname')
             ->add('image', FileType::class, array('label' => 'Tricks (jpeg, jpg, png image)','data_class' => null))
-            ->add('video', UrlType::class, array('label' => 'Video (AVI, MP4, MKV…)'))
-
-        
+            ->add('video')  
         ;
     }
 
-   /* public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder
-            ->add('name')
-            ->add('description')
-            ->add('level')
-            ->add('groupname')
-            ->add('image', FileType::class, array('label' => 'Tricks (jpeg, jpg, png image)','data_class' => null))
-            ->add('video', CollectionType::class, [
-                'entry_type' =>UrlType::class,
-                'entry_options' => ['label' => true],
-                'allow_add' => true,
-            ]);
-    }*/
+
 
 
     public function configureOptions(OptionsResolver $resolver)
