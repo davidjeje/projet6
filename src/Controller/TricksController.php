@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Tricks;
 use App\Form\TricksType;
 use App\Form\TricksEditType;
+use App\Form\TricksEditImageType;
+use App\Form\VideoType;
 use App\Repository\TricksRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,10 +17,20 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use App\Entity\Commentaires;
 use App\Form\CommentairesType;
 use App\Repository\CommentairesRepository;
+//use App\templates\commentaires;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Form\UserShowType;
 use App\Repository\UsersRepository;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Entity\Paginator;
+use App\Form\PaginatorType;
+use App\Repository\PaginatorRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
 
@@ -30,8 +42,20 @@ class TricksController extends AbstractController
      */
     public function index(TricksRepository $tricksRepository): Response
     {
-        return $this->render('tricks/index.html.twig', ['tricks' => $tricksRepository->findAll()]);
+         
+        return $this->render('tricks/index.html.twig', ['tricks' => $tricksRepository->nombreTrick(0, 4)]);
     }
+
+    /** 
+    * @Route("/trick/ajax", name="trick_ajax", methods="GET|POST") 
+    */ 
+    public function ajaxAction(Request $request, TricksRepository $tricksRepository) 
+    {  
+        $id = $request->request->get('id');
+        $tricks = $tricksRepository->nombreTrick($id, 4);
+        return $this->render('tricks/blockTrick.html.twig', ['tricks' => $tricks]);
+        return new JsonResponse($tricks); 
+    }         
 
     /**
      * @Route("/connexion", name="tricks_connexion", methods="GET")
@@ -50,9 +74,9 @@ class TricksController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="tricks_new", methods="GET|POST")
+     * @Route("/{id}/new/trick", name="tricks_new", methods="GET|POST")
      */
-    public function new(Request $request): Response
+    public function new(Request $request, User $user): Response
     {
         
         $trick = new Tricks();
@@ -62,7 +86,7 @@ class TricksController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $file = $trick->getImage();
-
+            
             /*$fileName = $fileUploader->upload($file);
             $trick->setImage($fileName);*/
             $fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();
@@ -89,20 +113,14 @@ class TricksController extends AbstractController
 
                 }
 
-            // updates the 'images' property to store the PDF file name
-            // instead of its contents
             
-
-            // ... persist the $product variable or any other work
-
-            /*return $this->redirect($this->generateUrl('app_product_list'));
-            ;*/
 
             return $this->redirectToRoute('tricks_index');
     }
 
-        return $this->render('new.html.twig', [
+        return $this->render('tricks/new.html.twig', [
             'trick' => $trick,
+            'user' => $user,
             'form' => $form->createView(),
         ]);
     }
@@ -118,17 +136,31 @@ class TricksController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="tricks_show", methods={"GET", "POST"})
+     * @Route("/{id}/{page}/show", name="tricks_show", methods={"GET", "POST"})
      */
-    public function show(Tricks $trick, Request $request, CommentairesRepository $CommentairesRepository, UsersRepository $usersRepository, User $user): Response
+    public function show(Tricks $trick, Request $request, CommentairesRepository $CommentairesRepository, $page): Response
     {
          
         $commentaires = new Commentaires();
         $form = $this->createForm(CommentairesType::class, $commentaires);
         $form->handleRequest($request);
-        $commentaireAffichage = $CommentairesRepository->nombreCommentaire(0, 5);
-        //$recentCommentaires = $CommentairesRepository->DscCommentaire();
+        $nombreMaxParPage = 2;
+        $nombreMax = 2;
+        $firstResult = ($page-1) * $nombreMaxParPage;
+        $commentaireAffichage = $CommentairesRepository->nombreCommentaire($firstResult, $nombreMax, $trick->getId());
 
+        
+        $commentairePagination = $CommentairesRepository->paginationCommentaire($page, $nombreMaxParPage, $trick->getId());
+        
+        $pagination = array(
+            'page' => $page,
+            'nbPages' => ceil(count($commentairePagination) / $nombreMaxParPage),
+            'nomRoute' => 'tricks_show',
+            'paramsRoute' => array('id' => $trick->getId())
+        );
+
+
+        
         if ($form->isSubmitted() && $form->isValid()) 
         {
 
@@ -137,11 +169,18 @@ class TricksController extends AbstractController
             $user->addCommentaire(
                 $commentaires);
             $trick->addCommentaire($commentaires);
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($trick, $user, $commentaires);
             $em->flush();
+             
         }
-        return $this->render('tricks/show.html.twig', ['trick' => $trick,  'form' => $form->createView(), 'user' => $user /*, '$recent' => $recentCommentaires*/,'com'=>$commentaireAffichage]);
+        
+        
+        
+      return $this->render('tricks/show.html.twig', ['trick' => $trick, 'form' => $form->createView(),'commentaireAffichage' => $commentaireAffichage, 'commentairePagination' => $commentairePagination,
+            'pagination' => $pagination]); 
+    
     }
 
     /**
@@ -160,6 +199,7 @@ class TricksController extends AbstractController
             /*$fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();*/
             $date = new \DateTime();
             $trick->setDateModification($date->format("d-m-Y H:i"));
+            
             // Move the file to the directory where images are stored
             try 
             {
@@ -183,6 +223,80 @@ class TricksController extends AbstractController
         }
 
         return $this->render('tricks/edit.html.twig', [
+            'trick' => $trick,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/editImage", name="tricks_edit_image", methods="GET|POST")
+     */
+    public function editImage(Request $request, Tricks $trick): Response
+    {
+        $form = $this->createForm(TricksEditImageType::class, $trick);
+        
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $date = new \DateTime();
+            $trick->setDateModification($date->format("d-m-Y H:i"));
+            
+            // Move the file to the directory where images are stored
+            try 
+            {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($trick);
+                $em->flush();
+                $this->addFlash('success', 'Votre image à bien été modifié !!!');
+            } 
+            catch (FileException $e) 
+            {
+                $this->addFlash('error', "L'image n'a pas pu être modifié.");
+
+            }
+            
+            return $this->redirectToRoute('tricks_index', ['id' => $trick->getId()]);
+        }
+
+        return $this->render('tricks/editImage.html.twig', [
+            'trick' => $trick,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/editVideo", name="tricks_video", methods="GET|POST")
+     */
+    public function TricksVideo(Request $request, Tricks $trick): Response
+    {
+        $form = $this->createForm(VideoType::class, $trick);
+        
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $date = new \DateTime();
+            $trick->setDateModification($date->format("d-m-Y H:i"));
+            
+            // Move the file to the directory where images are stored
+            try 
+            {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($trick);
+                $em->flush();
+                $this->addFlash('success', 'Votre vidéo à bien été modifié !!!');
+            } 
+            catch (FileException $e) 
+            {
+                $this->addFlash('error', "La vidéo n'a pas pu être modifié.");
+
+            }
+            
+            return $this->redirectToRoute('tricks_index', ['id' => $trick->getId()]);
+        }
+
+        return $this->render('tricks/editVideo.html.twig', [
             'trick' => $trick,
             'form' => $form->createView(),
         ]);
