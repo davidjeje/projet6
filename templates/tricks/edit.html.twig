@@ -17,12 +17,13 @@
                         {% if is_granted('ROLE_USER') and trick.auteur|length > 0 %}
 
                             {% if  trick.auteur[0] and app.user == trick.auteur[0] %}
-                                <a href="{{ path('tricks_edit_image', {'id': trick.id}) }}"><i class="fas fa-pen"></i></a>
+                                <a href="{{ path('tricks_edit_image', {'id': trick.id, 'numberImage': '1'}) }}"><i class="fas fa-pen"></i></a>
                                 
                                 <a href="{{ path('tricks_delete', {'id': trick.id}) }}"><i class="fas fa-trash"></i></a> 
                             {% endif %}
 
                         {% endif %}
+                        <a href="{{ path('tricks_edit_image', {'id': trick.id, 'numberImage': '1'}) }}"><i class="fas fa-pen"></i></a>
                     </div>                      
             </div>
         </div>
@@ -49,7 +50,7 @@
                         <!-- Title -->
                         <h4 class="card-title"><a>Modifier cette vidéo ?</a></h4>
                         <!-- Button -->
-                        <a href="{{ path('tricks_video', {'id': trick.id}) }}"><i class="fas fa-pen"></i></a>                      
+                        <a href="{{ path('tricks_video', {'id': trick.id, 'numberVideo':'1'}) }}"><i class="fas fa-pen"></i></a>                      
                     </div>
                 </div>
                 <!-- Card --> 
@@ -65,7 +66,7 @@
                         <!-- Title -->
                         <h4 class="card-title"><a>Modifier cette vidéo ?</a></h4>
                         <!-- Button -->
-                        <a href="{{ path('tricks_video', {'id': trick.id}) }}"><i class="fas fa-pen"></i></a>                      
+                        <a href="{{ path('tricks_video', {'id': trick.id, 'numberVideo':'2'}) }}"><i class="fas fa-pen"></i></a>                      
                     </div>
                 </div>
                 <!-- Card -->
@@ -81,11 +82,27 @@
                             <!-- Title -->
                             <h4 class="card-title"><a>Modifier ou supprimer cette vidéo ?</a></h4>
                             <!-- Button -->
-                            <a href="{{ path('tricks_video', {'id': trick.id}) }}"><i class="fas fa-pen"></i></a>                    
+                            <a href="{{ path('tricks_video', {'id': trick.id, 'numberVideo':'3'}) }}"><i class="fas fa-pen"></i></a>                    
                         </div>
                     </div>
                     <!-- Card -->
                 </div>
+
+                <div class="p-2">
+                <!-- Card -->
+                <div class="card">
+                    <!-- Card image -->
+                    {{ trick.secondeImage|raw }}
+                    <!-- Card content -->
+                    <div class="card-body">
+                        <!-- Title -->
+                        <h4 class="card-title"><a>Modifier cette image ?</a></h4>
+                        <!-- Button -->
+                        <a href="{{ path('tricks_edit_image', {'id': trick.id, 'numberImage':'2'}) }}"><i class="fas fa-pen"></i></a>                      
+                    </div>
+                </div>
+                <!-- Card --> 
+            </div>
         </div>
     </div>
 
