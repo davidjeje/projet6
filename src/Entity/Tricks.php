@@ -276,12 +276,12 @@ class Tricks
         return $this;
     }
 
-    public function getSecondeImage(): ?string
+    public function getSecondeImage()
     {
         return $this->secondeImage;
     }
 
-    public function setSecondeImage(string $secondeImage): self
+    public function setSecondeImage( $secondeImage): self
     {
         $this->secondeImage = $secondeImage;
 
