@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Tricks;
 use App\Form\TricksType;
 use App\Form\TricksEditType;
-use App\Form\TricksEditImageType;
+use App\Form\EditImageType;
 use App\Form\VideoType;
 use App\Repository\TricksRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -86,16 +86,20 @@ class TricksController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $file = $trick->getImage();
+            $fil = $trick->getSecondeImage();
             
             /*$fileName = $fileUploader->upload($file);
             $trick->setImage($fileName);*/
             $fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();
+            $fileNam = $this->generateUniqueFileName().'.'.$fil->guessExtension();
 
             // Move the file to the directory where images are stored
             try {
                 
-                    $file->move($this->getParameter('images_directory'),$fileName );
+                    $file->move($this->getParameter('images_directory'),$fileName, $fileNam );
+                    //$file->move($this->getParameter('images_directory'),$fileNam );
                     $trick->setImage($fileName);
+                    $trick->setSecondeImage($fileNam);
                     $em = $this->getDoctrine()->getManager();
                     $date = new \DateTime();
                     $trick->setDateCreation($date->format("d-m-Y h:i"));
@@ -229,15 +233,35 @@ class TricksController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/editImage", name="tricks_edit_image", methods="GET|POST")
+     * @Route("/{id}/{numberImage}/editImage", name="edit_image", methods="GET|POST")
      */
-    public function editImage(Request $request, Tricks $trick): Response
+    public function editImage(Request $request, Tricks $trick, $numberImage): Response
     {
-        $form = $this->createForm(TricksEditImageType::class, $trick);
+        $field="image";
+        if ($numberImage== 2)
+        {
+            $field="secondeImage";
+        }
+        
+        $form = $this->createForm(EditImageType::class, $trick, ["image"=>$field]);
         
         $form->handleRequest($request);
+
         
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() ) 
+        {
+            if ($numberImage== 2 and $field=="secondeImage")
+            {
+                $file = $trick->getSecondeImage();
+            }
+            else 
+            {
+                $file = $trick->getImage();
+            }
+            
+            /*$fileName = $fileUploader->upload($file);
+            $trick->setImage($fileName);*/
+            $fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();
             
             $date = new \DateTime();
             $trick->setDateModification($date->format("d-m-Y H:i"));
@@ -245,6 +269,16 @@ class TricksController extends AbstractController
             // Move the file to the directory where images are stored
             try 
             {
+                $file->move($this->getParameter('images_directory'),$fileName );
+                if ($file == $trick->getSecondeImage())
+                {
+                    $trick->setSecondeImage($fileName);
+                }
+                else 
+                {
+                    $trick->setImage($fileName);
+                }
+                
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($trick);
                 $em->flush();
@@ -262,23 +296,34 @@ class TricksController extends AbstractController
         return $this->render('tricks/editImage.html.twig', [
             'trick' => $trick,
             'form' => $form->createView(),
+            'numberImage'=>$numberImage,
         ]);
     }
 
     /**
-     * @Route("/{id}/editVideo", name="tricks_video", methods="GET|POST")
+     * @Route("/{id}/{numberVideo}/editVideo", name="tricks_video", methods="GET|POST")
      */
-    public function TricksVideo(Request $request, Tricks $trick): Response
+    public function TricksVideo(Request $request, Tricks $trick, $numberVideo): Response
     {
-        $form = $this->createForm(VideoType::class, $trick);
+        $entityField="video";
+        if ($numberVideo== 2)
+        {
+            $entityField="secondeVideo";
+        }
+        if ($numberVideo== 3)
+        {
+            $entityField="troisiemeVideo";
+        }
+        $form = $this->createForm(VideoType::class, $trick, ["video" =>$entityField]);
         
         $form->handleRequest($request);
         
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()  ) 
+        {
             
             $date = new \DateTime();
             $trick->setDateModification($date->format("d-m-Y H:i"));
-            
+            if ($trick)
             // Move the file to the directory where images are stored
             try 
             {
@@ -299,6 +344,7 @@ class TricksController extends AbstractController
         return $this->render('tricks/editVideo.html.twig', [
             'trick' => $trick,
             'form' => $form->createView(),
+            'numberVideo'=>$numberVideo,
         ]);
     }
 
