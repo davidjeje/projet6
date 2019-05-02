@@ -17,13 +17,13 @@
                         {% if is_granted('ROLE_USER') and trick.auteur|length > 0 %}
 
                             {% if  trick.auteur[0] and app.user == trick.auteur[0] %}
-                                <a href="{{ path('tricks_edit_image', {'id': trick.id, 'numberImage': '1'}) }}"><i class="fas fa-pen"></i></a>
+                                <a href="{{ path('edit_image', {'id': trick.id, 'numberImage': '1'}) }}"><i class="fas fa-pen"></i></a>
                                 
                                 <a href="{{ path('tricks_delete', {'id': trick.id}) }}"><i class="fas fa-trash"></i></a> 
                             {% endif %}
 
                         {% endif %}
-                        <a href="{{ path('tricks_edit_image', {'id': trick.id, 'numberImage': '1'}) }}"><i class="fas fa-pen"></i></a>
+                        <a href="{{ path('edit_image', {'id': trick.id, 'numberImage': '1'}) }}"><i class="fas fa-pen"></i></a>
                     </div>                      
             </div>
         </div>
@@ -92,13 +92,14 @@
                 <!-- Card -->
                 <div class="card">
                     <!-- Card image -->
-                    {{ trick.secondeImage|raw }}
+                    <img  src="{{ asset('images/'~trick.secondeImage) }}" >
+                    
                     <!-- Card content -->
                     <div class="card-body">
                         <!-- Title -->
                         <h4 class="card-title"><a>Modifier cette image ?</a></h4>
                         <!-- Button -->
-                        <a href="{{ path('tricks_edit_image', {'id': trick.id, 'numberImage':'2'}) }}"><i class="fas fa-pen"></i></a>                      
+                        <a href="{{ path('edit_image', {'id': trick.id, 'numberImage':'2'}) }}"><i class="fas fa-pen"></i></a>             
                     </div>
                 </div>
                 <!-- Card --> 
