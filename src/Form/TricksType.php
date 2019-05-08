@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
-
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 
 class TricksType extends AbstractType
@@ -21,26 +21,14 @@ class TricksType extends AbstractType
             ->add('level')
             ->add('groupname')
             ->add('image', FileType::class, array('label' => 'Tricks (jpeg, jpg, png image)','data_class' => null))
-            ->add('video', UrlType::class, array('label' => 'Video (AVI, MP4, MKV…)'))
-
-        
+             ->add('secondeImage', FileType::class, array('label' => 'Tricks (jpeg, jpg, png secondeImage)','data_class' => null))
+            ->add('video')
+            ->add('secondeVideo')
+            ->add('troisiemeVideo')  
         ;
     }
 
-   /* public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder
-            ->add('name')
-            ->add('description')
-            ->add('level')
-            ->add('groupname')
-            ->add('image', FileType::class, array('label' => 'Tricks (jpeg, jpg, png image)','data_class' => null))
-            ->add('video', CollectionType::class, [
-                'entry_type' =>UrlType::class,
-                'entry_options' => ['label' => true],
-                'allow_add' => true,
-            ]);
-    }*/
+
 
 
     public function configureOptions(OptionsResolver $resolver)

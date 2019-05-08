@@ -56,6 +56,18 @@ class Tricks
 
     /**
      * @ORM\Column(type="string")
+     * 
+     * @Assert\Image(
+     *     minWidth = 500,
+     *     maxWidth = 500,
+     *     minHeight = 357,
+     *     maxHeight = 357
+     * )
+     */
+    private $secondeImage;
+
+    /**
+     * @ORM\Column(type="string")
      */
     private $DateCreation;
 
@@ -68,7 +80,7 @@ class Tricks
      * Une figure a potentiellement plusieurs commentaires
      * @ORM\OneToMany(targetEntity="App\Entity\Commentaires", mappedBy="figureId", cascade={"persist"})
      */
-    private $commentaires;
+    private $commentairesId;
     
      /**
      * Plusieur figures peut être créées par plusieur user
@@ -78,19 +90,32 @@ class Tricks
     private $auteur;
 
     /**
-     * @ORM\Column(type="array")
+     * @ORM\Column(type="string")
      *
      * 
      */
-    private $video = array();
+    private $video;
 
-    
+    /**
+     * @ORM\Column(type="string")
+     *
+     * 
+     */
+    private $secondeVideo;
+
+    /**
+     * @ORM\Column(type="string")
+     *
+     * 
+     */
+    private $troisiemeVideo;
 
 
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
         $this->auteur = new ArrayCollection();
+        $this->commentairesId = new ArrayCollection();
         
     }
 
@@ -170,38 +195,6 @@ class Tricks
 
         return $this;
     }
-    
-
-    /**
-     * @return Collection|Commentaires[]
-     */
-    public function getCommentaires(): Collection
-    {
-        return $this->commentaires;
-    }
-
-    public function addCommentaire(Commentaires $commentaire): self
-    {
-        if (!$this->commentaires->contains($commentaire)) {
-            $this->commentaires[] = $commentaire;
-            $commentaire->setFigureId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCommentaire(Commentaires $commentaire): self
-    {
-        if ($this->commentaires->contains($commentaire)) {
-            $this->commentaires->removeElement($commentaire);
-            // set the owning side to null (unless already changed)
-            if ($commentaire->getFigureId() === $this) {
-                $commentaire->setFigureId(null);
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection|User[]
@@ -240,20 +233,84 @@ class Tricks
         return $this;
     }
 
-    public function getVideo(): ?array
+    public function getVideo(): ?string
     {
         return $this->video;
     }
 
-    public function setVideo(array $video): self
+    public function setVideo(string $video): self
     {
         $this->video = $video;
 
         return $this;
     }
 
-    
-    
+    /**
+     * @return Collection|Commentaires[]
+     */
+    public function getCommentairesId(): Collection
+    {
+        return $this->commentairesId;
+    }
+
+    public function addCommentairesId(Commentaires $commentairesId): self
+    {
+        if (!$this->commentairesId->contains($commentairesId)) {
+            $this->commentairesId[] = $commentairesId;
+            $commentairesId->setFigureId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentairesId(Commentaires $commentairesId): self
+    {
+        if ($this->commentairesId->contains($commentairesId)) {
+            $this->commentairesId->removeElement($commentairesId);
+            // set the owning side to null (unless already changed)
+            if ($commentairesId->getFigureId() === $this) {
+                $commentairesId->setFigureId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getSecondeImage()
+    {
+        return $this->secondeImage;
+    }
+
+    public function setSecondeImage( $secondeImage): self
+    {
+        $this->secondeImage = $secondeImage;
+
+        return $this;
+    }
+
+    public function getSecondeVideo(): ?string
+    {
+        return $this->secondeVideo;
+    }
+
+    public function setSecondeVideo(string $secondeVideo): self
+    {
+        $this->secondeVideo = $secondeVideo;
+
+        return $this;
+    }
+
+    public function getTroisiemeVideo(): ?string
+    {
+        return $this->troisiemeVideo;
+    }
+
+    public function setTroisiemeVideo(string $troisiemeVideo): self
+    {
+        $this->troisiemeVideo = $troisiemeVideo;
+
+        return $this;
+    }
 
    
 }

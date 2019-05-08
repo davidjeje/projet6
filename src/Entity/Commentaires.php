@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Paginator;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommentairesRepository")
@@ -33,7 +34,7 @@ class Commentaires
      */
     /**
      * Les commentaires sont liés à une figure
-     * @ORM\ManyToOne(targetEntity="App\Entity\Tricks", inversedBy="commentaires", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Tricks", inversedBy="commentairesId", cascade={"persist"})
      * @ORM\JoinColumn(name="figureId", referencedColumnName="id")
      */
     private $figureId;
@@ -41,14 +42,24 @@ class Commentaires
     /**
      * Plusieurs commentaires peuvent être écrit par un auteur.
      * @ORM\ManyToOne(targetEntity="App\Entity\User",
-     inversedBy="commentaire", cascade={"persist"})
+     inversedBy="commentaireId", cascade={"persist"})
      * @ORM\JoinColumn(name="autorId", referencedColumnName="id")
      */
-    private $autor;
+    private $autorId;
+
+    /**
+     * Plusieurs commentaires peuvent être sur une page.
+     * @ORM\ManyToOne(targetEntity="App\Entity\Paginator",
+     inversedBy="commentaireId", cascade={"persist"})
+     * @ORM\JoinColumn(name="paginatorId", referencedColumnName="id")
+     */
+    private $paginatorId;
 
     public function __construct()
     {
-        $this->autor = new ArrayCollection();
+        $this->autorId = new ArrayCollection();
+        $this->paginatorId = new ArrayCollection();
+
     }
 
 
@@ -93,17 +104,32 @@ class Commentaires
         return $this;
     }
 
-    public function getAutor(): ?User
+    public function getAutorId(): ?User
     {
-        return $this->autor;
+        return $this->autorId;
     }
 
-    public function setAutor(?User $autor): self
+    public function setAutorId(?User $autorId): self
     {
-        $this->autor = $autor;
+        $this->autorId = $autorId;
 
         return $this;
     }
+
+    public function getPaginatorId(): ?Paginator
+    {
+        return $this->paginatorId;
+    }
+
+    public function setPaginatorId(?Paginator $paginatorId): self
+    {
+        $this->paginatorId = $paginatorId;
+
+        return $this;
+    }
+
+    
+   
 
     
     

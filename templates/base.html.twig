@@ -8,7 +8,14 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <html>
 <head>
 <title>Free Snow Bootstrap Website Template | Home :: w3layouts</title>
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<!-- Font Awesome -->
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+<!-- Bootstrap core CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+<!-- Material Design Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.7.6/css/mdb.min.css" rel="stylesheet">
+  
 <link href="{{ asset('css/bootstrap.css') }}" rel='stylesheet' type='text/css' />
 <link href="{{ asset('css/style.css') }}" rel='stylesheet' type='text/css' />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -72,7 +79,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						    <ul class="nav" id="nav">
 						    	<li><a href="{{ path('tricks_index')}}">Accueil</a></li>
 						    	{% if is_granted('ROLE_USER')  %}
-						    	<li><a href="{{ path('tricks_new') }}">Création d'une Figure</a></li>
+						    	<li><a href="{{ path('tricks_new', {'id': app.user.id}) }}">Création d'une Figure</a></li>
 						    	<span class="deco"><li><a href="{{ path('users_edit', {'id': app.user.id})}}" >Votre Profil</a></li></span>
 						    	<span class="deco"><li><a href="{{ path('logout')}}" id="deconecte">Déconnexion</a></li></span>
 						    	{% else %}
@@ -108,8 +115,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	<!-- start slider -->
        <div id="fwslider">
          <div class="slider_container">
+         	{% block slide1 %}
             <div class="slide">
-            {% block slide1 %} 
+             
                 <!-- Slide image -->
                <img src="{{ asset('images/slider1.jpg') }}" class="img-responsive" alt=""/>
                 <!-- /Slide image -->
@@ -121,6 +129,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <!-- /Text title -->
 
                         <div class="n" style="font-size: 24px;"><a href="#ancre"> <i class="fas fa-arrow-down fa-2x"></i></a></div>
+                        
                         
                     </div>
                 </div>
@@ -181,9 +190,15 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			{% block container %}
 			        <div  class="foot hidden-sm hidden-md hidden-lg hidden-xl">
 	    	
-	    	<div class="center" style="font-size: 24px;"><i class="fas fa-bars fa-lg"></i></div>
+	    	<div class="center" style="font-size: 24px;"><a href="{{ path('tricks_index')}}"><i class="fas fa-bars fa-lg"></i></div>
+
+	    	<div class="center" style="font-size: 24px;"><a href="{{ path('tricks_index')}}"><i class="fas fa-bookmark fa-lg"></i></div>
 	    			{% if is_granted('ROLE_USER')  %}
-	    	<div style="font-size: 24px;"><i class="fas fa-power-off fa-lg"></i></div>
+	    			
+	    	<div style="font-size: 24px;"><a href="{{ path('logout')}}" id="deconecte"><i class="fas fa-power-off fa-lg"></i></a></div>
+	    			{% else %}
+	    			
+	    	<div style="font-size: 24px;"><a href="{{ path('tricks_connexion')}}"><i class="fas fa-sign-in-alt fa-lg"></i></a></div>
 	    			{% endif %}
 	    	
 	    </div>
@@ -198,34 +213,24 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					{% block footer1 %}
 					<div class="col-md-3">
 						<ul class="footer_box">
-							<h4>Products</h4>
-							<li><a href="#">Mens</a></li>
-							<li><a href="#">Womens</a></li>
-							<li><a href="#">Youth</a></li>
+							<h4>Connecter vous à votre profil !</h4>
+							<li><a href="{{ path('login')}}">Connexion</a></li>
+						    <li><a href="{{ path('users_new') }}">Inscription</a></li>
+							
+						</ul>
+					</div>
+					
+					<div class="col-md-3">
+						<ul class="footer_box">
+							<h4>Nous joindre</h4>
+							<li><a href="#">Par mail à l'adresse suivante: snowboard@gmail.com</a></li>
+							<li>Par téléphone au : 01.02.03.04.05</li>
+							
 						</ul>
 					</div>
 					<div class="col-md-3">
 						<ul class="footer_box">
-							<h4>About</h4>
-							<li><a href="#">Careers and internships</a></li>
-							<li><a href="#">Sponserships</a></li>
-							<li><a href="#">team</a></li>
-							<li><a href="#">Catalog Request/Download</a></li>
-						</ul>
-					</div>
-					<div class="col-md-3">
-						<ul class="footer_box">
-							<h4>Customer Support</h4>
-							<li><a href="#">Contact Us</a></li>
-							<li><a href="#">Shipping and Order Tracking</a></li>
-							<li><a href="#">Easy Returns</a></li>
-							<li><a href="#">Warranty</a></li>
-							<li><a href="#">Replacement Binding Parts</a></li>
-						</ul>
-					</div>
-					<div class="col-md-3">
-						<ul class="footer_box">
-							<h4>Newsletter</h4>
+							<h4> Pour recevoir des Newsletter, entrer votre email</h4>
 							<div class="footer_search">
 				    		   <form>
 				    			<input type="text" value="Enter your email" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Enter your email';}">
@@ -267,24 +272,19 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			</div>
 		</div>
 		{% block javascript %}
-		<script type="text/javascript">
-    /*$(window).resize(function() 
-    {
-    	if( $(window).width() < 768 )
-    	{
-    		$('.footer').addClass( "hidden-xs" );
-        	$('.foot ').addClass( "visible-xs-*" );
-    	}
-    	else
-    	{
-    		$('.footer').addClass( "hidden-xs" );
-        	$('.foot ').addClass( "visible-xs-*" );
-    	}
-        
 
-        
-    })*/
+		<script type="text/javascript">
+   
 </script>
+
 		{% endblock %}
+		<!-- JQuery -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.7.6/js/mdb.min.js"></script>
 </body>	
 </html>

@@ -1,49 +1,33 @@
 {% extends 'base.html.twig' %}
 {% block content1 %}
-            
-        
-<h2>Toutes les figures</h2>
-    <div class="main">
-      <div class="shop_top">
-        <div class="container">
-            <div class="row ex_box">
-            <h3 class="m_2" id="ancre"></h3>
-            <div class="alert alert success">{% for message in app.flashes('success') %} {{ message }} {% endfor %}</div>
-            {% for trick in tricks %}
-                
-                <div class="col-12 col-sm-6 col-md-4 col-lg-3 team1">
-                <div class="img_section_magnifier2">
-                  <a class="fancybox"  href="{{ asset('images/'~trick.image) }}" data-fancybox-group="gallery" title="Lorem ipsum dolor sit amet"><img  src="{{ asset('images/'~trick.image) }}" class="img-responsive" alt=""></a><span> </span>
-                    <div class="img_section_txt"> 
-                        
-                        <button><a href="{{ path('tricks_show', {'id': trick.id}) }}" >{{trick.name}}</a></button>
-
-                        <div id="id-popup">
-                            {% if is_granted('ROLE_USER') and trick.auteur|length > 0 %}
-
-                                {% if  trick.auteur[0] and app.user == trick.auteur[0] %}
-                                <a href="{{ path('tricks_edit', {'id': trick.id}) }}"><i class="fas fa-pen"></i></a>
-                                
-                                <a href="{{ path('tricks_delete', {'id': trick.id}) }}"><i class="fas fa-trash"></i></a>
-                             
-                                {% endif %}
-                            {% endif %}
-                        </div>
-                        
+                 
+    <h2>Toutes les figures</h2>
+        <div class="main">
+            <div class="shop_top">
+                <div class="m-5">
+                    <h3 class="m_2" id="ancre"></h3>
+                    <div class="alert alert success">
+                        {% for message in app.flashes('success') %} {{ message }} {% endfor %}
                     </div>
+
+                    <div class="alert alert error">
+                        {% for message in app.flashes('error') %} {{ message }} {% endfor %}
+                    </div>
+                    <div class="row ex_box">
+                        {% include 'tricks/blockTrick.html.twig' with {'tricks': tricks}%}
+                    </div>
+        
+                    <button type="button" id="loading" class="btn btn-info">Voir plus</button>
+        
                 </div>
-                </div>
-                
-            {% endfor %}
             </div>
-     
         </div>
-     </div>
-    </div>
     <div class="features">
         <div class="container0">
             <div class="col-md-3 col-lg-3 top_box1">   
-                <div class="n" style="font-size: 24px;"><a href="#ancre"><i class="fas fa-arrow-up fa-2x"></i></a></div>              
+                <div class="n hidden-xs " style="font-size: 24px;">
+                    <a href="#ancre"><i class="fas fa-arrow-up fa-2x"></i></a>
+                </div>              
             </div>   
         </div>
     </div>
@@ -51,15 +35,16 @@
 {% endblock %}
 
 {% block javascript %}
-<script type="text/javascript">
-        $(document).ready(function() 
+<script type="text/javascript">var lastId =  4 </script>
+<script> 
+    $("#loading").click(function()
+    {
+        var jqxhr = $.post( "{{path('trick_ajax')}}", { id: lastId }
+        ,function(data) 
         {
-            /*
-             *  Simple image gallery. Uses default settings
-             */
-            $('#idid-popup').modal('show');
-
-            $('.fancybox').fancybox();
-
+        $('.ex_box').append( data );
+        lastId = $('.ex_box > div').length;
         });
-</script>{% endblock %}
+    })
+</script>
+{% endblock %}

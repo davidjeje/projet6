@@ -22,8 +22,9 @@ class TricksRepository extends ServiceEntityRepository
     public function nombreTrick($firstResult, $maxResult)
     {
         return $this->createQueryBuilder('c')
-           ->setfirstResult($firstResult)
-            ->orderBy('c.id', 'DSC')
+            //->select("c.id, c.name, c.image")
+            ->setfirstResult($firstResult)
+            ->orderBy('c.id', 'ASC')
             ->setMaxResults($maxResult)
             ->getQuery()
             ->getResult()

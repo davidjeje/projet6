@@ -2,10 +2,85 @@
 
 {% block title %}New Tricks{% endblock %}
 
-{% block content1 %}
-    <h1>Créer une nouvelle figure</h1>
+{% block slide1 %}
 
-    {{ include('tricks/_form.html.twig') }}
+    <div class="col-12 slide" style="display: block;">
+        <div class="col-12">
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <div class="login-page">
+            <!-- Material form login -->
+                <div class="card">
 
-    <a href="{{ path('tricks_index') }}">revenir à la liste</a>
+                    <h5 class="card-header info-color white-text text-center py-4">
+                        <strong>Création d'une figure</strong>
+                    </h5>
+
+                <!--Card content-->
+                    <div class="card-body w-100">
+                        {{form_start(form)}}
+                            <div class="md-form w-100">
+                                {{ form_label(form.name) }}
+                                {{ form_widget(form.name, {'attr': {'class': 'form-control', 'id': 'materialLoginFormEmail'} }) }}    
+                            </div>
+
+                            <div class="md-form w-100">
+                                {{ form_label(form.description) }}
+                                {{ form_widget(form.description, {'attr': {'class': 'form-control', 'id': 'materialLoginFormEmail'} }) }} 
+                            </div>
+
+                            <div class="md-form w-100">
+                                {{ form_label(form.level) }}
+                                {{ form_widget(form.level, {'attr': {'class': 'form-control', 'id': 'materialLoginFormEmail'} }) }}   
+                            </div>
+
+                            <div class="md-form w-100">
+                                {{ form_label(form.groupname) }}
+                                {{ form_widget(form.groupname, {'attr': {'class': 'form-control', 'id': 'materialLoginFormEmail'} }) }}
+                            </div>
+
+                            <div class="md-form w-100">
+                                {{ form_widget(form.image, {'attr': {'class': 'form-control'} }) }}
+                            </div>
+
+                            <div class="md-form w-100">
+                                {{ form_widget(form.secondeImage, {'attr': {'class': 'form-control'} }) }}
+                            </div>
+
+
+                            <div class="md-form w-100">
+                                {{ form_label(form.video) }}
+                                {{ form_widget(form.video, {'attr': {'class': 'form-control'} }) }}   
+                            </div>
+
+                            <div class="md-form w-100">
+                                {{ form_label(form.secondeVideo) }}
+                                {{ form_widget(form.secondeVideo, {'attr': {'class': 'form-control'} }) }}   
+                            </div>
+
+                            <div class="md-form w-100">
+                                {{ form_label(form.troisiemeVideo) }}
+                                {{ form_widget(form.troisiemeVideo, {'attr': {'class': 'form-control'} }) }}   
+                            </div>
+                    <div>
+                </div>
+
+                <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit"><a href="{{ path('tricks_new', {'id': app.user.id})}}"></a>Ajouter</button>
+            </div>
+        </div>
+                        {{form_end(form)}}
+		<br>
+    </div>
+				
+{% endblock %}
+				 	
+{% block slide3 %}
+        
+{% endblock %}		 
+			 
+{% block container %}
+	   
 {% endblock %}

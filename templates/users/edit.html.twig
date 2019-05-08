@@ -1,13 +1,56 @@
 {% extends 'base.html.twig' %}
+{% block slide1 %}
 
-{% block title %}Modifier vos informations{% endblock %}
+    <div class="col-12 slide" style="display: block;">
+        <div class="col-12">
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <div class="login-page">
+                <!-- Material form login -->
+                <div class="card">
 
-{% block content1 %}
-    <h1>Modifier vos informations</h1>
+                    <h5 class="card-header info-color white-text text-center py-4">
+                        <strong>Modifier votre profil</strong>
+                    </h5>
 
-    {{ include('users/_form.html.twig', {'button_label': 'Modifier'}) }}
+                    <!--Card content-->
+                    <div class="card-body w-100">
+                        {{form_start(form)}}
+                        <div class="md-form w-100">
+                            {{ form_label(form.prenom) }}
+                            {{ form_widget(form.prenom, {'attr': {'class': 'form-control', 'id': 'materialLoginFormEmail'} }) }}  
+                        </div>
 
-    <a href="{{ path('tricks_index') }}">Revenir sur la liste des figures </a>
+                        <div class="md-form w-100">
+                            {{ form_label(form.nom) }}
+                            {{ form_widget(form.nom, {'attr': {'class': 'form-control', 'id': 'materialLoginFormEmail'} }) }}  
+                        </div>
 
-    {{ include('users/_delete_form.html.twig') }}
+                        <div class="md-form w-100">
+                            {{ form_label(form.email) }}
+                            {{ form_widget(form.email, {'attr': {'class': 'form-control', 'id': 'materialLoginFormEmail'} }) }}      
+                        </div>
+
+                        <div class="md-form w-100">
+                            {{ form_widget(form.photo, {'attr': {'class': 'form-control', 'id': 'materialLoginFormEmail'} }) }}     
+                        </div>
+
+            
+                        <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit"><a href="{{ path('users_edit', {'id': app.user.id})}}"></a>Modifier</button>
+                        {{form_end(form)}}
+                    </div>
+                </div>
+				<br>		  
+            </div>
+        </div>
+    </div>			
+{% endblock %}
+				 	
+{% block slide3 %} 
+{% endblock %}		 
+			 
+{% block container %}
 {% endblock %}

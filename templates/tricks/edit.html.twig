@@ -1,64 +1,188 @@
 {% extends 'base.html.twig' %}
 
 {% block slide1 %}
-<img src="{{ asset('images/'~trick.image) }}" class="img-responsive" alt=""/>
-    <!-- /Slide image -->
-    <!-- Texts container -->
-    <div class="slide_content">
-        <div class="slide_content_wrap">
+    {% set image = trick.image|default('1.jpeg') %}
+
+    <div class="slide">      
+        <!-- Slide image -->
+        <img src="{{ asset('images/'~trick.image) }}" class="img-responsive" alt=""/>
+        <!-- /Slide image -->
+        <!-- Texts container -->
+        <div class="slide_content">
+            <div class="slide_content_wrap">
             <!-- Text title -->
-            <h1 class="title">{{ trick.name }} !!!</h1>
-            <!-- /Text title -->
-                        
+                <h1 class="title">{{ trick.name }}</h1>
+                <!-- /Text title --> 
+                    <div class="nn">
+                        {% if is_granted('ROLE_USER') and trick.auteur|length > 0 %}
+
+                            {% if  trick.auteur[0] and app.user == trick.auteur[0] %}
+                                <a href="{{ path('edit_image', {'id': trick.id, 'numberImage': '1'}) }}"><i class="fas fa-pen"></i></a>
+                                
+                                <a href="{{ path('tricks_delete', {'id': trick.id}) }}"><i class="fas fa-trash"></i></a> 
+                            {% endif %}
+
+                        {% endif %}
+                        <a href="{{ path('edit_image', {'id': trick.id, 'numberImage': '1'}) }}"><i class="fas fa-pen"></i></a>
+                    </div>                      
+            </div>
         </div>
-    </div>          
+    </div>
+
 {% endblock %}
 
 {% block slide2 %}{% endblock %}
 
+
 {% block content1 %}
-{% block content1 %}
-<button class="vu visible-xs-*">Voir les vidéos</button>
-<div class="video hidden-xs ">
+
+    <button class="vu visible-xs-*">Voir les vidéos</button>
+    <div class="video hidden-xs ">
     
-    {{ trick.video|raw }}
+        <div class="d-flex flex-row">
+            <div class="p-2">
+                <!-- Card -->
+                <div class="card">
+                    <!-- Card image -->
+                    {{ trick.video|raw }}
+                    <!-- Card content -->
+                    <div class="card-body">
+                        <!-- Title -->
+                        <h4 class="card-title"><a>Modifier cette vidéo ?</a></h4>
+                        <!-- Button -->
+                        <a href="{{ path('tricks_video', {'id': trick.id, 'numberVideo':'1'}) }}"><i class="fas fa-pen"></i></a>                      
+                    </div>
+                </div>
+                <!-- Card --> 
+            </div>
 
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/n0F6hSpxaFc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <div class="p-2">
+                <!-- Card -->
+                <div class="card">
+                    <!-- Card image -->
+                    {{ trick.secondeVideo|raw }}
+                    <!-- Card content -->
+                    <div class="card-body">
+                        <!-- Title -->
+                        <h4 class="card-title"><a>Modifier cette vidéo ?</a></h4>
+                        <!-- Button -->
+                        <a href="{{ path('tricks_video', {'id': trick.id, 'numberVideo':'2'}) }}"><i class="fas fa-pen"></i></a>                      
+                    </div>
+                </div>
+                <!-- Card -->
+            </div>
 
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/KoHzXi7Usl8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <div class="p-2"> 
+                    <!-- Card -->
+                    <div class="card">
+                        <!-- Card image -->
+                        {{ trick.troisiemeVideo|raw }}
+                        <!-- Card content -->
+                        <div class="card-body">
+                            <!-- Title -->
+                            <h4 class="card-title"><a>Modifier ou supprimer cette vidéo ?</a></h4>
+                            <!-- Button -->
+                            <a href="{{ path('tricks_video', {'id': trick.id, 'numberVideo':'3'}) }}"><i class="fas fa-pen"></i></a>                    
+                        </div>
+                    </div>
+                    <!-- Card -->
+                </div>
 
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/8CtWgw9xYRE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</div>
+                <div class="p-2">
+                <!-- Card -->
+                <div class="card">
+                    <!-- Card image -->
+                    <img  src="{{ asset('images/'~trick.secondeImage) }}" >
+                    
+                    <!-- Card content -->
+                    <div class="card-body">
+                        <!-- Title -->
+                        <h4 class="card-title"><a>Modifier cette image ?</a></h4>
+                        <!-- Button -->
+                        <a href="{{ path('edit_image', {'id': trick.id, 'numberImage':'2'}) }}"><i class="fas fa-pen"></i></a>             
+                    </div>
+                </div>
+                <!-- Card --> 
+            </div>
+        </div>
+    </div>
 
-<img src="" class="img-responsive" alt=""/>  
-<br>
+    <p>
+        <h2>Snowboarder freestyle</h2>
+        <br>
+        Le snowboard freestyle (anglicisme) ou la planche acrobatique de neige1 (ou artistique) est la pratique de la planche à neige de figures, apparue dans les années 1980 et héritière du skateboard. Cette discipline de planche acrobatique consiste pour ses pratiquants à exécuter des figures libres lors de sauts pratiqués à l'aide de structures diverses utilisées comme tremplin. Elle a principalement lieu dans des zones spéciales dédiées comme les snowparks ou en milieu urbain. Elle peut aussi être pratiquée en hors-piste (backcountry en anglais). Cette discipline est considérée comme un sport extrême.
 
-<p>
-    <h2>Snowboarder freestyle</h2>
+        Le snowboardeur qui pratique le snowboard freestyle est appelé freestyleur (freestyler), ou plus généralement rideur (rider). Les épreuves de snowboard freestyle disputées en Coupe du monde, aux championnats du monde et aux Jeux olympiques sont le half-pipe, le slopestyle, le big air et le snowboard-cross... Cette figure est {{ trick.name }}. {{ trick.description }}.
+    </p>
+    <p>
+        Cette figure fait partie du groupe {{ trick.groupname }}. La date de création est le {{ trick.DateCreation }} et la date de modification est {{ trick.DateModification }}.
+    </p>
     <br>
-    Le snowboard freestyle (anglicisme) ou la planche acrobatique de neige1 (ou artistique) est la pratique de la planche à neige de figures, apparue dans les années 1980 et héritière du skateboard. Cette discipline de planche acrobatique consiste pour ses pratiquants à exécuter des figures libres lors de sauts pratiqués à l'aide de structures diverses utilisées comme tremplin. Elle a principalement lieu dans des zones spéciales dédiées comme les snowparks ou en milieu urbain. Elle peut aussi être pratiquée en hors-piste (backcountry en anglais). Cette discipline est considérée comme un sport extrême.
+    <hr>
 
-    Le snowboardeur qui pratique le snowboard freestyle est appelé freestyleur (freestyler), ou plus généralement rideur (rider). Les épreuves de snowboard freestyle disputées en Coupe du monde, aux championnats du monde et aux Jeux olympiques sont le half-pipe, le slopestyle, le big air et le snowboard-cross... Cette figure est {{ trick.name }}. {{ trick.description }}.</p>
-<p>
+    <div class="col-12 slide" style="display: block;">
+        <div class="col-12">
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <div class="login-page">
+            <!-- Material form login -->
+                <div class="card">
+                    <h5 class="card-header info-color white-text text-center py-4">
+                        <strong>Modifier la figure</strong>
+                    </h5>
 
-Cette figure fait partie du groupe {{ trick.groupname }}. La date de création est le {{ trick.DateCreation }} et la date de modification est {{ trick.DateModification }}.</p>
-<br>
-<hr>
+                    <!--Card content-->
+                    <div class="card-body px-lg-5 pt-0">
 
+                        <!-- Form -->
+    
+                        {{form_start(form)}}
+                        <div class="md-form">
+                            {{ form_label(form.name) }}
+                            {{ form_widget(form.name, {'attr':{'class':'form-control'}}) }}
+                            {{ form_errors(form.name) }}
+                        </div>
 
+                        <!-- Password -->
+                        <div class="md-form">
+                            {{ form_label(form.description) }}
+                            {{ form_widget(form.description, {'attr':{'class':'form-control'}}) }} 
+                            {{ form_errors(form.description) }}
+                        </div>
 
-{% if is_granted('ROLE_USER') and trick.auteur|length > 0 %}
-    {% if  trick.auteur[0] and app.user == trick.auteur[0] %}
-    <h1>Modifier la figure</h1>
+                        <div class="md-form">
+                            {{ form_label(form.level) }}
+                            {{ form_widget(form.level, {'attr':{'class':'form-control'}}) }} 
+                            {{ form_errors(form.level) }}
+                        </div>
 
-    {{ include('tricks/_form.html.twig', {'button_label': 'Modifier'}) }}
+                        <div class="md-form">
+                            {{ form_label(form.groupname) }}
+                            {{ form_widget(form.groupname, {'attr':{'class':'form-control'}}) }} 
+                            {{ form_errors(form.groupname) }}
+                        </div>
+
+            
+      
+
+                        <!--Blue-grey-->
+                        <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit"><a href="{{ path('tricks_edit', {'id': trick.id})}}"></a>Modifier</button>
+                        {{form_end(form)}}
+                    </div>
+                </div>
+            </div>
+        </div>  
+
+        <br>
+                  
+    </div>
 
     <a href="{{ path('tricks_index') }}">revenir sur la page d'accueil</a>
 
-    {{ include('tricks/_delete_form.html.twig') }}
-    {% endif %}
-{% endif %}
-    
+    {{ include('tricks/_delete_form.html.twig') }}   
 {% endblock %}
 
 {% block slide3 %}
@@ -67,8 +191,7 @@ Cette figure fait partie du groupe {{ trick.groupname }}. La date de création e
 {% endblock %}
 
 {% block content2 %}
-<br>
-<p></p>
+
 {% endblock %}
 {% block javascript %}
 <script type="text/javascript">

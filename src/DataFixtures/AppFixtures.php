@@ -8,66 +8,90 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Entity\User;
 use App\Entity\Tricks;
 use App\Entity\Commentaires;
+use App\Entity\Paginator;
+use Faker;
 class AppFixtures extends Fixture
 {
 	private $encoder;
+	
 
-public function __construct(UserPasswordEncoderInterface $encoder)
-{
-    $this->encoder = $encoder;
-}
-
-// ...
-//public const USER_REFERENCE = 'user';
-public function load(ObjectManager $manager)
-{
-	for ($i = 0; $i < 20; $i++) 
+	public function __construct(UserPasswordEncoderInterface $encoder)
 	{
-	$user = new User();
-    $user->setEmail('user'.$i.'com');
-    $user->setNom('user'.$i);
-    $user->setPrenom('user'.$i);
-    $user->setPhoto('user'.$i);
+    	$this->encoder = $encoder;
+   
+	}
 
-    $password = $this->encoder->encodePassword($user, 'pass_1234');
-    $user->setPassword($password);
 
-    $manager->persist($user);
-	} 
+	//public const USER_REFERENCE = 'user';
+	public function load(ObjectManager $manager/*, User $user*/)
+	{
+	
+		for ($i = 0; $i < 20; $i++) 
+		{
+			$user = new User();
+    		$user->setEmail('user'.$i.'@gmail.com');
+    		$user->setNom('Nom'.$i);
+    		$user->setPrenom('Prenom'.$i);
+    		$user->setPhoto($i.'.jpg');
+    		$user->setIsActive(true);
+    		$user->addRole('ROLE_USER');
 
-	for ($i = 0; $i < 20; $i++) 
-      {
-         $trick = new Tricks();
-         $trick->setName('trick '.$i);
-         $trick->setDescription('Description '.$i);
-         $trick->setLevel('Level '.$i);
-         $trick->setGroupname('Groupname '.$i);
-         $trick->setDateCreation('DateCreation '.$i);
-         $trick->setDateModification('DateModification '.$i);
-         //$trick->addAuteur($this->getReference(AppFixtures:: 'user'.$i));
-         $trick->setImage('http://mementoski.com/wp-content/uploads/2016/07/header-snowboard.jpg'.$i);
-         $trick->setSecondeImage('http://mementoski.com/wp-content/uploads/2016/07/header-snowboard.jpg'.$i);
-         $trick->setVideo('<iframe width="560" height="315" src="https://www.youtube.com/embed/jl6xnZRi9p8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> '.$i);
-          $trick->setSecondeVideo('<iframe width="560" height="315" src="https://www.youtube.com/embed/jl6xnZRi9p8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> '.$i);
-         $trick->setTroisiemeVideo('<iframe width="560" height="315" src="https://www.youtube.com/embed/jl6xnZRi9p8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> '.$i);
-         $manager->persist($trick);
-      }
+    		$password = $this->encoder->encodePassword($user, 'pass_1234');
+    		$user->setPassword($password);
 
-     /* for ($i = 0; $i < 20; $i++) {
-            $Commentaires = new Commentaires();
-            //$Commentaires->setAutorId($this->getReference('user1'));
+    		$manager->persist($user);
 
-            $Commentaires->setCommentaire('Commentaire '.$i);
-            //$Commentaires->setDateCommentaire('DateCommentaire '.$i);
+		} 
+	 	$manager->flush();
+
+		for ($i = 0; $i < 20; $i++) 
+		{
+        	$paginator = new paginator();
+        	$paginator->setPage($i);
+        	$paginator->setNbPages('20');
+        	$paginator->setNomRoute('tricks_show');
+        	$manager->persist($paginator);
+    	}
+    	$manager->flush();
+
+		$user= $manager->getRepository(User::class)->findAll();
+		$paginator= $manager->getRepository(Paginator::class)->findAll();
+		for ($i = 1; $i < 10; $i++) 
+    	{
+        	$trick = new Tricks();
+        	$trick->setName('trick '.$i);
+        	$trick->setDescription('Description '.$i);
+        	$trick->setLevel('Level '.$i);
+        	$trick->setGroupname('Groupname '.$i);
+        	$trick->setDateCreation((new \DateTime())->format("d-m-Y"));
+        	$trick->setDateModification((new \DateTime())->format("d-m-Y"));
+         
+
+        	$trick->addAuteur($user[$i]);
+        	$trick->setImage($i.'.jpeg');
+        	$trick->setSecondeImage($i.'.jpeg');
+        	$trick->setVideo('<iframe width="560" height="315" src="https://www.youtube.com/embed/jl6xnZRi9p8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> ');
+        	$trick->setSecondeVideo('<iframe width="560" height="315" src="https://www.youtube.com/embed/jl6xnZRi9p8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> ');
+        	$trick->setTroisiemeVideo('<iframe width="560" height="315" src="https://www.youtube.com/embed/jl6xnZRi9p8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> ');
+        	$manager->persist($trick);
+        	$Commentaires = new Commentaires();
+        	$Commentaires->setPaginatorId($paginator[$i]);
             
-            $manager->persist($Commentaires);
-        }*/
+            	$Commentaires->setAutorId($user[$i]);
+            
+            	$Commentaires->setCommentaire('Commentaire '.$i);
+            	$Commentaires->setDateCommentaire((new \DateTime())->format("d-m-Y"));
+            
+            	$trick->addCommentairesId($Commentaires);
+            	$manager->persist($Commentaires);
+        	
+   
+    	}
+
+
     $manager->flush();
-    $this->addReference('user1', $user);
-    $this->addReference('trick'.$i, $trick);
-   // $this->addReference('commentaires'.$i, $Commentaires);
-    //$this->addReference(self::USER_REFERENCE, $user);
-}
+
+	}
 
 }
 
