@@ -27,12 +27,10 @@ use App\Entity\Paginator;
 use App\Form\PaginatorType;
 use App\Repository\PaginatorRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
+use Symfony\Component\HttpFoundation\File\File;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
-
 
 
 class TricksController extends AbstractController
@@ -42,7 +40,6 @@ class TricksController extends AbstractController
      */
     public function index(TricksRepository $tricksRepository): Response
     {
-         
         return $this->render('tricks/index.html.twig', ['tricks' => $tricksRepository->nombreTrick(0, 4)]);
     }
 
@@ -57,29 +54,17 @@ class TricksController extends AbstractController
         return new JsonResponse($tricks); 
     }         
 
-    /**
-     * @Route("/connexion", name="tricks_connexion", methods="GET")
-     */
-    public function connexion(): Response
-    {
-        return $this->render('connexion.html.twig');
-    }
 
     /**
-     * @Route("/inscription", name="tricks_inscription", methods="GET")
-     */
-    public function inscription(): Response
-    {
-        return $this->render('inscription.html.twig');
-    }
-
-    /**
-     * @Route("/{id}/new/trick", name="tricks_new", methods="GET|POST")
+     * @Route("/new/trick", name="tricks_new", methods="GET|POST")
      */
     public function new(Request $request, User $user): Response
     {
-        
+        $user = new User();
+        $user = $this->getUser();
+
         $trick = new Tricks();
+        
         $form = $this->createForm(TricksType::class, $trick);
         $form->handleRequest($request);
 
@@ -124,7 +109,7 @@ class TricksController extends AbstractController
 
         return $this->render('tricks/new.html.twig', [
             'trick' => $trick,
-            'user' => $user,
+            'user' => $this->getUser(),
             'form' => $form->createView(),
         ]);
     }
@@ -179,7 +164,6 @@ class TricksController extends AbstractController
             $em->flush();
              
         }
-        
         
         
       return $this->render('tricks/show.html.twig', ['trick' => $trick, 'form' => $form->createView(),'commentaireAffichage' => $commentaireAffichage, 'commentairePagination' => $commentairePagination,
@@ -238,11 +222,20 @@ class TricksController extends AbstractController
     public function editImage(Request $request, Tricks $trick, $numberImage): Response
     {
         $field="image";
+        $method="setImage";
+        $getter="getImage";
         if ($numberImage== 2)
         {
             $field="secondeImage";
+            $method="setSecondeImage";
+            $getter="getSecondeImage";
         }
-        
+        //if ($request->isMethod('get')) 
+        //{
+
+            $trick->$method(
+            new File($this->getParameter('images_directory').'/'.$trick->$getter()));
+        //}
         $form = $this->createForm(EditImageType::class, $trick, ["image"=>$field]);
         
         $form->handleRequest($request);
@@ -250,7 +243,7 @@ class TricksController extends AbstractController
         
         if ($form->isSubmitted() ) 
         {
-            if ($numberImage== 2 and $field=="secondeImage")
+            if ($numberImage== 2 )
             {
                 $file = $trick->getSecondeImage();
             }
@@ -323,7 +316,7 @@ class TricksController extends AbstractController
             
             $date = new \DateTime();
             $trick->setDateModification($date->format("d-m-Y H:i"));
-            if ($trick)
+            
             // Move the file to the directory where images are stored
             try 
             {
@@ -349,7 +342,7 @@ class TricksController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="tricks_delete", methods="DELETE")
+     * @Route("/{id}/deleteTrick", name="tricks_delete", methods="DELETE")
      */
     public function delete(Request $request, Tricks $trick): Response
     {
