@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block slide1 %}
+
+    <div class="col-md-6">
+        <div class="login-page">
+		</div>
+    </div>
+	<div class="col-md-6">
+		<div class="login-title">
+			{{form(form)}}
+		</div>
+	</div>
+{% endblock %}				 	 
+{% block container %}
+	{% if error %}
+        <div class="alert alert-danger">
+            <ul class="list-unstyled mb-0">
+                <li>
+                    <span class="initialism form-error-icon badge badge-danger">Error</span> 
+                    <span class="form-error-message">{{ error.messageKey|trans(error.messageData, 'security') }}</span>
+                </li>
+            </ul>
+        </div>
+    {% endif %}
+    {{form(form)}}
+{% endblock %}
+{% block slide3 %}
+    <div class="timers"></div>
+    <div class="slidePrev"><span></span></div>       
+{% endblock %}
