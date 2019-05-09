@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+{% block slide1 %}
+
+    <div class="col-12 slide" style="display: block;">
+        <div class="col-12">
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <div class="login-page">
+            <!-- Material form login -->
+                <div class="card">
+                    <h5 class="card-header info-color white-text text-center py-4">
+                        <strong>Modifier l'image</strong>
+                    </h5>
+
+                    <!--Card content-->
+                    <div class="card-body px-lg-5 pt-0">
+                        <!-- Form -->
+                        {{form_start(form)}}
+                        <div class="md-form">
+                            {{ form_row(form) }}
+                            
+                        </div>
+                    </div>   
+
+                    <!--Blue-grey-->
+                    <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit"><a href="{{ path('edit_image', {'id': trick.id, 'numberImage': numberImage})}}"></a>Modifier</button>
+                    {{form_end(form)}}
+                </div>
+            </div>
+        </div>
+    </div>  
+
+    <br>
+                
+{% endblock %}
+                    
+{% block slide3 %}
+        
+{% endblock %}       
+             
+{% block container %}
+      
+{% endblock %}
