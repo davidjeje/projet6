@@ -68,7 +68,7 @@
                     <div>
                 </div>
 
-                <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit"><a href="{{ path('tricks_new')}}"></a>Ajouter</button>
+                <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit"><a href="{{ path('tricks_new', {'id': app.user.id})}}"></a>Ajouter</button>
             </div>
         </div>
                         {{form_end(form)}}
