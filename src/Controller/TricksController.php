@@ -56,12 +56,11 @@ class TricksController extends AbstractController
 
 
     /**
-     * @Route("/new/trick", name="tricks_new", methods="GET|POST")
+     * @Route("/{id}/new/trick", name="tricks_new", methods="GET|POST")
      */
     public function new(Request $request, User $user): Response
     {
-        $user = new User();
-        $user = $this->getUser();
+        //$user = $this->getUser();
 
         $trick = new Tricks();
         
@@ -109,7 +108,7 @@ class TricksController extends AbstractController
 
         return $this->render('tricks/new.html.twig', [
             'trick' => $trick,
-            'user' => $this->getUser(),
+            'user' => $user,
             'form' => $form->createView(),
         ]);
     }
@@ -230,12 +229,10 @@ class TricksController extends AbstractController
             $method="setSecondeImage";
             $getter="getSecondeImage";
         }
-        //if ($request->isMethod('get')) 
-        //{
 
-            $trick->$method(
-            new File($this->getParameter('images_directory').'/'.$trick->$getter()));
-        //}
+        $trick->$method(
+        new File($this->getParameter('images_directory').'/'.$trick->$getter()));
+        
         $form = $this->createForm(EditImageType::class, $trick, ["image"=>$field]);
         
         $form->handleRequest($request);
