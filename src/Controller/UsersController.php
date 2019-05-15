@@ -76,7 +76,7 @@ class UsersController extends AbstractController
     $mailer->send($message);
             // ... do any other work - like sending them an email, etc
             // maybe set a "flash" success message for the user
-            $this->addFlash('success', 'Votre compte à bien été enregistré.');
+            $this->addFlash('success', 'Votre compte à bien été enregistré. Rendez vous sur votre boite mail pour finaliser votre inscription. Merci.');
 
             return $this->redirectToRoute('tricks_index');
         }
@@ -174,7 +174,7 @@ class UsersController extends AbstractController
             $form = $this->get('form.factory')
             ->createNamedBuilder(null)
             ->add('_username', null, ['label' => 'Email'])
-            ->add('ok', \Symfony\Component\Form\Extension\Core\Type\SubmitType::class, ['label' => 'Réinitialiser le mot de passe', 'attr' => ['class' => 'btn-primary btn-block']])
+            //->add('ok', \Symfony\Component\Form\Extension\Core\Type\SubmitType::class, ['label' => 'Réinitialiser le mot de passe', 'attr' => ['class' => 'btn-primary btn-block']])
             ->getForm();
             $form->handleRequest($request);
           if ($form->isSubmitted() && $form->isValid()) {
@@ -202,7 +202,7 @@ class UsersController extends AbstractController
 
     $mailer->send($message);
             
-            $this->addFlash('o', 'Votre compte à bien été enregistré.');
+            $this->addFlash('o', 'Vous venez de valider votre adresse mail. Rendez vous dans votre boite mail pour accepter la demande de changement de mot de passe');
 
             return $this->redirectToRoute('tricks_index');
         }
