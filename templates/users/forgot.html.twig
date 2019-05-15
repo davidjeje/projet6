@@ -1,31 +1,51 @@
 {% extends 'base.html.twig' %}
-
 {% block slide1 %}
 
-    <div class="col-md-6">
-        <div class="login-page">
-		</div>
+    <div class="col-12 slide" style="display: block;">
+        <div class="col-12">
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <div class="login-page">
+            <!-- Material form login -->
+                <div class="card">
+
+                    <h5 class="card-header info-color white-text text-center py-4">
+                        <strong>Réinitialiser le mot de passe</strong>
+                    </h5>
+
+                    <!--Card content-->
+                    <div class="card-body px-lg-5 pt-0">
+
+                        <!-- Form -->
+    
+                        {{form_start(form)}}
+                        <div class="md-form">
+                            {{ form_label(form._username) }}
+                            {{ form_widget(form._username, {'attr':{'class':'form-control'}}) }}
+                            {{ form_errors(form._username) }}
+                        </div>
+
+                        
+      
+
+                        <!--Blue-grey-->
+                        <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit"><a href="{{ path('forgot')}}"></a>Valider</button>
+                        {{form_end(form)}}
+    
+                    </div>
+                </div>
+           </div>
+        </div>  
+
+        <br>
     </div>
-	<div class="col-md-6">
-		<div class="login-title">
-			{{form(form)}}
-		</div>
-	</div>
-{% endblock %}				 	 
-{% block container %}
-	{% if error %}
-        <div class="alert alert-danger">
-            <ul class="list-unstyled mb-0">
-                <li>
-                    <span class="initialism form-error-icon badge badge-danger">Error</span> 
-                    <span class="form-error-message">{{ error.messageKey|trans(error.messageData, 'security') }}</span>
-                </li>
-            </ul>
-        </div>
-    {% endif %}
-    {{form(form)}}
+                
 {% endblock %}
+                    
 {% block slide3 %}
-    <div class="timers"></div>
-    <div class="slidePrev"><span></span></div>       
-{% endblock %}
+        
+{% endblock %}       
+             
