@@ -46,10 +46,10 @@ class Tricks
      * @ORM\Column(type="string")
      * 
      * @Assert\Image(
-     *     minWidth = 500,
-     *     maxWidth = 500,
-     *     minHeight = 357,
-     *     maxHeight = 357
+     *     minWidth = 900,
+     *     maxWidth = 900,
+     *     minHeight = 857,
+     *     maxHeight = 857
      * )
      */
     private $image;

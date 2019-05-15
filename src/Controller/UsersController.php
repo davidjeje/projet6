@@ -37,7 +37,7 @@ class UsersController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="users_new", methods="GET|POST")
+     * @Route("/new/user", name="users_new", methods="GET|POST")
      */
     public function new(Request $request, UserPasswordEncoderInterface $passwordEncoder, \Swift_Mailer $mailer): Response
     {
@@ -76,7 +76,7 @@ class UsersController extends AbstractController
     $mailer->send($message);
             // ... do any other work - like sending them an email, etc
             // maybe set a "flash" success message for the user
-            $this->addFlash('success', 'Votre compte à bien été enregistré.');
+            $this->addFlash('success', 'Votre compte à bien été enregistré. Rendez vous sur votre boite mail pour finaliser votre inscription. Merci.');
 
             return $this->redirectToRoute('tricks_index');
         }
@@ -122,7 +122,7 @@ class UsersController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
-             return $this->redirectToRoute('login');
+            return $this->redirectToRoute('login');
             
         }
 
@@ -133,7 +133,7 @@ class UsersController extends AbstractController
     }
 
     /**
-     * @Route("/login", name="login", methods="GET|POST")
+     * @Route("/login/user", name="login", methods="GET|POST")
      */
     public function login(Request $request, AuthenticationUtils $authenticationUtils) {
         // get the login error if there is one
@@ -148,7 +148,7 @@ class UsersController extends AbstractController
                 ->add('_password', \Symfony\Component\Form\Extension\Core\Type\PasswordType::class, ['label' => 'Mot de passe'])
                 /*->add('ok', \Symfony\Component\Form\Extension\Core\Type\SubmitType::class, ['label' => 'Ok', 'attr' => ['class' => 'btn-primary btn-block']])*/
                 ->getForm();
-                
+
         if ($form->isSubmitted() && $form->isValid()) 
         {
             $session = new Session();
@@ -167,14 +167,14 @@ class UsersController extends AbstractController
 
 
     /**
-     * @Route("/forgot", name="forgot", methods="GET|POST")
+     * @Route("/forgot/password", name="forgot", methods="GET|POST")
      */
     public function forgot(Request $request, \Swift_Mailer $mailer, UsersRepository $usersRepository) {
         
             $form = $this->get('form.factory')
             ->createNamedBuilder(null)
             ->add('_username', null, ['label' => 'Email'])
-            ->add('ok', \Symfony\Component\Form\Extension\Core\Type\SubmitType::class, ['label' => 'Réinitialiser le mot de passe', 'attr' => ['class' => 'btn-primary btn-block']])
+            //->add('ok', \Symfony\Component\Form\Extension\Core\Type\SubmitType::class, ['label' => 'Réinitialiser le mot de passe', 'attr' => ['class' => 'btn-primary btn-block']])
             ->getForm();
             $form->handleRequest($request);
           if ($form->isSubmitted() && $form->isValid()) {
@@ -202,7 +202,7 @@ class UsersController extends AbstractController
 
     $mailer->send($message);
             
-            $this->addFlash('o', 'Votre compte à bien été enregistré.');
+            $this->addFlash('o', 'Vous venez de valider votre adresse mail. Rendez vous dans votre boite mail pour accepter la demande de changement de mot de passe');
 
             return $this->redirectToRoute('tricks_index');
         }
@@ -241,7 +241,7 @@ class UsersController extends AbstractController
 
 
     /**
-     * @Route("/{id}/edit", name="users_edit", methods="GET|POST")
+     * @Route("/{id}/edit/user", name="users_edit", methods="GET|POST")
      */
     public function edit(Request $request, User $user): Response
     {
@@ -281,11 +281,10 @@ class UsersController extends AbstractController
             'error' => null,
         ]);
     }
-
     
 
     /**
-     * @Route("/logout", name="logout", methods="GET|POST")
+     * @Route("/logout/user", name="logout", methods="GET|POST")
      */
     public function logout(Request $request, User $user): Response
     {
@@ -298,16 +297,17 @@ class UsersController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/delete", name="users_delete", methods="DELETE")
+     * @Route("/{id}/delete/user", name="users_delete", methods="DELETE")
      */
     public function delete(Request $request, User $user): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) 
+        {
             $em = $this->getDoctrine()->getManager();
             $em->remove($user);
             $em->flush();
         }
 
-        return $this->redirectToRoute('users_index');
+        return $this->redirectToRoute('tricks_index');
     }
 }
