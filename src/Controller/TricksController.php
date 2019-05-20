@@ -54,13 +54,40 @@ class TricksController extends AbstractController
         return new JsonResponse($tricks); 
     }         
 
+    public  function slugify($text)
+    {
+        // replace non letter or digits by -
+        $text = preg_replace('~[^\pL\d]+~u', '-', $text);
+
+        // transliterate
+        $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+
+        // remove unwanted characters
+        $text = preg_replace('~[^-\w]+~', '', $text);
+
+        // trim
+        $text = trim($text, '-');
+
+        // remove duplicate -
+        $text = preg_replace('~-+~', '-', $text);
+
+        // lowercase
+        $text = strtolower($text);
+
+        if (empty($text)) 
+        {
+            return 'n-a';
+        }
+
+        return $text;
+    }
 
     /**
-     * @Route("/{id}/new/trick", name="tricks_new", methods="GET|POST")
+     * @Route("/new/trick", name="tricks_new", methods="GET|POST")
      */
-    public function new(Request $request, User $user): Response
+    public function new(Request $request): Response
     {
-        //$user = $this->getUser();
+        $user = $this->getUser();
 
         $trick = new Tricks();
         
@@ -88,6 +115,7 @@ class TricksController extends AbstractController
                     $date = new \DateTime();
                     $trick->setDateCreation($date->format("d-m-Y h:i"));
                     $trick->addAuteur($this->getUser());
+                    $trick->setSlug($this->slugify($trick->getName()));
 
                     $em->persist($trick);
                     $em->flush();
@@ -124,11 +152,13 @@ class TricksController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/{page}/show", name="tricks_show", methods={"GET", "POST"})
+     * @Route("/{slug}/{page}/show/one/trick", name="tricks_show", methods={"GET", "POST"})
      */
-    public function show(Tricks $trick, Request $request, CommentairesRepository $CommentairesRepository, $page): Response
+    public function show(Tricks $trick, Request $request, CommentairesRepository $CommentairesRepository, $page, Paginator $pagina): Response
     {
-         
+        $user = $this->getUser();
+        //$pagina = $this->getPaginator();
+        
         $commentaires = new Commentaires();
         $form = $this->createForm(CommentairesType::class, $commentaires);
         $form->handleRequest($request);
@@ -154,24 +184,38 @@ class TricksController extends AbstractController
 
             $date = new \DateTime();
             $commentaires->setDateCommentaire($date->format("d-m-Y H:i"));
-            $user->addCommentaire(
-                $commentaires);
-            $trick->addCommentaire($commentaires);
+            //$commentaires->getPaginatorId();
+            $user->addCommentaireId($commentaires);
+            $trick->addCommentairesId($commentaires);
+            $pagina->addCommentaireId($commentaires);
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($trick, $user, $commentaires);
-            $em->flush();
+             try 
+            {
+                
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($trick, $user, $commentaires);
+                $em->flush();
+                $this->addFlash('success', 'Votre commentaire à bien été envoyé !!!');
+            } 
+            catch (FileException $e) 
+            {
+                $this->addFlash('error', "Le commentaire n'a pas pu être envoyé.");
+
+            }
+            
+            return $this->redirectToRoute('tricks_index', ['id' => $trick->getId()]);
+
+            
              
         }
         
         
-      return $this->render('tricks/show.html.twig', ['trick' => $trick, 'form' => $form->createView(),'commentaireAffichage' => $commentaireAffichage, 'commentairePagination' => $commentairePagination,
-            'pagination' => $pagination]); 
+      return $this->render('tricks/show.html.twig', ['trick' => $trick, 'form' => $form->createView(),'commentaireAffichage' => $commentaireAffichage, 'commentairePagination' => $commentairePagination,'user' => $user,'pagination' => $pagination]); 
     
     }
 
     /**
-     * @Route("/{id}/edit", name="tricks_edit", methods="GET|POST")
+     * @Route("/{slug}/edit/trick", name="tricks_edit", methods="GET|POST")
      */
     public function edit(Request $request, Tricks $trick): Response
     {
@@ -216,7 +260,7 @@ class TricksController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/{numberImage}/editImage", name="edit_image", methods="GET|POST")
+     * @Route("/{slug}/{numberImage}/editImage", name="edit_image", methods="GET|POST")
      */
     public function editImage(Request $request, Tricks $trick, $numberImage): Response
     {
@@ -291,7 +335,7 @@ class TricksController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/{numberVideo}/editVideo", name="tricks_video", methods="GET|POST")
+     * @Route("/{slug}/{numberVideo}/editVideo", name="tricks_video", methods="GET|POST")
      */
     public function TricksVideo(Request $request, Tricks $trick, $numberVideo): Response
     {
