@@ -46,9 +46,9 @@ class Tricks
      * @ORM\Column(type="string")
      * 
      * @Assert\Image(
-     *     minWidth = 900,
+     *     minWidth = 400,
      *     maxWidth = 900,
-     *     minHeight = 857,
+     *     minHeight = 400,
      *     maxHeight = 857
      * )
      */
@@ -58,10 +58,10 @@ class Tricks
      * @ORM\Column(type="string")
      * 
      * @Assert\Image(
-     *     minWidth = 500,
-     *     maxWidth = 500,
-     *     minHeight = 357,
-     *     maxHeight = 357
+     *     minWidth = 400,
+     *     maxWidth = 900,
+     *     minHeight = 400,
+     *     maxHeight = 857
      * )
      */
     private $secondeImage;
@@ -109,6 +109,13 @@ class Tricks
      * 
      */
     private $troisiemeVideo;
+
+    /**
+     * @ORM\Column(type="string")
+     *
+     * 
+     */
+    private $slug;
 
 
     public function __construct()
@@ -308,6 +315,18 @@ class Tricks
     public function setTroisiemeVideo(string $troisiemeVideo): self
     {
         $this->troisiemeVideo = $troisiemeVideo;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }
