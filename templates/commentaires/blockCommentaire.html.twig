@@ -1,0 +1,10 @@
+{% for commentaire in commentaireAffichage %}
+	<div>
+		<img src="{{ asset('images/'~commentaire.autorId.photo) }}" class="img-responsive" alt=""/>
+
+		Voici le commentaire de : {{commentaire.autorId.email }}
+
+    	{{commentaire.commentaire}} écrit le {{commentaire.dateCommentaire}}
+    	<hr>
+    </div>
+{% endfor %}
