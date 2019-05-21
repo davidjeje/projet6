@@ -1,6 +1,42 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Enregistrer') }}</button>
-{{ form_end(form) }}
+
+
+<div class="col-12 slide" style="display: block;">
+        <div class="col-12">
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <div class="login-page">
+            <!-- Material form login -->
+                <div class="card">
+
+                    <h5 class="card-header info-color white-text text-center py-4">
+                        <strong>Laisser un commentaire</strong>
+                    </h5>
+
+                    <!--Card content-->
+                    <div class="card-body px-lg-5 pt-0">
+
+                        <!-- Form -->
+    
+                        {{form_start(form)}}
+                        <div class="md-form">
+                            {{ form_widget(form.commentaire) }}
+                        </div>
+
+      		               		            
+
+                        <!--Blue-grey-->
+                        <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit" href="{{ path('tricks_show', {'slug': trick.slug, 'page': 1} ) }}"><a ></a>Enregistrer</button>
+                        {{form_end(form)}}
+	
+                    </div>
+                </div>
+	       </div>
+        </div>	
+
+		<br>
+    </div>
 
 
