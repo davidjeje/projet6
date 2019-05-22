@@ -79,7 +79,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						    <ul class="nav" id="nav">
 						    	<li><a href="{{ path('tricks_index')}}">Accueil</a></li>
 						    	{% if is_granted('ROLE_USER')  %}
-						    	<li><a href="{{ path('tricks_new', {'id': app.user.id}) }}">Création d'une Figure</a></li>
+						    	<li><a href="{{ path('tricks_new') }}">Création d'une Figure</a></li>
 						    	<span class="deco"><li><a href="{{ path('users_edit', {'id': app.user.id})}}" >Votre Profil</a></li></span>
 						    	<span class="deco"><li><a href="{{ path('logout')}}" id="deconecte">Déconnexion</a></li></span>
 						    	{% else %}

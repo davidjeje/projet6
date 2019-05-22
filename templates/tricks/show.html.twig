@@ -18,7 +18,7 @@
                     {% if is_granted('ROLE_USER') and trick.auteur|length > 0 %}
 
                         {% if  trick.auteur[0] and app.user == trick.auteur[0] %}
-                            <a href="{{ path('tricks_edit', {'id': trick.id}) }}"><i class="fas fa-pen"></i></a>
+                            <a href="{{ path('tricks_edit', {'slug': trick.slug}) }}"><i class="fas fa-pen"></i></a>
                                 
                             <a href="{{ path('tricks_delete', {'id': trick.id}) }}"><i class="fas fa-trash"></i></a>
                              
@@ -26,7 +26,7 @@
 
                     {% endif %}
                 </div>
-                <a href="{{ path('tricks_edit', {'id': trick.id}) }}"><i class="fas fa-pen"></i></a>
+                <a href="{{ path('tricks_edit', {'slug': trick.slug}) }}"><i class="fas fa-pen"></i></a>
                         
             </div>
         </div>
@@ -98,13 +98,15 @@
     <hr>
     <div class= "bo">
         <div class= "row ex_bo">
-
-   
+            <br>
+            
             {% include 'commentaires/blockCommentaire.html.twig' with {'commentaireAffichage': commentaireAffichage}
             %}
+            <hr>
+            <br>
         </div>
 
-        <button type= 'button' id='loading'> Voir plus</button>
+        <button type='button' id='loading'> Voir plus</button>
     </div> 
     </br> 
     </br>  
@@ -113,7 +115,7 @@
 
     {% if is_granted('ROLE_USER') and trick.auteur|length > 0 %}
         {% if  trick.auteur[0] and app.user == trick.auteur[0] %}
-            <a href="{{ path('tricks_edit', {'id': trick.id}) }}">Modifier</a>
+            <a href="{{ path('tricks_edit', {'slug': trick.slug}) }}">Modifier</a>
             {{ include('tricks/_delete_form.html.twig') }}
         {% endif %}
     {% endif %}

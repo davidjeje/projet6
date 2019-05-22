@@ -2,28 +2,24 @@
 
 namespace App\Form;
 
-use App\Entity\Commentaires;
+use App\Entity\Paginator;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use App\Entity\User;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
-class CommentairesType extends AbstractType
+class PaginatorType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            
-            ->add('commentaire', TextareaType::class)
-            
+            ->add('page')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Commentaires::class,
+            'data_class' => Paginator::class,
         ]);
     }
 }
