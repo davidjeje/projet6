@@ -73,7 +73,7 @@ class AppFixtures extends Fixture
         	$trick->setVideo('<iframe width="560" height="315" src="https://www.youtube.com/embed/jl6xnZRi9p8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> ');
         	$trick->setSecondeVideo('<iframe width="560" height="315" src="https://www.youtube.com/embed/jl6xnZRi9p8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> ');
         	$trick->setTroisiemeVideo('<iframe width="560" height="315" src="https://www.youtube.com/embed/jl6xnZRi9p8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> ');
-        	$trick->setSlug('trick '.$i);
+        	$trick->setSlug('trick'.$i);
         	$manager->persist($trick);
         	$Commentaires = new Commentaires();
         	$Commentaires->setPaginatorId($paginator[$i]);
