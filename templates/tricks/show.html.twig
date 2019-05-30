@@ -40,9 +40,9 @@
             <button class="vu visible-xs-*">Voir les vidéos</button>
             <div class="video hidden-xs ">
                 <div class="d-flex flex-row">
-                    <div class="p-2">{{ trick.video|raw }}</div>
-                    <div class="p-2">{{ trick.secondeVideo|raw }}</div>
-                    <div class="p-2">{{ trick.troisiemeVideo|raw }}</div>
+                    <div class="p-2">{{ trick.video }}</div>
+                    <div class="p-2">{{ trick.secondeVideo }}</div>
+                    <div class="p-2">{{ trick.troisiemeVideo }}</div>
                 </div>
             </div>
 
@@ -91,22 +91,25 @@
         <hr>
         {{ include('users/_form.html.twig') }}
 
-        <a href="{{ path('tricks_index') }}">Revenir sur la page d'accueil</a>
+        
     {% endif %}
 
     <br>
     <hr>
-    <div class= "bo">
+    <div class= "bo text-center">
         <div class= "row ex_bo">
             <br>
-            
+            <br>
             {% include 'commentaires/blockCommentaire.html.twig' with {'commentaireAffichage': commentaireAffichage}
             %}
+            <br>
             <hr>
             <br>
         </div>
 
-        <button type='button' id='loading'> Voir plus</button>
+        <button type='button' id='loading' class="btn btn-primary"> Voir plus</button>
+        <br>
+        <a href="{{ path('tricks_index') }}" class="btn btn-info">Revenir sur la page d'accueil</a>
     </div> 
     </br> 
     </br>  
@@ -115,7 +118,7 @@
 
     {% if is_granted('ROLE_USER') and trick.auteur|length > 0 %}
         {% if  trick.auteur[0] and app.user == trick.auteur[0] %}
-            <a href="{{ path('tricks_edit', {'slug': trick.slug}) }}">Modifier</a>
+            <a href="{{ path('tricks_edit', {'slug': trick.slug}) }}" class="btn btn-secondary">Modifier</a>
             {{ include('tricks/_delete_form.html.twig') }}
         {% endif %}
     {% endif %}
