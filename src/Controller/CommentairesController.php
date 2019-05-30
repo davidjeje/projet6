@@ -109,11 +109,11 @@ class CommentairesController extends AbstractController
      */
     public function delete(Request $request, Commentaires $commentaire): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$commentaire->getId(), $request->request->get('_token'))) {
+        
             $em = $this->getDoctrine()->getManager();
             $em->remove($commentaire);
             $em->flush();
-        }
+        
 
         return $this->redirectToRoute('commentaires_index');
     }
