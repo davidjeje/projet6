@@ -79,11 +79,10 @@ class PaginatorController extends AbstractController
      */
     public function delete(Request $request, Paginator $paginator): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$paginator->getId(), $request->request->get('_token'))) {
+        
             $em = $this->getDoctrine()->getManager();
             $em->remove($paginator);
             $em->flush();
-        }
 
         return $this->redirectToRoute('paginator_index');
     }
