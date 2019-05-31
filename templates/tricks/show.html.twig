@@ -40,9 +40,13 @@
             <button class="vu visible-xs-*">Voir les vidéos</button>
             <div class="video hidden-xs ">
                 <div class="d-flex flex-row">
-                    <div class="p-2">{{ trick.video }}</div>
-                    <div class="p-2">{{ trick.secondeVideo }}</div>
-                    <div class="p-2">{{ trick.troisiemeVideo }}</div>
+                    
+
+                    {% set raw = "raw" %}
+                    
+                    <div class="p-2">{{ trick.video|raw }}</div>
+                    <div class="p-2">{{ trick.secondeVideo|raw }}</div>
+                    <div class="p-2">{{ trick.troisiemeVideo|raw }}</div>
                 </div>
             </div>
 
