@@ -119,7 +119,6 @@ class TricksController extends AbstractController
                 catch (FileException $e) 
                 {
                     $this->addFlash('error', "La figure n'a pas pu être enregistré.");
-
                 }
 
             
