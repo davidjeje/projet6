@@ -44,6 +44,7 @@ class Paginator
 
     /**
      * Une page a potentiellement plusieurs commentaires
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Commentaires", mappedBy="paginatorId", cascade={"persist"})
      */
     private $commentaireId;

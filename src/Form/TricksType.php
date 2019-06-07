@@ -20,11 +20,10 @@ class TricksType extends AbstractType
             ->add('level')
             ->add('groupname')
             ->add('image', FileType::class, array('label' => 'Tricks (jpeg, jpg, png image)','data_class' => null))
-             ->add('secondeImage', FileType::class, array('label' => 'Tricks (jpeg, jpg, png secondeImage)','data_class' => null))
+            ->add('secondeImage', FileType::class, array('label' => 'Tricks (jpeg, jpg, png secondeImage)','data_class' => null))
             ->add('video')
             ->add('secondeVideo')
-            ->add('troisiemeVideo')
-        ;
+            ->add('troisiemeVideo');
     }
 
 
@@ -32,9 +31,11 @@ class TricksType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
+        $resolver->setDefaults(
+            [
             'data_class' => Tricks::class,
             //'empty_data ' => getImage(),
-        ]);
+            ]
+        );
     }
 }

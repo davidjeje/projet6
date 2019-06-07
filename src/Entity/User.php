@@ -58,32 +58,34 @@ class User implements UserInterface, \Serializable
 
     /**
      * Plusieur utilisateur peuvent créer plusieurs figures
+     *
      * @ORM\ManyToMany(targetEntity="App\Entity\Tricks", mappedBy="auteur", cascade={"persist"})
      */
     private $trick;
 
     /**
-    * @ORM\Column(name="token", type="string", unique = true)
-    */
+     * @ORM\Column(name="token", type="string", unique = true)
+     */
     private $token;
 
      
     /**
-    * Un utilisateur a potentiellement plusieurs commentaires
-    * @ORM\OneToMany(targetEntity="App\Entity\Commentaires", mappedBy="autorId", cascade={"persist"})
-    */
+     * Un utilisateur a potentiellement plusieurs commentaires
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Commentaires", mappedBy="autorId", cascade={"persist"})
+     */
     private $commentaireId;
 
     /**
-    * @ORM\Column(type="string", nullable = true)
-    *
-    * @Assert\Image(
-    *     minWidth = 40,
-    *     maxWidth = 60,
-    *     minHeight = 40,
-    *     maxHeight = 60
-    * )
-    */
+     * @ORM\Column(type="string", nullable = true)
+     *
+     * @Assert\Image(
+     *     minWidth = 40,
+     *     maxWidth = 60,
+     *     minHeight = 40,
+     *     maxHeight = 60
+     * )
+     */
     private $photo;
 
     /**
@@ -148,20 +150,26 @@ class User implements UserInterface, \Serializable
     {
     }
 
-    /** @see \Serializable::serialize() */
+    /**
+     * @see \Serializable::serialize() 
+     */
     public function serialize()
     {
-        return serialize(array(
+        return serialize(
+            array(
             $this->id,
             $this->email,
             $this->password,
             $this->isActive,
                 // see section on salt below
                 // $this->salt,
-        ));
+            )
+        );
     }
 
-    /** @see \Serializable::unserialize() */
+    /**
+     * @see \Serializable::unserialize() 
+     */
     public function unserialize($serialized)
     {
         list(

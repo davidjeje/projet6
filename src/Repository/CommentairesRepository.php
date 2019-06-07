@@ -36,15 +36,14 @@ class CommentairesRepository extends ServiceEntityRepository
             ->orderBy('c.id', 'DESC')
             ->setMaxResults($maxResult)
             ->getQuery()
-            ->getResult()
-
-        ;
+            ->getResult();
     }
 
     /**
      * Récupère une liste de commentaires triés et paginés.
      *
-     * @param int $page Le numéro de la page
+     * @param int $page         Le numéro de la
+     *                          page
      * @param int $nbMaxParPage Nombre maximum de commentaire par page
      *
      * @throws InvalidArgumentException
@@ -73,7 +72,7 @@ class CommentairesRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('a')
             ->where('CURRENT_DATE() >= a.dateCommentaire')
             ->andWhere('a.figureId = :val')
-           ->setParameter('val', $trick)
+            ->setParameter('val', $trick)
             ->orderBy('a.dateCommentaire', 'DESC');
         
         $query = $qb->getQuery();
@@ -95,7 +94,6 @@ class CommentairesRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('c')
             ->orderBy('c.id', 'DESC')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 }

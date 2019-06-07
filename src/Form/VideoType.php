@@ -21,11 +21,7 @@ class VideoType extends AbstractType
                 $options['video'],
                 TextType::class,
                 ['attr' => ['class' => 'form-control']]
-)
-            
-            
-             
-        ;
+            );
     }
 
 
@@ -33,9 +29,11 @@ class VideoType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
+        $resolver->setDefaults(
+            [
             'data_class' => Tricks::class,
             'video' => null,
-        ]);
+            ]
+        );
     }
 }

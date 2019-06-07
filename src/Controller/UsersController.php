@@ -55,18 +55,15 @@ class UsersController extends AbstractController
             $em->persist($user);
             $em->flush();
             $message = (new \Swift_Message('Nous vous souhaitons la bienvenu. Clic sur le lien pour valider ton inscription ! A bientôt !!!'))
-            ->setFrom('dada.pepe.alal@gmail.com')
-            ->setTo($email)
-            ->setBody(
-                $this->renderView(
-                'users/texte.html.twig',
-                ['token' => $token]
-
-            ),
-                'text/html'
-        )
-        
-    ;
+                ->setFrom('dada.pepe.alal@gmail.com')
+                ->setTo($email)
+                ->setBody(
+                    $this->renderView(
+                        'users/texte.html.twig',
+                        ['token' => $token]
+                    ),
+                    'text/html'
+                );
 
             $mailer->send($message);
             
@@ -75,10 +72,12 @@ class UsersController extends AbstractController
             return $this->redirectToRoute('tricks_index');
         }
 
-        return $this->render('users/new.html.twig', [
+        return $this->render(
+            'users/new.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
-        ]);
+            ]
+        );
     }
 
     /**
@@ -116,10 +115,12 @@ class UsersController extends AbstractController
             return $this->redirectToRoute('login');
         }
 
-        return $this->render('users/changePass.html.twig', [
+        return $this->render(
+            'users/changePass.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
-            ]);
+            ]
+        );
     }
 
     /**
@@ -132,24 +133,26 @@ class UsersController extends AbstractController
         $lastUsername = $authenticationUtils->getLastUsername();
         
         $form = $this->get('form.factory')
-                ->createNamedBuilder(null)
-                ->add('_username', null, ['label' => 'Email'])
-                ->add('_password', \Symfony\Component\Form\Extension\Core\Type\PasswordType::class, ['label' => 'Mot de passe'])
+            ->createNamedBuilder(null)
+            ->add('_username', null, ['label' => 'Email'])
+            ->add('_password', \Symfony\Component\Form\Extension\Core\Type\PasswordType::class, ['label' => 'Mot de passe'])
                 
-                ->getForm();
+            ->getForm();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $session = new Session();
             $session->start();
             return $this->redirectToRoute('tricks_index');
         }
-        return $this->render('users/connexion.html.twig', [
+        return $this->render(
+            'users/connexion.html.twig', [
                     'mainNavLogin' => true,
                     'title' => 'Connexion',
                     'form' => $form->createView(),
                     'last_username' => $lastUsername,
                     'error' => $error,
-        ]);
+            ]
+        );
     }
 
 
@@ -171,18 +174,15 @@ class UsersController extends AbstractController
             $em->persist($user);
             $em->flush();
             $message = (new \Swift_Message('Nous vous souhaitons la bienvenu. Cliquer sur le lien pour pouvoir Réinitialiser votre mot de passe ! A bientôt !!!'))
-            ->setFrom('dada.pepe.alal@gmail.com')
-            ->setTo($email)
-            ->setBody(
-                $this->renderView(
-                'users/reset.html.twig',
-                ['token' => $user->getToken()]
-
-            ),
-                'text/html'
-        )
-        
-    ;
+                ->setFrom('dada.pepe.alal@gmail.com')
+                ->setTo($email)
+                ->setBody(
+                    $this->renderView(
+                        'users/reset.html.twig',
+                        ['token' => $user->getToken()]
+                    ),
+                    'text/html'
+                );
 
             $mailer->send($message);
             
@@ -194,13 +194,15 @@ class UsersController extends AbstractController
 
         
         
-        return $this->render('users/forgot.html.twig', [
+        return $this->render(
+            'users/forgot.html.twig', [
                     'mainNavLogin' => true, 'title' => 'Mot de passe oublier',
                    
                     'form' => $form->createView(),
                     
                     'error' => null,
-        ]);
+            ]
+        );
     }
 
     /**
@@ -247,12 +249,14 @@ class UsersController extends AbstractController
             return $this->redirectToRoute('tricks_index', ['id' => $user->getId()]);
         }
 
-        return $this->render('users/edit.html.twig', [
+        return $this->render(
+            'users/edit.html.twig', [
             'mainNavLogin' => true,
             'user' => $user,
             'form' => $form->createView(),
             'error' => null,
-        ]);
+            ]
+        );
     }
     
 
@@ -262,11 +266,13 @@ class UsersController extends AbstractController
     public function logout(Request $request, User $user): Response
     {
         $session->destroy();
-        return $this->render('tricks/index.html.twig', [
+        return $this->render(
+            'tricks/index.html.twig', [
                     'mainNavLogin' => false,
                     'title' => 'Deconnexion',
                     'error' => null,
-        ]);
+            ]
+        );
     }
 
     /**

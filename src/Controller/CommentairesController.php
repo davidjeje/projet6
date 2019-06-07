@@ -41,8 +41,8 @@ class CommentairesController extends AbstractController
     }
 
     /**
-    * @Route("/commentaire/ajax", name="commentaire_ajax", methods="GET|POST")
-    */
+     * @Route("/commentaire/ajax", name="commentaire_ajax", methods="GET|POST")
+     */
     public function ajaxEnAction(Request $request, CommentairesRepository $commentairesRepository)
     {
         $id = $request->request->get('id');
@@ -68,10 +68,12 @@ class CommentairesController extends AbstractController
             return $this->redirectToRoute('commentaires_index');
         }
 
-        return $this->render('commentaires/new.html.twig', [
+        return $this->render(
+            'commentaires/new.html.twig', [
             'commentaire' => $commentaire,
             'form' => $form->createView(),
-        ]);
+            ]
+        );
     }
 
     /**
@@ -96,10 +98,12 @@ class CommentairesController extends AbstractController
             return $this->redirectToRoute('commentaires_index', ['id' => $commentaire->getId()]);
         }
 
-        return $this->render('commentaires/edit.html.twig', [
+        return $this->render(
+            'commentaires/edit.html.twig', [
             'commentaire' => $commentaire,
             'form' => $form->createView(),
-        ]);
+            ]
+        );
     }
 
     /**

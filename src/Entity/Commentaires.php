@@ -34,24 +34,27 @@ class Commentaires
      */
     /**
      * Les commentaires sont liés à une figure
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Tricks", inversedBy="commentairesId", cascade={"persist"})
-     * @ORM\JoinColumn(name="figureId", referencedColumnName="id")
+     * @ORM\JoinColumn(name="figureId",                 referencedColumnName="id")
      */
     private $figureId;
 
     /**
      * Plusieurs commentaires peuvent être écrit par un auteur.
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\User",
      inversedBy="commentaireId", cascade={"persist"})
-     * @ORM\JoinColumn(name="autorId", referencedColumnName="id")
+     * @ORM\JoinColumn(name="autorId",                referencedColumnName="id")
      */
     private $autorId;
 
     /**
      * Plusieurs commentaires peuvent être sur une page.
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Paginator",
      inversedBy="commentaireId", cascade={"persist"})
-     * @ORM\JoinColumn(name="paginatorId", referencedColumnName="id")
+     * @ORM\JoinColumn(name="paginatorId",                 referencedColumnName="id")
      */
     private $paginatorId;
 

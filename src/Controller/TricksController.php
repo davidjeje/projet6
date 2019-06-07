@@ -42,8 +42,8 @@ class TricksController extends AbstractController
     }
 
     /**
-    * @Route("/trick/ajax", name="trick_ajax", methods="GET|POST")
-    */
+     * @Route("/trick/ajax", name="trick_ajax", methods="GET|POST")
+     */
     public function ajaxAction(Request $request, TricksRepository $tricksRepository)
     {
         $id = $request->request->get('id');
@@ -116,11 +116,13 @@ class TricksController extends AbstractController
             return $this->redirectToRoute('tricks_index');
         }
 
-        return $this->render('tricks/new.html.twig', [
+        return $this->render(
+            'tricks/new.html.twig', [
             'trick' => $trick,
             'user' => $user,
             'form' => $form->createView(),
-        ]);
+            ]
+        );
     }
 
     /**
@@ -132,8 +134,8 @@ class TricksController extends AbstractController
     }
 
     /**
-    * @Route("/{slug}/{page}/show/one/trick", name="tricks_show", methods="GET|POST"
-    */
+     * @Route("/{slug}/{page}/show/one/trick", name="tricks_show", methods="GET|POST"
+     */
     public function show(Tricks $trick, Request $request, CommentairesRepository $CommentairesRepository, $page, Paginator $pagina): Response
     {
         $user = $this->getUser();
@@ -205,10 +207,12 @@ class TricksController extends AbstractController
             return $this->redirectToRoute('tricks_index', ['id' => $trick->getId()]);
         }
 
-        return $this->render('tricks/edit.html.twig', [
+        return $this->render(
+            'tricks/edit.html.twig', [
             'trick' => $trick,
             'form' => $form->createView(),
-        ]);
+            ]
+        );
     }
 
     /**
@@ -265,11 +269,13 @@ class TricksController extends AbstractController
             return $this->redirectToRoute('tricks_index', ['id' => $trick->getId()]);
         }
 
-        return $this->render('tricks/editImage.html.twig', [
+        return $this->render(
+            'tricks/editImage.html.twig', [
             'trick' => $trick,
             'form' => $form->createView(),
             'numberImage'=>$numberImage,
-        ]);
+            ]
+        );
     }
 
     /**
@@ -304,11 +310,13 @@ class TricksController extends AbstractController
             return $this->redirectToRoute('tricks_index', ['id' => $trick->getId()]);
         }
 
-        return $this->render('tricks/editVideo.html.twig', [
+        return $this->render(
+            'tricks/editVideo.html.twig', [
             'trick' => $trick,
             'form' => $form->createView(),
             'numberVideo'=>$numberVideo,
-        ]);
+            ]
+        );
     }
 
     /**

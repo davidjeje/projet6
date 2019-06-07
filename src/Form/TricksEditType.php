@@ -16,15 +16,15 @@ class TricksEditType extends AbstractType
             ->add('name')
             ->add('description')
             ->add('level')
-            ->add('groupname')
-            
-        ;
+            ->add('groupname');
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
+        $resolver->setDefaults(
+            [
             'data_class' => Tricks::class,
-        ]);
+            ]
+        );
     }
 }

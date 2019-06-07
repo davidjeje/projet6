@@ -12,14 +12,15 @@ class PaginatorType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('page')
-        ;
+            ->add('page');
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
+        $resolver->setDefaults(
+            [
             'data_class' => Paginator::class,
-        ]);
+            ]
+        );
     }
 }

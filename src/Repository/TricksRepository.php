@@ -27,8 +27,7 @@ class TricksRepository extends ServiceEntityRepository
             ->orderBy('c.id', 'ASC')
             ->setMaxResults($maxResult)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
     // /**

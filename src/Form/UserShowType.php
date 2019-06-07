@@ -12,8 +12,6 @@ class UserShowType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-                ->add('commentaire', TextareaType::class)
-                
-        ;
+                ->add('commentaire', TextareaType::class);
     }
 }

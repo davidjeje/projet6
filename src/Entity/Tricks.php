@@ -76,43 +76,37 @@ class Tricks
     private $DateModification;
    
     /**
-      * Une figure a potentiellement plusieurs commentaires
-      * @ORM\OneToMany(targetEntity="App\Entity\Commentaires", mappedBy="figureId", cascade={"persist"})
-      */
+     * Une figure a potentiellement plusieurs commentaires
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Commentaires", mappedBy="figureId", cascade={"persist"})
+     */
     private $commentairesId;
     
     /**
-    * Plusieur figures peut être créées par plusieur user
-    * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="trick", cascade={"persist"})
-    * @ORM\JoinColumn(name="auteurId", referencedColumnName="id")
-    */
+     * Plusieur figures peut être créées par plusieur user
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="trick", cascade={"persist"})
+     * @ORM\JoinColumn(name="auteurId",                referencedColumnName="id")
+     */
     private $auteur;
 
     /**
      * @ORM\Column(type="string")
-     *
-     *
      */
     private $video;
 
     /**
      * @ORM\Column(type="string")
-     *
-     *
      */
     private $secondeVideo;
 
     /**
      * @ORM\Column(type="string")
-     *
-     *
      */
     private $troisiemeVideo;
 
     /**
      * @ORM\Column(type="string")
-     *
-     *
      */
     private $slug;
 
