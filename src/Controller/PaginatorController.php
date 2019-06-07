@@ -40,10 +40,12 @@ class PaginatorController extends AbstractController
             return $this->redirectToRoute('paginator_index');
         }
 
-        return $this->render('paginator/new.html.twig', [
+        return $this->render(
+            'paginator/new.html.twig', [
             'paginator' => $paginator,
             'form' => $form->createView(),
-        ]);
+            ]
+        );
     }
 
     /**
@@ -68,10 +70,12 @@ class PaginatorController extends AbstractController
             return $this->redirectToRoute('paginator_index', ['id' => $paginator->getId()]);
         }
 
-        return $this->render('paginator/edit.html.twig', [
+        return $this->render(
+            'paginator/edit.html.twig', [
             'paginator' => $paginator,
             'form' => $form->createView(),
-        ]);
+            ]
+        );
     }
 
     /**
@@ -79,11 +83,9 @@ class PaginatorController extends AbstractController
      */
     public function delete(Request $request, Paginator $paginator): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$paginator->getId(), $request->request->get('_token'))) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($paginator);
-            $em->flush();
-        }
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($paginator);
+        $em->flush();
 
         return $this->redirectToRoute('paginator_index');
     }

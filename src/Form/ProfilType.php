@@ -18,22 +18,25 @@ class ProfilType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-                ->add('prenom')
-                ->add('nom')
-                ->add('email', EmailType::class)
-                ->add('photo', FileType::class, array('label' => 'Users (jpeg, jpg, png image)','data_class' => null))
-                ->add('plainPassword', HiddenType::class, array('label' => 'Mot de passe', 'data' =>'123456789')
-                )
-                
-        ;
+            ->add('prenom')
+            ->add('nom')
+            ->add('email', EmailType::class)
+            ->add('photo', FileType::class, array('label' => 'Users (jpeg, jpg, png image)','data_class' => null))
+            ->add(
+                'plainPassword',
+                HiddenType::class,
+                array('label' => 'Mot de passe', 'data' =>'123456789')
+            );
     }
 
 
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
+        $resolver->setDefaults(
+            [
             'data_class' => User::class,
-        ]);
+            ]
+        );
     }
 }

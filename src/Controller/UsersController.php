@@ -15,13 +15,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\File\Exception\FileException; 
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use App\Entity\Tricks;
 use App\Form\TricksType;
 use App\Repository\TricksRepository;
 use Symfony\Component\HttpFoundation\Session\Session;
-
-
 
 /**
  * @Route("/users")
@@ -41,50 +39,45 @@ class UsersController extends AbstractController
      */
     public function new(Request $request, UserPasswordEncoderInterface $passwordEncoder, \Swift_Mailer $mailer): Response
     {
-        $user = new User(); 
+        $user = new User();
         $form = $this->createForm(UsersType::class, $user);
         $form->handleRequest($request);
         $email = $user->getEmail();
         $token = $user->getToken();
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
             $user->setPassword($password);
-            //on active par défaut
+            
             $user->setIsActive(false);
-            //$user->addRole("ROLE_ADMIN");
-            // 4) save the User!
+            
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
             $message = (new \Swift_Message('Nous vous souhaitons la bienvenu. Clic sur le lien pour valider ton inscription ! A bientôt !!!'))
-            ->setFrom('dada.pepe.alal@gmail.com')
-            ->setTo($email)
-            ->setBody(
-            $this->renderView(
-                // templates/emails/registration.html.twig
-                'users/texte.html.twig',
-                ['token' => $token]
+                ->setFrom('dada.pepe.alal@gmail.com')
+                ->setTo($email)
+                ->setBody(
+                    $this->renderView(
+                        'users/texte.html.twig',
+                        ['token' => $token]
+                    ),
+                    'text/html'
+                );
 
-            ),
-            'text/html'
-        )
-        
-    ;
-
-    $mailer->send($message);
-            // ... do any other work - like sending them an email, etc
-            // maybe set a "flash" success message for the user
+            $mailer->send($message);
+            
             $this->addFlash('success', 'Votre compte à bien été enregistré. Rendez vous sur votre boite mail pour finaliser votre inscription. Merci.');
 
             return $this->redirectToRoute('tricks_index');
         }
 
-        return $this->render('users/new.html.twig', [
+        return $this->render(
+            'users/new.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
-        ]);
+            ]
+        );
     }
 
     /**
@@ -110,75 +103,70 @@ class UsersController extends AbstractController
         $user = $usersRepository->findOneBy(array("token"=>$token));
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) 
-        {
-
+        if ($form->isSubmitted() && $form->isValid()) {
             $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
             $user->setPassword($password);
-            //on active par défaut
+            
             $user->setIsActive(true);
-            //$user->addRole("ROLE_ADMIN");
-            // 4) save the User!
+            
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
             return $this->redirectToRoute('login');
-            
         }
 
-        return $this->render('users/changePass.html.twig', [
+        return $this->render(
+            'users/changePass.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
-            ]); 
+            ]
+        );
     }
 
     /**
      * @Route("/login/user", name="login", methods="GET|POST")
      */
-    public function login(Request $request, AuthenticationUtils $authenticationUtils) {
-        // get the login error if there is one
+    public function login(Request $request, AuthenticationUtils $authenticationUtils)
+    {
         $error = $authenticationUtils->getLastAuthenticationError();
 
-        // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
         
         $form = $this->get('form.factory')
-                ->createNamedBuilder(null)
-                ->add('_username', null, ['label' => 'Email'])
-                ->add('_password', \Symfony\Component\Form\Extension\Core\Type\PasswordType::class, ['label' => 'Mot de passe'])
-                /*->add('ok', \Symfony\Component\Form\Extension\Core\Type\SubmitType::class, ['label' => 'Ok', 'attr' => ['class' => 'btn-primary btn-block']])*/
-                ->getForm();
+            ->createNamedBuilder(null)
+            ->add('_username', null, ['label' => 'Email'])
+            ->add('_password', \Symfony\Component\Form\Extension\Core\Type\PasswordType::class, ['label' => 'Mot de passe'])
+                
+            ->getForm();
 
-        if ($form->isSubmitted() && $form->isValid()) 
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $session = new Session();
             $session->start();
             return $this->redirectToRoute('tricks_index');
         }
-        return $this->render('users/connexion.html.twig', [
-                    'mainNavLogin' => true, 
+        return $this->render(
+            'users/connexion.html.twig', [
+                    'mainNavLogin' => true,
                     'title' => 'Connexion',
                     'form' => $form->createView(),
                     'last_username' => $lastUsername,
                     'error' => $error,
-        ]);
-        
+            ]
+        );
     }
 
 
     /**
      * @Route("/forgot/password", name="forgot", methods="GET|POST")
      */
-    public function forgot(Request $request, \Swift_Mailer $mailer, UsersRepository $usersRepository) {
-        
-            $form = $this->get('form.factory')
+    public function forgot(Request $request, \Swift_Mailer $mailer, UsersRepository $usersRepository)
+    {
+        $form = $this->get('form.factory')
             ->createNamedBuilder(null)
             ->add('_username', null, ['label' => 'Email'])
-            //->add('ok', \Symfony\Component\Form\Extension\Core\Type\SubmitType::class, ['label' => 'Réinitialiser le mot de passe', 'attr' => ['class' => 'btn-primary btn-block']])
             ->getForm();
-            $form->handleRequest($request);
-          if ($form->isSubmitted() && $form->isValid()) {
-
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             $email = $request->request->get('_username');
             $user = $usersRepository->findOneBy(array("email"=>$email));
             $user->setToken(bin2hex(random_bytes(16)));
@@ -186,21 +174,17 @@ class UsersController extends AbstractController
             $em->persist($user);
             $em->flush();
             $message = (new \Swift_Message('Nous vous souhaitons la bienvenu. Cliquer sur le lien pour pouvoir Réinitialiser votre mot de passe ! A bientôt !!!'))
-            ->setFrom('dada.pepe.alal@gmail.com')
-            ->setTo($email)
-            ->setBody(
-            $this->renderView(
-                
-                'users/reset.html.twig',
-                ['token' => $user->getToken()]
+                ->setFrom('dada.pepe.alal@gmail.com')
+                ->setTo($email)
+                ->setBody(
+                    $this->renderView(
+                        'users/reset.html.twig',
+                        ['token' => $user->getToken()]
+                    ),
+                    'text/html'
+                );
 
-            ),
-            'text/html'
-        )
-        
-    ;
-
-    $mailer->send($message);
+            $mailer->send($message);
             
             $this->addFlash('o', 'Vous venez de valider votre adresse mail. Rendez vous dans votre boite mail pour accepter la demande de changement de mot de passe');
 
@@ -210,15 +194,15 @@ class UsersController extends AbstractController
 
         
         
-        return $this->render('users/forgot.html.twig', [
+        return $this->render(
+            'users/forgot.html.twig', [
                     'mainNavLogin' => true, 'title' => 'Mot de passe oublier',
                    
                     'form' => $form->createView(),
                     
                     'error' => null,
-        ]);
-
-        
+            ]
+        );
     }
 
     /**
@@ -234,8 +218,6 @@ class UsersController extends AbstractController
      */
     private function generateUniqueFileName()
     {
-        // md5() reduces the similarity of the file names generated by
-        // uniqid(), which is based on timestamps
         return md5(uniqid());
     }
 
@@ -251,35 +233,30 @@ class UsersController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $file = $user->getPhoto();
-            //$user->setPlainPassword("12345678910");
-            /*$fileName = $fileUploader->upload($file);
-            $trick->setImage($fileName);*/
+            
             $fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();
             
-            try
-            {
-                $file->move($this->getParameter('images_directory'),$fileName );
+            try {
+                $file->move($this->getParameter('images_directory'), $fileName);
                 $user->setPhoto($fileName);
                 $this->getDoctrine()->getManager()->flush();
                 $this->addFlash('success', 'Vos modifications ont bien été prise en compte.');
+            } catch (FileException $e) {
+                $this->addFlash('error', "Vos modifications n'ont pas été prise en compte.");
             }
-
-            catch (FileException $e) 
-                {
-                    $this->addFlash('error', "Vos modifications n'ont pas été prise en compte.");
-
-                }
             
 
             return $this->redirectToRoute('tricks_index', ['id' => $user->getId()]);
-    }
+        }
 
-        return $this->render('users/edit.html.twig', [
+        return $this->render(
+            'users/edit.html.twig', [
             'mainNavLogin' => true,
             'user' => $user,
             'form' => $form->createView(),
             'error' => null,
-        ]);
+            ]
+        );
     }
     
 
@@ -289,11 +266,13 @@ class UsersController extends AbstractController
     public function logout(Request $request, User $user): Response
     {
         $session->destroy();
-        return $this->render('tricks/index.html.twig', [
-                    'mainNavLogin' => false, 
+        return $this->render(
+            'tricks/index.html.twig', [
+                    'mainNavLogin' => false,
                     'title' => 'Deconnexion',
                     'error' => null,
-        ]);
+            ]
+        );
     }
 
     /**
@@ -301,12 +280,10 @@ class UsersController extends AbstractController
      */
     public function delete(Request $request, User $user): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) 
-        {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($user);
-            $em->flush();
-        }
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($user);
+        $em->flush();
+        
 
         return $this->redirectToRoute('tricks_index');
     }

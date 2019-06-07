@@ -15,15 +15,15 @@ class CommentairesType extends AbstractType
     {
         $builder
             
-            ->add('commentaire', TextareaType::class)
-            
-        ;
+            ->add('commentaire', TextareaType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
+        $resolver->setDefaults(
+            [
             'data_class' => Commentaires::class,
-        ]);
+            ]
+        );
     }
 }

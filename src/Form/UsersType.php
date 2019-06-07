@@ -17,15 +17,17 @@ class UsersType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-                ->add('prenom')
-                ->add('nom')
-                ->add('email', EmailType::class)
+            ->add('prenom')
+            ->add('nom')
+            ->add('email', EmailType::class)
                 /*->add('photo', FileType::class, array('label' => 'Users (jpeg, jpg, png image)','data_class' => null))*/
-                ->add('plainPassword', RepeatedType::class, array(
+            ->add(
+                'plainPassword', RepeatedType::class, array(
                     'type' => PasswordType::class,
                     'first_options' => array('label' => 'Mot de passe'),
                     'second_options' => array('label' => 'Confirmation du mot de passe'),
-                ))
+                )
+            )
                 /* ->add('password', PasswordType::class, array('label' => 'Confirmation du mot de passe'))
                 /*->add('submit', SubmitType::class, ['label'=>'Envoyer', 'attr'=>['class'=>'btn-primary btn-block']])*/
         ;
@@ -35,8 +37,10 @@ class UsersType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
+        $resolver->setDefaults(
+            [
             'data_class' => User::class,
-        ]);
+            ]
+        );
     }
 }

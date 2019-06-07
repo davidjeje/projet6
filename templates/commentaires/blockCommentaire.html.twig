@@ -1,10 +1,35 @@
 {% for commentaire in commentaireAffichage %}
-	<div>
-		<img src="{{ asset('images/'~commentaire.autorId.photo) }}" class="img-responsive" alt=""/>
+	
 
-		Voici le commentaire de : {{commentaire.autorId.email }}
+<!--Main wrapper-->
+    <div class="comments-list text-center text-md-left container-fluid">
+        
+        <!--First row-->
+        <div class="row col-8 mx-auto mb-3 p-2 grey lighten-3 z-depth-1 rounded-sm">
+            <!--Image column-->
+            <div class="col-sm-2 col-12 mb-3">
+              	
+              	<img src="{{ asset('images/'~commentaire.autorId.photo) }}" class="avatar rounded-circle z-depth-1-half" width="90px" alt="sample image"/>
+            </div>
+            <!--/.Image column-->
 
-    	{{commentaire.commentaire}} écrit le {{commentaire.dateCommentaire}}
-    	<hr>
+            <!--Content column-->
+            <div class="col-sm-10 col-12">
+                <a>
+                    <h5 class="user-name font-weight-bold">{{commentaire.autorId.nom }}</h5>
+                </a>
+                <div class="card-data">
+                    <ul class="list-unstyled">
+                        <li class="comment-date font-small">
+                            <i class="far fa-clock-o"></i> {{commentaire.dateCommentaire}}</li>
+                    </ul>
+                </div>
+                <p class="dark-grey-text article">{{commentaire.commentaire}}.</p>
+            </div>
+                                <!--/.Content column-->
+        </div>
     </div>
+                            <!--/.First row-->
 {% endfor %}
+
+

@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\FileUploader;
-use Symfony\Component\HttpFoundation\File\Exception\FileException; 
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UsersRepository;
@@ -27,7 +27,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-
 /**
  * @Route("/commentaires")
  */
@@ -41,17 +40,16 @@ class CommentairesController extends AbstractController
         return $this->render('commentaires/index.html.twig', ['commentaires' => $commentairesRepository->findAll()]);
     }
 
-    /** 
-    * @Route("/commentaire/ajax", name="commentaire_ajax", methods="GET|POST") 
-    */ 
-    public function ajaxEnAction(Request $request, CommentairesRepository $commentairesRepository) 
-    {  
+    /**
+     * @Route("/commentaire/ajax", name="commentaire_ajax", methods="GET|POST")
+     */
+    public function ajaxEnAction(Request $request, CommentairesRepository $commentairesRepository)
+    {
         $id = $request->request->get('id');
         $trickId = $request->request->get('trickId');
         $commentaireAffichage = $commentairesRepository->nombreCommentaire($id, 2, $trickId);
         return $this->render('commentaires/blockCommentaire.html.twig', ['commentaireAffichage' => $commentaireAffichage]);
-         
-    }  
+    }
      
     /**
      * @Route("/new", name="commentaires_new", methods="GET|POST")
@@ -70,10 +68,12 @@ class CommentairesController extends AbstractController
             return $this->redirectToRoute('commentaires_index');
         }
 
-        return $this->render('commentaires/new.html.twig', [
+        return $this->render(
+            'commentaires/new.html.twig', [
             'commentaire' => $commentaire,
             'form' => $form->createView(),
-        ]);
+            ]
+        );
     }
 
     /**
@@ -98,10 +98,12 @@ class CommentairesController extends AbstractController
             return $this->redirectToRoute('commentaires_index', ['id' => $commentaire->getId()]);
         }
 
-        return $this->render('commentaires/edit.html.twig', [
+        return $this->render(
+            'commentaires/edit.html.twig', [
             'commentaire' => $commentaire,
             'form' => $form->createView(),
-        ]);
+            ]
+        );
     }
 
     /**
@@ -109,11 +111,10 @@ class CommentairesController extends AbstractController
      */
     public function delete(Request $request, Commentaires $commentaire): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$commentaire->getId(), $request->request->get('_token'))) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($commentaire);
-            $em->flush();
-        }
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($commentaire);
+        $em->flush();
+        
 
         return $this->redirectToRoute('commentaires_index');
     }

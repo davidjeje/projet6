@@ -9,9 +9,6 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use InvalidArgumentException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-
-
-
 /**
  * @method Commentaires|null find($id, $lockMode = null, $lockVersion = null)
  * @method Commentaires|null findOneBy(array $criteria, array $orderBy = null)
@@ -31,7 +28,7 @@ class CommentairesRepository extends ServiceEntityRepository
     
     public function nombreCommentaire($firstResult, $maxResult, $trickId)
     {
-        return 
+        return
             $this->createQueryBuilder('c')
             ->setfirstResult($firstResult)
             ->where('c.figureId = :val')
@@ -39,23 +36,22 @@ class CommentairesRepository extends ServiceEntityRepository
             ->orderBy('c.id', 'DESC')
             ->setMaxResults($maxResult)
             ->getQuery()
-            ->getResult()
-
-        ;
+            ->getResult();
     }
 
     /**
      * Récupère une liste de commentaires triés et paginés.
      *
-     * @param int $page Le numéro de la page
-     * @param int $nbMaxParPage Nombre maximum de commentaire par page     
+     * @param int $page         Le numéro de la
+     *                          page
+     * @param int $nbMaxParPage Nombre maximum de commentaire par page
      *
      * @throws InvalidArgumentException
      * @throws NotFoundHttpException
      *
      * @return Paginator
      */
-     public function paginationCommentaire($page, $nbMaxParPage, $trick)
+    public function paginationCommentaire($page, $nbMaxParPage, $trick)
     {
         if (!is_numeric($page)) {
             throw new InvalidArgumentException(
@@ -74,9 +70,9 @@ class CommentairesRepository extends ServiceEntityRepository
         }
     
         $qb = $this->createQueryBuilder('a')
-            ->where('CURRENT_DATE() >= a.dateCommentaire' )
+            ->where('CURRENT_DATE() >= a.dateCommentaire')
             ->andWhere('a.figureId = :val')
-           ->setParameter('val', $trick)
+            ->setParameter('val', $trick)
             ->orderBy('a.dateCommentaire', 'DESC');
         
         $query = $qb->getQuery();
@@ -85,7 +81,7 @@ class CommentairesRepository extends ServiceEntityRepository
         $query->setFirstResult($premierResultat)->setMaxResults($nbMaxParPage);
         $paginator = new Paginator($query);
 
-        if ( ($paginator->count() <= $premierResultat) && $page != 1) {
+        if (($paginator->count() <= $premierResultat) && $page != 1) {
             throw new NotFoundHttpException('La page demandée n\'existe pas.'); // page 404, sauf pour la première page
         }
 
@@ -98,9 +94,6 @@ class CommentairesRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('c')
             ->orderBy('c.id', 'DESC')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-    
-
 }

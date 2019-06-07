@@ -11,20 +11,17 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-
-
 class VideoType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             
-            ->add($options['video'], TextType::class, ['attr' => ['class' => 'form-control']]
-)
-            
-            
-             
-        ;
+            ->add(
+                $options['video'],
+                TextType::class,
+                ['attr' => ['class' => 'form-control']]
+            );
     }
 
 
@@ -32,11 +29,11 @@ class VideoType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
+        $resolver->setDefaults(
+            [
             'data_class' => Tricks::class,
             'video' => null,
-        ]);
+            ]
+        );
     }
-
-    
 }
