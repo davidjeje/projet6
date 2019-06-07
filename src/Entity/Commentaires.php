@@ -60,7 +60,6 @@ class Commentaires
     {
         $this->autorId = new ArrayCollection();
         $this->paginatorId = new ArrayCollection();
-
     }
 
 
@@ -128,12 +127,4 @@ class Commentaires
 
         return $this;
     }
-
-    
-   
-
-    
-    
-    
-   
 }

@@ -15,7 +15,8 @@ use App\Entity\Tricks;
  * @UniqueEntity(fields="email")
  * @ORM\Entity()
  */
-class User implements UserInterface, \Serializable {
+class User implements UserInterface, \Serializable
+{
 
     /**
      * @ORM\Id
@@ -59,30 +60,30 @@ class User implements UserInterface, \Serializable {
      * Plusieur utilisateur peuvent créer plusieurs figures
      * @ORM\ManyToMany(targetEntity="App\Entity\Tricks", mappedBy="auteur", cascade={"persist"})
      */
-     private $trick;
+    private $trick;
 
-     /**
-     * @ORM\Column(name="token", type="string", unique = true)
-     */
-     private $token;
+    /**
+    * @ORM\Column(name="token", type="string", unique = true)
+    */
+    private $token;
 
      
-     /**
-     * Un utilisateur a potentiellement plusieurs commentaires
-     * @ORM\OneToMany(targetEntity="App\Entity\Commentaires", mappedBy="autorId", cascade={"persist"})
-     */
-     private $commentaireId;
+    /**
+    * Un utilisateur a potentiellement plusieurs commentaires
+    * @ORM\OneToMany(targetEntity="App\Entity\Commentaires", mappedBy="autorId", cascade={"persist"})
+    */
+    private $commentaireId;
 
-     /**
-     * @ORM\Column(type="string", nullable = true)
-     * 
-     * @Assert\Image(
-     *     minWidth = 40,
-     *     maxWidth = 60,
-     *     minHeight = 40,
-     *     maxHeight = 60
-     * )
-     */
+    /**
+    * @ORM\Column(type="string", nullable = true)
+    *
+    * @Assert\Image(
+    *     minWidth = 40,
+    *     maxWidth = 60,
+    *     minHeight = 40,
+    *     maxHeight = 60
+    * )
+    */
     private $photo;
 
     /**
@@ -96,7 +97,8 @@ class User implements UserInterface, \Serializable {
     private $prenom;
      
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->isActive = false;
         $this->trick = new ArrayCollection();
         $this->token = bin2hex(random_bytes(16));
@@ -107,41 +109,48 @@ class User implements UserInterface, \Serializable {
         // $this->salt = md5(uniqid('', true));
     }
 
-    public function getUsername() {
+    public function getUsername()
+    {
         return $this->email;
     }
 
-    public function getSalt() {
+    public function getSalt()
+    {
         // you *may* need a real salt depending on your encoder
         // see section on salt below
         return null;
     }
 
-    public function getPassword() {
+    public function getPassword()
+    {
         return $this->password;
     }
 
-    function setPassword($password) {
+    public function setPassword($password)
+    {
         $this->password = $password;
     }
 
-    public function getRoles() {
+    public function getRoles()
+    {
         if (empty($this->roles)) {
             return ['ROLE_USER'];
         }
         return $this->roles;
     }
 
-    function addRole($role) {
+    public function addRole($role)
+    {
         $this->roles[] = $role;
     }
 
-    public function eraseCredentials() {
-        
+    public function eraseCredentials()
+    {
     }
 
     /** @see \Serializable::serialize() */
-    public function serialize() {
+    public function serialize()
+    {
         return serialize(array(
             $this->id,
             $this->email,
@@ -153,8 +162,9 @@ class User implements UserInterface, \Serializable {
     }
 
     /** @see \Serializable::unserialize() */
-    public function unserialize($serialized) {
-        list (
+    public function unserialize($serialized)
+    {
+        list(
                 $this->id,
                 $this->email,
                 $this->password,
@@ -164,35 +174,43 @@ class User implements UserInterface, \Serializable {
                 ) = unserialize($serialized);
     }
 
-    function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
-    function getEmail() {
+    public function getEmail()
+    {
         return $this->email;
     }
 
-    function getPlainPassword() {
+    public function getPlainPassword()
+    {
         return $this->plainPassword;
     }
 
-    function getIsActive() {
+    public function getIsActive()
+    {
         return $this->isActive;
     }
 
-    function setId($id) {
+    public function setId($id)
+    {
         $this->id = $id;
     }
 
-    function setEmail($email) {
+    public function setEmail($email)
+    {
         $this->email = $email;
     }
 
-    function setPlainPassword($plainPassword) {
+    public function setPlainPassword($plainPassword)
+    {
         $this->plainPassword = $plainPassword;
     }
 
-    function setIsActive($isActive) {
+    public function setIsActive($isActive)
+    {
         $this->isActive = $isActive;
     }
 
@@ -248,7 +266,7 @@ class User implements UserInterface, \Serializable {
         return $this->photo;
     }
 
-    public function setPhoto( $photo): self
+    public function setPhoto($photo): self
     {
         $this->photo = $photo;
 
@@ -309,12 +327,4 @@ class User implements UserInterface, \Serializable {
 
         return $this;
     }
-
-   
-
-   
-
-   
-
-    
 }

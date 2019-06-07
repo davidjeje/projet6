@@ -46,12 +46,11 @@ class Paginator
      * Une page a potentiellement plusieurs commentaires
      * @ORM\OneToMany(targetEntity="App\Entity\Commentaires", mappedBy="paginatorId", cascade={"persist"})
      */
-     private $commentaireId;
+    private $commentaireId;
 
-     public function __construct()
+    public function __construct()
     {
         $this->commentaireId = new ArrayCollection();
-
     }
 
     public function getId(): ?int
@@ -137,8 +136,4 @@ class Paginator
 
         return $this;
     }
-
-    
-
-    
 }

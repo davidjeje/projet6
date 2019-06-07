@@ -13,11 +13,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\FileUploader;
-use Symfony\Component\HttpFoundation\File\Exception\FileException; 
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use App\Entity\Commentaires;
 use App\Form\CommentairesType;
 use App\Repository\CommentairesRepository;
-//use App\templates\commentaires;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Form\UserShowType;
@@ -32,7 +31,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-
 class TricksController extends AbstractController
 {
     /**
@@ -43,20 +41,19 @@ class TricksController extends AbstractController
         return $this->render('tricks/index.html.twig', ['tricks' => $tricksRepository->nombreTrick(0, 4)]);
     }
 
-    /** 
-    * @Route("/trick/ajax", name="trick_ajax", methods="GET|POST") 
-    */ 
-    public function ajaxAction(Request $request, TricksRepository $tricksRepository) 
-    {  
+    /**
+    * @Route("/trick/ajax", name="trick_ajax", methods="GET|POST")
+    */
+    public function ajaxAction(Request $request, TricksRepository $tricksRepository)
+    {
         $id = $request->request->get('id');
         $tricks = $tricksRepository->nombreTrick($id, 4);
         return $this->render('tricks/blockTrick.html.twig', ['tricks' => $tricks]);
-        return new JsonResponse($tricks); 
-    }         
+        return new JsonResponse($tricks);
+    }
 
-    public  function slugify($text)
+    public function slugify($text)
     {
-        
         $text = preg_replace('~[^\pL\d]+~u', '-', $text);
 
         $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
@@ -69,8 +66,7 @@ class TricksController extends AbstractController
 
         $text = strtolower($text);
 
-        if (empty($text)) 
-        {
+        if (empty($text)) {
             return 'n-a';
         }
 
@@ -90,7 +86,6 @@ class TricksController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $file = $trick->getImage();
             $fil = $trick->getSecondeImage();
             
@@ -99,32 +94,27 @@ class TricksController extends AbstractController
             $fileNam = $this->generateUniqueFileName().'.'.$fil->guessExtension();
 
             try {
-                
-                    $file->move($this->getParameter('images_directory'),$fileName, $fileNam );
+                $file->move($this->getParameter('images_directory'), $fileName, $fileNam);
                     
-                    $trick->setImage($fileName);
-                    $trick->setSecondeImage($fileNam);
-                    $em = $this->getDoctrine()->getManager();
-                    $date = new \DateTime();
-                    $trick->setDateCreation($date->format("d-m-Y h:i"));
-                    $trick->addAuteur($this->getUser());
-                    $trick->setSlug($this->slugify($trick->getName()));
+                $trick->setImage($fileName);
+                $trick->setSecondeImage($fileNam);
+                $em = $this->getDoctrine()->getManager();
+                $date = new \DateTime();
+                $trick->setDateCreation($date->format("d-m-Y h:i"));
+                $trick->addAuteur($this->getUser());
+                $trick->setSlug($this->slugify($trick->getName()));
 
-                    $em->persist($trick);
-                    $em->flush();
-                    $this->addFlash('success', 'Votre figure à bien été enregistré.');
-
-                } 
-                
-                catch (FileException $e) 
-                {
-                    $this->addFlash('error', "La figure n'a pas pu être enregistré.");
-                }
+                $em->persist($trick);
+                $em->flush();
+                $this->addFlash('success', 'Votre figure à bien été enregistré.');
+            } catch (FileException $e) {
+                $this->addFlash('error', "La figure n'a pas pu être enregistré.");
+            }
 
             
 
             return $this->redirectToRoute('tricks_index');
-    }
+        }
 
         return $this->render('tricks/new.html.twig', [
             'trick' => $trick,
@@ -138,17 +128,15 @@ class TricksController extends AbstractController
      */
     private function generateUniqueFileName()
     {
-        
         return md5(uniqid());
     }
 
     /**
-     * @Route("/{slug}/{page}/show/one/trick", name="tricks_show", methods={"GET", "POST"})
-     */
+    * @Route("/{slug}/{page}/show/one/trick", name="tricks_show", methods="GET|POST"
+    */
     public function show(Tricks $trick, Request $request, CommentairesRepository $CommentairesRepository, $page, Paginator $pagina): Response
     {
         $user = $this->getUser();
-        
         $commentaires = new Commentaires();
         $form = $this->createForm(CommentairesType::class, $commentaires);
         $form->handleRequest($request);
@@ -169,38 +157,27 @@ class TricksController extends AbstractController
 
 
         
-        if ($form->isSubmitted() && $form->isValid()) 
-        {
-
+        if ($form->isSubmitted() && $form->isValid()) {
             $date = new \DateTime();
             $commentaires->setDateCommentaire($date->format("d-m-Y H:i"));
             $user->addCommentaireId($commentaires);
             $trick->addCommentairesId($commentaires);
             $pagina->addCommentaireId($commentaires);
 
-             try 
-            {
-                
+            try {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($trick, $user, $commentaires);
                 $em->flush();
                 $this->addFlash('success', 'Votre commentaire à bien été envoyé !!!');
-            } 
-            catch (FileException $e) 
-            {
+            } catch (FileException $e) {
                 $this->addFlash('error', "Le commentaire n'a pas pu être envoyé.");
-
             }
             
             return $this->redirectToRoute('tricks_index', ['id' => $trick->getId()]);
-
-            
-             
         }
         
         
-      return $this->render('tricks/show.html.twig', ['trick' => $trick, 'form' => $form->createView(),'commentaireAffichage' => $commentaireAffichage, 'commentairePagination' => $commentairePagination,'user' => $user,'pagination' => $pagination]); 
-    
+        return $this->render('tricks/show.html.twig', ['trick' => $trick, 'form' => $form->createView(),'commentaireAffichage' => $commentaireAffichage, 'commentairePagination' => $commentairePagination,'user' => $user,'pagination' => $pagination]);
     }
 
     /**
@@ -213,21 +190,16 @@ class TricksController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
             $date = new \DateTime();
             $trick->setDateModification($date->format("d-m-Y H:i"));
             
-            try 
-            {
+            try {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($trick);
                 $em->flush();
                 $this->addFlash('success', 'Votre figure à bien été modifié !!!');
-            } 
-            catch (FileException $e) 
-            {
+            } catch (FileException $e) {
                 $this->addFlash('error', "La figure n'a pas pu être modifié.");
-
             }
             
             return $this->redirectToRoute('tricks_index', ['id' => $trick->getId()]);
@@ -247,29 +219,25 @@ class TricksController extends AbstractController
         $field="image";
         $method="setImage";
         $getter="getImage";
-        if ($numberImage== 2)
-        {
+        if ($numberImage== 2) {
             $field="secondeImage";
             $method="setSecondeImage";
             $getter="getSecondeImage";
         }
 
         $trick->$method(
-        new File($this->getParameter('images_directory').'/'.$trick->$getter()));
+            new File($this->getParameter('images_directory').'/'.$trick->$getter())
+        );
         
         $form = $this->createForm(EditImageType::class, $trick, ["image"=>$field]);
         
         $form->handleRequest($request);
 
         
-        if ($form->isSubmitted() ) 
-        {
-            if ($numberImage== 2 )
-            {
+        if ($form->isSubmitted()) {
+            if ($numberImage== 2) {
                 $file = $trick->getSecondeImage();
-            }
-            else 
-            {
+            } else {
                 $file = $trick->getImage();
             }
             
@@ -278,15 +246,11 @@ class TricksController extends AbstractController
             $date = new \DateTime();
             $trick->setDateModification($date->format("d-m-Y H:i"));
             
-            try 
-            {
-                $file->move($this->getParameter('images_directory'),$fileName );
-                if ($file == $trick->getSecondeImage())
-                {
+            try {
+                $file->move($this->getParameter('images_directory'), $fileName);
+                if ($file == $trick->getSecondeImage()) {
                     $trick->setSecondeImage($fileName);
-                }
-                else 
-                {
+                } else {
                     $trick->setImage($fileName);
                 }
                 
@@ -294,11 +258,8 @@ class TricksController extends AbstractController
                 $em->persist($trick);
                 $em->flush();
                 $this->addFlash('success', 'Votre image à bien été modifié !!!');
-            } 
-            catch (FileException $e) 
-            {
+            } catch (FileException $e) {
                 $this->addFlash('error', "L'image n'a pas pu être modifié.");
-
             }
             
             return $this->redirectToRoute('tricks_index', ['id' => $trick->getId()]);
@@ -317,35 +278,27 @@ class TricksController extends AbstractController
     public function TricksVideo(Request $request, Tricks $trick, $numberVideo): Response
     {
         $entityField="video";
-        if ($numberVideo== 2)
-        {
+        if ($numberVideo== 2) {
             $entityField="secondeVideo";
         }
-        if ($numberVideo== 3)
-        {
+        if ($numberVideo== 3) {
             $entityField="troisiemeVideo";
         }
         $form = $this->createForm(VideoType::class, $trick, ["video" =>$entityField]);
         
         $form->handleRequest($request);
         
-        if ($form->isSubmitted()  ) 
-        {
-            
+        if ($form->isSubmitted()) {
             $date = new \DateTime();
             $trick->setDateModification($date->format("d-m-Y H:i"));
             
-            try 
-            {
+            try {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($trick);
                 $em->flush();
                 $this->addFlash('success', 'Votre vidéo à bien été modifié !!!');
-            } 
-            catch (FileException $e) 
-            {
+            } catch (FileException $e) {
                 $this->addFlash('error', "La vidéo n'a pas pu être modifié.");
-
             }
             
             return $this->redirectToRoute('tricks_index', ['id' => $trick->getId()]);
@@ -363,13 +316,10 @@ class TricksController extends AbstractController
      */
     public function delete(Request $request, Tricks $trick): Response
     {
-        
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($trick);
-            $em->flush();
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($trick);
+        $em->flush();
         
         return $this->redirectToRoute('tricks_index');
     }
-
-
 }

@@ -22,7 +22,10 @@ class ProfilType extends AbstractType
                 ->add('nom')
                 ->add('email', EmailType::class)
                 ->add('photo', FileType::class, array('label' => 'Users (jpeg, jpg, png image)','data_class' => null))
-                ->add('plainPassword', HiddenType::class, array('label' => 'Mot de passe', 'data' =>'123456789')
+                ->add(
+                    'plainPassword',
+                    HiddenType::class,
+                    array('label' => 'Mot de passe', 'data' =>'123456789')
                 )
                 
         ;

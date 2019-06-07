@@ -9,7 +9,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 use App\Entity\Commentaires;
 use App\Entity\User;
 
-
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TricksRepository")
  */
@@ -44,7 +43,7 @@ class Tricks
 
     /**
      * @ORM\Column(type="string")
-     * 
+     *
      * @Assert\Image(
      *     minWidth = 400,
      *     maxWidth = 900,
@@ -56,7 +55,7 @@ class Tricks
 
     /**
      * @ORM\Column(type="string")
-     * 
+     *
      * @Assert\Image(
      *     minWidth = 400,
      *     maxWidth = 900,
@@ -74,46 +73,46 @@ class Tricks
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-   private $DateModification;
+    private $DateModification;
    
-   /**
-     * Une figure a potentiellement plusieurs commentaires
-     * @ORM\OneToMany(targetEntity="App\Entity\Commentaires", mappedBy="figureId", cascade={"persist"})
-     */
+    /**
+      * Une figure a potentiellement plusieurs commentaires
+      * @ORM\OneToMany(targetEntity="App\Entity\Commentaires", mappedBy="figureId", cascade={"persist"})
+      */
     private $commentairesId;
     
-     /**
-     * Plusieur figures peut être créées par plusieur user
-     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="trick", cascade={"persist"})
-     * @ORM\JoinColumn(name="auteurId", referencedColumnName="id")
-     */
+    /**
+    * Plusieur figures peut être créées par plusieur user
+    * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="trick", cascade={"persist"})
+    * @ORM\JoinColumn(name="auteurId", referencedColumnName="id")
+    */
     private $auteur;
 
     /**
      * @ORM\Column(type="string")
      *
-     * 
+     *
      */
     private $video;
 
     /**
      * @ORM\Column(type="string")
      *
-     * 
+     *
      */
     private $secondeVideo;
 
     /**
      * @ORM\Column(type="string")
      *
-     * 
+     *
      */
     private $troisiemeVideo;
 
     /**
      * @ORM\Column(type="string")
      *
-     * 
+     *
      */
     private $slug;
 
@@ -123,7 +122,6 @@ class Tricks
         $this->commentaires = new ArrayCollection();
         $this->auteur = new ArrayCollection();
         $this->commentairesId = new ArrayCollection();
-        
     }
 
     public function getId(): ?int
@@ -179,7 +177,7 @@ class Tricks
         return $this;
     }
 
-    public function getDateCreation() 
+    public function getDateCreation()
     {
         return $this->DateCreation;
     }
@@ -191,7 +189,7 @@ class Tricks
         return $this;
     }
 
-    public function getDateModification() 
+    public function getDateModification()
     {
         return $this->DateModification;
     }
@@ -229,11 +227,10 @@ class Tricks
 
     public function getImage()
     {
-       
         return $this->image;
     }
 
-    public function setImage( $image): self
+    public function setImage($image): self
     {
         $this->image = $image;
 
@@ -288,7 +285,7 @@ class Tricks
         return $this->secondeImage;
     }
 
-    public function setSecondeImage( $secondeImage): self
+    public function setSecondeImage($secondeImage): self
     {
         $this->secondeImage = $secondeImage;
 
@@ -330,8 +327,4 @@ class Tricks
 
         return $this;
     }
-
-   
 }
-
-    

@@ -15,13 +15,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\File\Exception\FileException; 
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use App\Entity\Tricks;
 use App\Form\TricksType;
 use App\Repository\TricksRepository;
 use Symfony\Component\HttpFoundation\Session\Session;
-
-
 
 /**
  * @Route("/users")
@@ -41,14 +39,13 @@ class UsersController extends AbstractController
      */
     public function new(Request $request, UserPasswordEncoderInterface $passwordEncoder, \Swift_Mailer $mailer): Response
     {
-        $user = new User(); 
+        $user = new User();
         $form = $this->createForm(UsersType::class, $user);
         $form->handleRequest($request);
         $email = $user->getEmail();
         $token = $user->getToken();
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
             $user->setPassword($password);
             
@@ -61,18 +58,17 @@ class UsersController extends AbstractController
             ->setFrom('dada.pepe.alal@gmail.com')
             ->setTo($email)
             ->setBody(
-            $this->renderView(
-                
+                $this->renderView(
                 'users/texte.html.twig',
                 ['token' => $token]
 
             ),
-            'text/html'
+                'text/html'
         )
         
     ;
 
-    $mailer->send($message);
+            $mailer->send($message);
             
             $this->addFlash('success', 'Votre compte à bien été enregistré. Rendez vous sur votre boite mail pour finaliser votre inscription. Merci.');
 
@@ -108,9 +104,7 @@ class UsersController extends AbstractController
         $user = $usersRepository->findOneBy(array("token"=>$token));
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) 
-        {
-
+        if ($form->isSubmitted() && $form->isValid()) {
             $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
             $user->setPassword($password);
             
@@ -120,20 +114,19 @@ class UsersController extends AbstractController
             $em->persist($user);
             $em->flush();
             return $this->redirectToRoute('login');
-            
         }
 
         return $this->render('users/changePass.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
-            ]); 
+            ]);
     }
 
     /**
      * @Route("/login/user", name="login", methods="GET|POST")
      */
-    public function login(Request $request, AuthenticationUtils $authenticationUtils) {
-        
+    public function login(Request $request, AuthenticationUtils $authenticationUtils)
+    {
         $error = $authenticationUtils->getLastAuthenticationError();
 
         $lastUsername = $authenticationUtils->getLastUsername();
@@ -145,35 +138,32 @@ class UsersController extends AbstractController
                 
                 ->getForm();
 
-        if ($form->isSubmitted() && $form->isValid()) 
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $session = new Session();
             $session->start();
             return $this->redirectToRoute('tricks_index');
         }
         return $this->render('users/connexion.html.twig', [
-                    'mainNavLogin' => true, 
+                    'mainNavLogin' => true,
                     'title' => 'Connexion',
                     'form' => $form->createView(),
                     'last_username' => $lastUsername,
                     'error' => $error,
         ]);
-        
     }
 
 
     /**
      * @Route("/forgot/password", name="forgot", methods="GET|POST")
      */
-    public function forgot(Request $request, \Swift_Mailer $mailer, UsersRepository $usersRepository) {
-        
-            $form = $this->get('form.factory')
+    public function forgot(Request $request, \Swift_Mailer $mailer, UsersRepository $usersRepository)
+    {
+        $form = $this->get('form.factory')
             ->createNamedBuilder(null)
             ->add('_username', null, ['label' => 'Email'])
             ->getForm();
-            $form->handleRequest($request);
-          if ($form->isSubmitted() && $form->isValid()) {
-
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             $email = $request->request->get('_username');
             $user = $usersRepository->findOneBy(array("email"=>$email));
             $user->setToken(bin2hex(random_bytes(16)));
@@ -184,18 +174,17 @@ class UsersController extends AbstractController
             ->setFrom('dada.pepe.alal@gmail.com')
             ->setTo($email)
             ->setBody(
-            $this->renderView(
-                
+                $this->renderView(
                 'users/reset.html.twig',
                 ['token' => $user->getToken()]
 
             ),
-            'text/html'
+                'text/html'
         )
         
     ;
 
-    $mailer->send($message);
+            $mailer->send($message);
             
             $this->addFlash('o', 'Vous venez de valider votre adresse mail. Rendez vous dans votre boite mail pour accepter la demande de changement de mot de passe');
 
@@ -212,8 +201,6 @@ class UsersController extends AbstractController
                     
                     'error' => null,
         ]);
-
-        
     }
 
     /**
@@ -229,7 +216,6 @@ class UsersController extends AbstractController
      */
     private function generateUniqueFileName()
     {
-        
         return md5(uniqid());
     }
 
@@ -248,23 +234,18 @@ class UsersController extends AbstractController
             
             $fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();
             
-            try
-            {
-                $file->move($this->getParameter('images_directory'),$fileName );
+            try {
+                $file->move($this->getParameter('images_directory'), $fileName);
                 $user->setPhoto($fileName);
                 $this->getDoctrine()->getManager()->flush();
                 $this->addFlash('success', 'Vos modifications ont bien été prise en compte.');
+            } catch (FileException $e) {
+                $this->addFlash('error', "Vos modifications n'ont pas été prise en compte.");
             }
-
-            catch (FileException $e) 
-                {
-                    $this->addFlash('error', "Vos modifications n'ont pas été prise en compte.");
-
-                }
             
 
             return $this->redirectToRoute('tricks_index', ['id' => $user->getId()]);
-    }
+        }
 
         return $this->render('users/edit.html.twig', [
             'mainNavLogin' => true,
@@ -282,7 +263,7 @@ class UsersController extends AbstractController
     {
         $session->destroy();
         return $this->render('tricks/index.html.twig', [
-                    'mainNavLogin' => false, 
+                    'mainNavLogin' => false,
                     'title' => 'Deconnexion',
                     'error' => null,
         ]);
@@ -293,10 +274,9 @@ class UsersController extends AbstractController
      */
     public function delete(Request $request, User $user): Response
     {
-        
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($user);
-            $em->flush();
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($user);
+        $em->flush();
         
 
         return $this->redirectToRoute('tricks_index');

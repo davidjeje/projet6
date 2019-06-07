@@ -79,10 +79,9 @@ class PaginatorController extends AbstractController
      */
     public function delete(Request $request, Paginator $paginator): Response
     {
-        
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($paginator);
-            $em->flush();
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($paginator);
+        $em->flush();
 
         return $this->redirectToRoute('paginator_index');
     }
