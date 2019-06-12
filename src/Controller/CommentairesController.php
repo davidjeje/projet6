@@ -69,7 +69,8 @@ class CommentairesController extends AbstractController
         }
 
         return $this->render(
-            'commentaires/new.html.twig', [
+            'commentaires/new.html.twig',
+            [
             'commentaire' => $commentaire,
             'form' => $form->createView(),
             ]
@@ -99,7 +100,8 @@ class CommentairesController extends AbstractController
         }
 
         return $this->render(
-            'commentaires/edit.html.twig', [
+            'commentaires/edit.html.twig',
+            [
             'commentaire' => $commentaire,
             'form' => $form->createView(),
             ]

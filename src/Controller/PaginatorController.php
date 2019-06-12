@@ -41,7 +41,8 @@ class PaginatorController extends AbstractController
         }
 
         return $this->render(
-            'paginator/new.html.twig', [
+            'paginator/new.html.twig',
+            [
             'paginator' => $paginator,
             'form' => $form->createView(),
             ]
@@ -71,7 +72,8 @@ class PaginatorController extends AbstractController
         }
 
         return $this->render(
-            'paginator/edit.html.twig', [
+            'paginator/edit.html.twig',
+            [
             'paginator' => $paginator,
             'form' => $form->createView(),
             ]

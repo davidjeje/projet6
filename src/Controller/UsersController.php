@@ -73,7 +73,8 @@ class UsersController extends AbstractController
         }
 
         return $this->render(
-            'users/new.html.twig', [
+            'users/new.html.twig',
+            [
             'user' => $user,
             'form' => $form->createView(),
             ]
@@ -116,7 +117,8 @@ class UsersController extends AbstractController
         }
 
         return $this->render(
-            'users/changePass.html.twig', [
+            'users/changePass.html.twig',
+            [
             'user' => $user,
             'form' => $form->createView(),
             ]
@@ -145,7 +147,8 @@ class UsersController extends AbstractController
             return $this->redirectToRoute('tricks_index');
         }
         return $this->render(
-            'users/connexion.html.twig', [
+            'users/connexion.html.twig',
+            [
                     'mainNavLogin' => true,
                     'title' => 'Connexion',
                     'form' => $form->createView(),
@@ -195,7 +198,8 @@ class UsersController extends AbstractController
         
         
         return $this->render(
-            'users/forgot.html.twig', [
+            'users/forgot.html.twig',
+            [
                     'mainNavLogin' => true, 'title' => 'Mot de passe oublier',
                    
                     'form' => $form->createView(),
@@ -250,7 +254,8 @@ class UsersController extends AbstractController
         }
 
         return $this->render(
-            'users/edit.html.twig', [
+            'users/edit.html.twig',
+            [
             'mainNavLogin' => true,
             'user' => $user,
             'form' => $form->createView(),
@@ -267,7 +272,8 @@ class UsersController extends AbstractController
     {
         $session->destroy();
         return $this->render(
-            'tricks/index.html.twig', [
+            'tricks/index.html.twig',
+            [
                     'mainNavLogin' => false,
                     'title' => 'Deconnexion',
                     'error' => null,

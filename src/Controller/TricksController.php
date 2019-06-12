@@ -117,7 +117,8 @@ class TricksController extends AbstractController
         }
 
         return $this->render(
-            'tricks/new.html.twig', [
+            'tricks/new.html.twig',
+            [
             'trick' => $trick,
             'user' => $user,
             'form' => $form->createView(),
@@ -208,7 +209,8 @@ class TricksController extends AbstractController
         }
 
         return $this->render(
-            'tricks/edit.html.twig', [
+            'tricks/edit.html.twig',
+            [
             'trick' => $trick,
             'form' => $form->createView(),
             ]
@@ -270,7 +272,8 @@ class TricksController extends AbstractController
         }
 
         return $this->render(
-            'tricks/editImage.html.twig', [
+            'tricks/editImage.html.twig',
+            [
             'trick' => $trick,
             'form' => $form->createView(),
             'numberImage'=>$numberImage,
@@ -311,7 +314,8 @@ class TricksController extends AbstractController
         }
 
         return $this->render(
-            'tricks/editVideo.html.twig', [
+            'tricks/editVideo.html.twig',
+            [
             'trick' => $trick,
             'form' => $form->createView(),
             'numberVideo'=>$numberVideo,
