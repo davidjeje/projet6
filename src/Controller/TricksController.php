@@ -326,7 +326,7 @@ class TricksController extends AbstractController
     /**
      * @Route("/{id}/deleteTrick", name="tricks_delete", methods="DELETE")
      */
-    public function delete(Request $request, Tricks $trick): Response
+    public function delete(Tricks $trick): Response
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($trick);
