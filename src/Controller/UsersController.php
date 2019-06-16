@@ -268,7 +268,7 @@ class UsersController extends AbstractController
     /**
      * @Route("/logout/user", name="logout", methods="GET|POST")
      */
-    public function logout(Request $request): Response
+    public function logout(): Response
     {
         
         return $this->render(
