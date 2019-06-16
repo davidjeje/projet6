@@ -83,7 +83,7 @@ class PaginatorController extends AbstractController
     /**
      * @Route("/{id}", name="paginator_delete", methods="DELETE")
      */
-    public function delete(Request $request, Paginator $paginator): Response
+    public function delete(Paginator $paginator): Response
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($paginator);

@@ -111,7 +111,7 @@ class CommentairesController extends AbstractController
     /**
      * @Route("/{id}", name="commentaires_delete", methods="DELETE")
      */
-    public function delete(Request $request, Commentaires $commentaire): Response
+    public function delete(Commentaires $commentaire): Response
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($commentaire);
