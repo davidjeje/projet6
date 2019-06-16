@@ -128,7 +128,7 @@ class UsersController extends AbstractController
     /**
      * @Route("/login/user", name="login", methods="GET|POST")
      */
-    public function login(Request $request, AuthenticationUtils $authenticationUtils)
+    public function login(AuthenticationUtils $authenticationUtils)
     {
         $error = $authenticationUtils->getLastAuthenticationError();
 
@@ -268,7 +268,7 @@ class UsersController extends AbstractController
     /**
      * @Route("/logout/user", name="logout", methods="GET|POST")
      */
-    public function logout(Request $request, User $user): Response
+    public function logout(Request $request): Response
     {
         $session->destroy();
         return $this->render(
