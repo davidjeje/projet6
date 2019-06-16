@@ -50,11 +50,7 @@ class TrickControllerTest extends WebTestCase
             // check the number of requests
             $this->assertLessThan(5,$profile->getCollector('db')->getQueryCount());
         }
-        $newCrawler = $crawler->filter('button[type=button]')
-    	->last()
-    	->parents()
-    	->first()
-		;
+        
 
 		$crawler->attr('class');
 		$client->clickLink('Plus de Détails');
@@ -86,7 +82,7 @@ class TrickControllerTest extends WebTestCase
             ->getRepository(User::class)
             ->findAll();*/
 
-		$id=$tricks[0]->getId();
+		
         $slug=$tricks[0]->getSlug();
 		//$userId=$user[0]->getId();
     	return [
@@ -159,11 +155,10 @@ class TrickControllerTest extends WebTestCase
     public function testEditTrick()
     {
     	$client = static::createClient();
-        $crawler = $client->request('GET', '/{id}/edit');
-
+        
     	$client->catchExceptions(false);
     	$this->assertContains('foo', $client->getResponse()->getContent());
-    	//Quatrième test, Pour qu'il fonctionne il faut que les champs du formulaire soient remplient.
+    	
     }
 
     public function testEditImageTrick()
@@ -191,8 +186,6 @@ class TrickControllerTest extends WebTestCase
     public function testDeleteTrick()
     {
     	$client = static::createClient();
-        $crawler = $client->request('GET', '/{id}/deleteTrick');
-        
     	$this->assertContains('foo', $client->getResponse()->getContent());
     	
     }
