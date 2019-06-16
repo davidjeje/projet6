@@ -91,10 +91,6 @@ class UserControllerTest extends WebTestCase
         $user = $this->entityManager
             ->getRepository(User::class)
             ->findAll();
-
-		
-		
-		$token=$user[0]->getToken();
 		
     	return [
         ['/'],
@@ -111,8 +107,7 @@ class UserControllerTest extends WebTestCase
     public function testLogoutUser()
     {
     	$client = static::createClient();
-        $crawler = $client->request('GET', '/users/logout/user');
-
+        
         $this->assertTrue($client->getResponse()->isNotFound());
        	
     }
