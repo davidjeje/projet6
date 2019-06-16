@@ -131,7 +131,7 @@ class TricksController extends AbstractController
      */
     private function generateUniqueFileName()
     {
-        return md5(uniqid());
+        return SHA256(uniqid());
     }
 
     /**
