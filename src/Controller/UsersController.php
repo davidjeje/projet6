@@ -270,7 +270,7 @@ class UsersController extends AbstractController
      */
     public function logout(Request $request): Response
     {
-        $session->destroy();
+        
         return $this->render(
             'tricks/index.html.twig',
             [
@@ -284,7 +284,7 @@ class UsersController extends AbstractController
     /**
      * @Route("/{id}/delete/user", name="users_delete", methods="DELETE")
      */
-    public function delete(Request $request, User $user): Response
+    public function delete( User $user): Response
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($user);
