@@ -135,7 +135,7 @@ class TricksController extends AbstractController
     }
 
     /**
-     * @Route("/{slug}/{page}/show/one/trick", name="tricks_show", methods="GET|POST"
+     * @Route("/{slug}/{page}/show/one/trick", name="tricks_show", methods="GET|POST")
      */
     public function show(Tricks $trick, Request $request, CommentairesRepository $CommentairesRepository, $page, Paginator $pagina): Response
     {

@@ -12,7 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class TricksType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('name')

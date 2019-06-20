@@ -104,13 +104,7 @@ class UserControllerTest extends WebTestCase
     
     
     	
-    public function testLogoutUser()
-    {
-    	$client = static::createClient();
-        
-        $this->assertTrue($client->getResponse()->isNotFound());
-       	
-    }
+    
 
     
 }

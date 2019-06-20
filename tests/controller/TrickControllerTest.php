@@ -78,13 +78,11 @@ class TrickControllerTest extends WebTestCase
             ->getRepository(Tricks::class)
             ->findAll();
 
-        /*$user = $this->entityManager
-            ->getRepository(User::class)
-            ->findAll();*/
+        
 
 		
         $slug=$tricks[0]->getSlug();
-		//$userId=$user[0]->getId();
+		
     	return [
         ['/'],
         ['/trick/ajax'],
@@ -152,15 +150,7 @@ class TrickControllerTest extends WebTestCase
 
     }
 
-    public function testEditTrick()
-    {
-    	$client = static::createClient();
-        
-    	$client->catchExceptions(false);
-    	$this->assertContains('foo', $client->getResponse()->getContent());
-    	
-    }
-
+    
     public function testEditImageTrick()
     {
     	$client = static::createClient();
@@ -179,14 +169,9 @@ class TrickControllerTest extends WebTestCase
         
         $this->assertGreaterThan(0, $crawler->filter('h2')->count());
         
-    	$this->assertContains('foo', $client->getResponse()->getContent());
+    	//$this->assertContains('foo', $client->getResponse()->getContent());
     	
     }
 
-    public function testDeleteTrick()
-    {
-    	$client = static::createClient();
-    	$this->assertContains('foo', $client->getResponse()->getContent());
-    	
-    }
+   
 }
