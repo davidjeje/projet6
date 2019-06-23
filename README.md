@@ -32,7 +32,7 @@ Website-skeleton: the recommended skeleton for making web projects, which is rec
 There is a demonstration project called Symfony Demonstration. In this project, we find some controllers, some integrated views with Bootstrap, some forms and a minimalist administration space already in place.
 Although this is not recommended by the Symfony project, in practice many developers use this learning project as a basis for their business projects.
 In the case where we do not create a new project but add my project, here is the command with the link github:
-git clone  https:[//github.com/davidjeje/projet6]
+git clone  'https':'[//github.com/davidjeje/projet6]'
 
 Before Starting the application 
 For the application to access the database:
@@ -51,7 +51,7 @@ If in production we use a web server like Apache or Nginx, in development, we ca
  ➜ php bin/console server:run
 
 If the port is not busy, the application will be available at this address: 
- http:[//localhost:8000/] .
+ http:[//localhost:8000] .
 To stop this local server, use the command  Ctrl + C  in your command prompt.
 
 Symfony Framework Home Page By default, since there is no controller or configured route, the framework presents us with a page with a link to the official documentation. 
