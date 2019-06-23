@@ -1,21 +1,16 @@
  Symfony
 
 Definition:
-
 Symfony is a set of PHP components and a free MVC framework written in PHP. It provides flexible and adaptable features that facilitate and accelerate the development of a website.
 
-
 Requirements :
-
 -Git
 -Local server with PHP
 - PHP 7.2 or Higher
 - Composer
 - Symfony
 
-
 Download composer:
-
 Normally, PHP 7.2 or the latest version of PHP must already be installed on our working environment, as this is a prerequisite for installing composer and symfony.
 
 Here are the commands to install Composer on our computer. We can install it the same way, whatever our operating system, as soon as PHP is installed:
@@ -40,9 +35,7 @@ Website-skeleton: the recommended skeleton for making web projects, which is rec
 There is a demonstration project called Symfony Demonstration. In this project, we find some controllers, some integrated views with Bootstrap, some forms and a minimalist administration space already in place.
 Although this is not recommended by the Symfony project, in practice many developers use this learning project as a basis for their business projects.
 In the case where we do not create a new project but add my project, here is the command with the link github:
- 
 git clone  https://github.com/davidjeje/projet6
-
 
 Before Starting the application 
 For the application to access the database:
