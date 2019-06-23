@@ -82,7 +82,6 @@ class TrickControllerTest extends WebTestCase
 
 		
         $slug=$tricks[0]->getSlug();
-		
     	return [
         ['/'],
         ['/trick/ajax'],
