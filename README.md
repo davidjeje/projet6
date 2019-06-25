@@ -1,5 +1,5 @@
 # Project 6 Openclassrooms
-
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f08a8a372b7943a895ec89a87ca0c730)](https://www.codacy.com/app/davidjeje/projet6?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=davidjeje/projet6&amp;utm_campaign=Badge_Grade)
 
 **Symfony definition:**
 
