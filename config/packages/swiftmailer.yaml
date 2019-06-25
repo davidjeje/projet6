@@ -4,5 +4,4 @@ swiftmailer:
     
     
     
-    MAILER_URL=gmail://localhost:25?encryption=ssl&auth_mode=login&username= David Larose&password= alanmarivat5
-
+    

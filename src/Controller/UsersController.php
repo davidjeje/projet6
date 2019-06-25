@@ -73,7 +73,8 @@ class UsersController extends AbstractController
         }
 
         return $this->render(
-            'users/new.html.twig', [
+            'users/new.html.twig',
+            [
             'user' => $user,
             'form' => $form->createView(),
             ]
@@ -116,7 +117,8 @@ class UsersController extends AbstractController
         }
 
         return $this->render(
-            'users/changePass.html.twig', [
+            'users/changePass.html.twig',
+            [
             'user' => $user,
             'form' => $form->createView(),
             ]
@@ -126,7 +128,7 @@ class UsersController extends AbstractController
     /**
      * @Route("/login/user", name="login", methods="GET|POST")
      */
-    public function login(Request $request, AuthenticationUtils $authenticationUtils)
+    public function login(AuthenticationUtils $authenticationUtils)
     {
         $error = $authenticationUtils->getLastAuthenticationError();
 
@@ -145,7 +147,8 @@ class UsersController extends AbstractController
             return $this->redirectToRoute('tricks_index');
         }
         return $this->render(
-            'users/connexion.html.twig', [
+            'users/connexion.html.twig',
+            [
                     'mainNavLogin' => true,
                     'title' => 'Connexion',
                     'form' => $form->createView(),
@@ -195,7 +198,8 @@ class UsersController extends AbstractController
         
         
         return $this->render(
-            'users/forgot.html.twig', [
+            'users/forgot.html.twig',
+            [
                     'mainNavLogin' => true, 'title' => 'Mot de passe oublier',
                    
                     'form' => $form->createView(),
@@ -218,7 +222,7 @@ class UsersController extends AbstractController
      */
     private function generateUniqueFileName()
     {
-        return md5(uniqid());
+        return SHA256(uniqid());
     }
 
 
@@ -250,7 +254,8 @@ class UsersController extends AbstractController
         }
 
         return $this->render(
-            'users/edit.html.twig', [
+            'users/edit.html.twig',
+            [
             'mainNavLogin' => true,
             'user' => $user,
             'form' => $form->createView(),
@@ -263,11 +268,12 @@ class UsersController extends AbstractController
     /**
      * @Route("/logout/user", name="logout", methods="GET|POST")
      */
-    public function logout(Request $request, User $user): Response
+    public function logout(): Response
     {
-        $session->destroy();
+        
         return $this->render(
-            'tricks/index.html.twig', [
+            'tricks/index.html.twig',
+            [
                     'mainNavLogin' => false,
                     'title' => 'Deconnexion',
                     'error' => null,
@@ -278,7 +284,7 @@ class UsersController extends AbstractController
     /**
      * @Route("/{id}/delete/user", name="users_delete", methods="DELETE")
      */
-    public function delete(Request $request, User $user): Response
+    public function delete( User $user): Response
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($user);

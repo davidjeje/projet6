@@ -117,7 +117,8 @@ class TricksController extends AbstractController
         }
 
         return $this->render(
-            'tricks/new.html.twig', [
+            'tricks/new.html.twig',
+            [
             'trick' => $trick,
             'user' => $user,
             'form' => $form->createView(),
@@ -130,11 +131,11 @@ class TricksController extends AbstractController
      */
     private function generateUniqueFileName()
     {
-        return md5(uniqid());
+        return SHA256(uniqid());
     }
 
     /**
-     * @Route("/{slug}/{page}/show/one/trick", name="tricks_show", methods="GET|POST"
+     * @Route("/{slug}/{page}/show/one/trick", name="tricks_show", methods="GET|POST")
      */
     public function show(Tricks $trick, Request $request, CommentairesRepository $CommentairesRepository, $page, Paginator $pagina): Response
     {
@@ -208,7 +209,8 @@ class TricksController extends AbstractController
         }
 
         return $this->render(
-            'tricks/edit.html.twig', [
+            'tricks/edit.html.twig',
+            [
             'trick' => $trick,
             'form' => $form->createView(),
             ]
@@ -270,7 +272,8 @@ class TricksController extends AbstractController
         }
 
         return $this->render(
-            'tricks/editImage.html.twig', [
+            'tricks/editImage.html.twig',
+            [
             'trick' => $trick,
             'form' => $form->createView(),
             'numberImage'=>$numberImage,
@@ -311,7 +314,8 @@ class TricksController extends AbstractController
         }
 
         return $this->render(
-            'tricks/editVideo.html.twig', [
+            'tricks/editVideo.html.twig',
+            [
             'trick' => $trick,
             'form' => $form->createView(),
             'numberVideo'=>$numberVideo,
@@ -322,7 +326,7 @@ class TricksController extends AbstractController
     /**
      * @Route("/{id}/deleteTrick", name="tricks_delete", methods="DELETE")
      */
-    public function delete(Request $request, Tricks $trick): Response
+    public function delete(Tricks $trick): Response
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($trick);

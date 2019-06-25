@@ -22,7 +22,9 @@ class UsersType extends AbstractType
             ->add('email', EmailType::class)
                 /*->add('photo', FileType::class, array('label' => 'Users (jpeg, jpg, png image)','data_class' => null))*/
             ->add(
-                'plainPassword', RepeatedType::class, array(
+                'plainPassword',
+                RepeatedType::class,
+                array(
                     'type' => PasswordType::class,
                     'first_options' => array('label' => 'Mot de passe'),
                     'second_options' => array('label' => 'Confirmation du mot de passe'),

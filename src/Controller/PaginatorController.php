@@ -41,7 +41,8 @@ class PaginatorController extends AbstractController
         }
 
         return $this->render(
-            'paginator/new.html.twig', [
+            'paginator/new.html.twig',
+            [
             'paginator' => $paginator,
             'form' => $form->createView(),
             ]
@@ -71,7 +72,8 @@ class PaginatorController extends AbstractController
         }
 
         return $this->render(
-            'paginator/edit.html.twig', [
+            'paginator/edit.html.twig',
+            [
             'paginator' => $paginator,
             'form' => $form->createView(),
             ]
@@ -81,7 +83,7 @@ class PaginatorController extends AbstractController
     /**
      * @Route("/{id}", name="paginator_delete", methods="DELETE")
      */
-    public function delete(Request $request, Paginator $paginator): Response
+    public function delete(Paginator $paginator): Response
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($paginator);
