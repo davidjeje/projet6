@@ -51,9 +51,9 @@ class UsersController extends AbstractController
             
             $user->setIsActive(false);
             
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+            $orm = $this->getDoctrine()->getManager();
+            $orm->persist($user);
+            $orm->flush();
             $message = (new \Swift_Message('Nous vous souhaitons la bienvenu. Clic sur le lien pour valider ton inscription ! A bientôt !!!'))
                 ->setFrom('dada.pepe.alal@gmail.com')
                 ->setTo($email)
@@ -89,9 +89,9 @@ class UsersController extends AbstractController
         $user = $usersRepository->findOneBy(array("token"=>$token));
 
         $user->setIsActive(true);
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($user);
-        $em->flush();
+        $orm = $this->getDoctrine()->getManager();
+        $orm->persist($user);
+        $orm->flush();
         $session = new Session();
         $session->start();
         return $this->redirectToRoute('login');
@@ -110,9 +110,9 @@ class UsersController extends AbstractController
             
             $user->setIsActive(true);
             
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+            $orm = $this->getDoctrine()->getManager();
+            $orm->persist($user);
+            $orm->flush();
             return $this->redirectToRoute('login');
         }
 
@@ -173,9 +173,9 @@ class UsersController extends AbstractController
             $email = $request->request->get('_username');
             $user = $usersRepository->findOneBy(array("email"=>$email));
             $user->setToken(bin2hex(random_bytes(16)));
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+            $orm = $this->getDoctrine()->getManager();
+            $orm->persist($user);
+            $orm->flush();
             $message = (new \Swift_Message('Nous vous souhaitons la bienvenu. Cliquer sur le lien pour pouvoir Réinitialiser votre mot de passe ! A bientôt !!!'))
                 ->setFrom('dada.pepe.alal@gmail.com')
                 ->setTo($email)
@@ -286,9 +286,9 @@ class UsersController extends AbstractController
      */
     public function delete( User $user): Response
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($user);
-        $em->flush();
+        $orm = $this->getDoctrine()->getManager();
+        $orm->remove($user);
+        $orm->flush();
         
 
         return $this->redirectToRoute('tricks_index');

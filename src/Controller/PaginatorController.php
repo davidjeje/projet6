@@ -33,9 +33,9 @@ class PaginatorController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($paginator);
-            $em->flush();
+            $orm = $this->getDoctrine()->getManager();
+            $orm->persist($paginator);
+            $orm->flush();
 
             return $this->redirectToRoute('paginator_index');
         }
@@ -85,9 +85,9 @@ class PaginatorController extends AbstractController
      */
     public function delete(Paginator $paginator): Response
     {
-        $emm = $this->getDoctrine()->getManager();
-        $emm->remove($paginator);
-        $emm->flush();
+        $orm = $this->getDoctrine()->getManager();
+        $orm->remove($paginator);
+        $orm->flush();
 
         return $this->redirectToRoute('paginator_index');
     }

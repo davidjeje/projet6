@@ -98,14 +98,14 @@ class TricksController extends AbstractController
                     
                 $trick->setImage($fileName);
                 $trick->setSecondeImage($fileNam);
-                $em = $this->getDoctrine()->getManager();
+                $orm = $this->getDoctrine()->getManager();
                 $date = new \DateTime();
                 $trick->setDateCreation($date->format("d-m-Y h:i"));
                 $trick->addAuteur($this->getUser());
                 $trick->setSlug($this->slugify($trick->getName()));
 
-                $em->persist($trick);
-                $em->flush();
+                $orm->persist($trick);
+                $orm->flush();
                 $this->addFlash('success', 'Votre figure à bien été enregistré.');
             } catch (FileException $e) {
                 $this->addFlash('error', "La figure n'a pas pu être enregistré.");
@@ -168,9 +168,9 @@ class TricksController extends AbstractController
             $pagina->addCommentaireId($commentaires);
 
             try {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($trick, $user, $commentaires);
-                $em->flush();
+                $orm = $this->getDoctrine()->getManager();
+                $orm->persist($trick, $user, $commentaires);
+                $orm->flush();
                 $this->addFlash('success', 'Votre commentaire à bien été envoyé !!!');
             } catch (FileException $e) {
                 $this->addFlash('error', "Le commentaire n'a pas pu être envoyé.");
@@ -262,9 +262,9 @@ class TricksController extends AbstractController
                     $trick->setImage($fileName);
                 }
                 
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($trick);
-                $em->flush();
+                $orm = $this->getDoctrine()->getManager();
+                $orm->persist($trick);
+                $orm->flush();
                 $this->addFlash('success', 'Votre image à bien été modifié !!!');
             } catch (FileException $e) {
                 $this->addFlash('error', "L'image n'a pas pu être modifié.");
@@ -304,9 +304,9 @@ class TricksController extends AbstractController
             $trick->setDateModification($date->format("d-m-Y H:i"));
             
             try {
-                $emm = $this->getDoctrine()->getManager();
-                $emm->persist($trick);
-                $emm->flush();
+                $orm = $this->getDoctrine()->getManager();
+                $orm->persist($trick);
+                $orm->flush();
                 $this->addFlash('success', 'Votre vidéo à bien été modifié !!!');
             } catch (FileException $e) {
                 $this->addFlash('error', "La vidéo n'a pas pu être modifié.");
@@ -330,9 +330,9 @@ class TricksController extends AbstractController
      */
     public function delete(Tricks $trick): Response
     {
-        $emm = $this->getDoctrine()->getManager();
-        $emm->remove($trick);
-        $emm->flush();
+        $orm = $this->getDoctrine()->getManager();
+        $orm->remove($trick);
+        $orm->flush();
         
         return $this->redirectToRoute('tricks_index');
     }

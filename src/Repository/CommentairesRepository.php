@@ -31,9 +31,9 @@ class CommentairesRepository extends ServiceEntityRepository
         return
             $this->createQueryBuilder('c')
             ->setfirstResult($firstResult)
-            ->where('c.figureId = :val')
+            ->where('cde.figureId = :val')
             ->setParameter('val', $trickId)
-            ->orderBy('c.id', 'DESC')
+            ->orderBy('cde.id', 'DESC')
             ->setMaxResults($maxResult)
             ->getQuery()
             ->getResult();
@@ -69,11 +69,11 @@ class CommentairesRepository extends ServiceEntityRepository
             );
         }
     
-        $qb = $this->createQueryBuilder('a')
-            ->where('CURRENT_DATE() >= a.dateCommentaire')
-            ->andWhere('a.figureId = :val')
+        $qb = $this->createQueryBuilder('abc')
+            ->where('CURRENT_DATE() >= abc.dateCommentaire')
+            ->andWhere('abc.figureId = :val')
             ->setParameter('val', $trick)
-            ->orderBy('a.dateCommentaire', 'DESC');
+            ->orderBy('abc.dateCommentaire', 'DESC');
         
         $query = $qb->getQuery();
 
@@ -91,8 +91,8 @@ class CommentairesRepository extends ServiceEntityRepository
 
     public function DscCommentaire()
     {
-        return $this->createQueryBuilder('c')
-            ->orderBy('c.id', 'DESC')
+        return $this->createQueryBuilder('cde')
+            ->orderBy('cde.id', 'DESC')
             ->getQuery()
             ->getResult();
     }
