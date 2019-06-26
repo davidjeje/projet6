@@ -62,9 +62,9 @@ class CommentairesController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($commentaire);
-            $em->flush();
+            $emm = $this->getDoctrine()->getManager();
+            $emm->persist($commentaire);
+            $emm->flush();
 
             return $this->redirectToRoute('commentaires_index');
         }
