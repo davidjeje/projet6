@@ -114,9 +114,9 @@ class CommentairesController extends AbstractController
      */
     public function delete(Commentaires $commentaire): Response
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($commentaire);
-        $em->flush();
+        $orm = $this->getDoctrine()->getManager();
+        $orm->remove($commentaire);
+        $orm->flush();
         
 
         return $this->redirectToRoute('commentaires_index');

@@ -46,8 +46,8 @@ class TricksController extends AbstractController
      */
     public function ajaxAction(Request $request, TricksRepository $tricksRepository)
     {
-        $id = $request->request->get('id');
-        $tricks = $tricksRepository->nombreTrick($id, 4);
+        $FirstResultId = $request->request->get('id');
+        $tricks = $tricksRepository->nombreTrick($FirstResultId, 4);
         return $this->render('tricks/blockTrick.html.twig', ['tricks' => $tricks]);
         return new JsonResponse($tricks);
     }
@@ -149,11 +149,11 @@ class TricksController extends AbstractController
         $commentaireAffichage = $CommentairesRepository->nombreCommentaire($firstResult, $nombreMax, $trick->getId());
 
         
-        $commentairePagination = $CommentairesRepository->paginationCommentaire($page, $nombreMaxParPage, $trick->getId());
+        $commentairePagi = $CommentairesRepository->paginationCommentaire($page, $nombreMaxParPage, $trick->getId());
         
         $pagination = array(
             'page' => $page,
-            'nbPages' => ceil(count($commentairePagination) / $nombreMaxParPage),
+            'nbPages' => ceil(count($commentairePagi) / $nombreMaxParPage),
             'nomRoute' => 'tricks_show',
             'paramsRoute' => array('id' => $trick->getId())
         );
@@ -180,7 +180,7 @@ class TricksController extends AbstractController
         }
         
         
-        return $this->render('tricks/show.html.twig', ['trick' => $trick, 'form' => $form->createView(),'commentaireAffichage' => $commentaireAffichage, 'commentairePagination' => $commentairePagination,'user' => $user,'pagination' => $pagination]);
+        return $this->render('tricks/show.html.twig', ['trick' => $trick, 'form' => $form->createView(),'commentaireAffichage' => $commentaireAffichage, 'commentairePagination' => $commentairePagi,'user' => $user,'pagination' => $pagination]);
     }
 
     /**
@@ -256,7 +256,9 @@ class TricksController extends AbstractController
                 $file->move($this->getParameter('images_directory'), $fileName);
                 if ($file == $trick->getSecondeImage()) {
                     $trick->setSecondeImage($fileName);
-                } else {
+                } 
+                else 
+                {
                     $trick->setImage($fileName);
                 }
                 
@@ -328,9 +330,9 @@ class TricksController extends AbstractController
      */
     public function delete(Tricks $trick): Response
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($trick);
-        $em->flush();
+        $emm = $this->getDoctrine()->getManager();
+        $emm->remove($trick);
+        $emm->flush();
         
         return $this->redirectToRoute('tricks_index');
     }
