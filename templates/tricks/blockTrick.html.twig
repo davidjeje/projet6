@@ -14,7 +14,7 @@
             <div class="card-body">
 
                 <!-- Title -->
-                <h4 class="card-title"><a href="{{ path('tricks_show', {'slug': trick.slug, 'page': 1} ) }}" >{{trick.name}}</a></h4>
+                <h4 class="card-title"><a href="{{ path('tricks_show', {'slug': trick.slug, 'page': 1} ) }}">{{trick.name}}</a></h4>
                 <!-- Text -->
                 <p class="card-text">
                     {% if is_granted('ROLE_USER') and trick.auteur|length > 0 %}

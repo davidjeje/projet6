@@ -40,14 +40,15 @@ class CommentairesController extends AbstractController
         return $this->render('commentaires/index.html.twig', ['commentaires' => $commentairesRepository->findAll()]);
     }
 
+
     /**
      * @Route("/commentaire/ajax", name="commentaire_ajax", methods="GET|POST")
      */
-    public function ajaxEnAction(Request $request, CommentairesRepository $commentairesRepository)
+    public function ajaxEnAction(Request $request, CommentairesRepository $commentairesRepo)
     {
-        $id = $request->request->get('id');
+        $firstResultId = $request->request->get('id');
         $trickId = $request->request->get('trickId');
-        $commentaireAffichage = $commentairesRepository->nombreCommentaire($id, 2, $trickId);
+        $commentaireAffichage = $commentairesRepo->nombreCommentaire($firstResultId, 2, $trickId);
         return $this->render('commentaires/blockCommentaire.html.twig', ['commentaireAffichage' => $commentaireAffichage]);
     }
      
