@@ -304,9 +304,9 @@ class TricksController extends AbstractController
             $trick->setDateModification($date->format("d-m-Y H:i"));
             
             try {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($trick);
-                $em->flush();
+                $emm = $this->getDoctrine()->getManager();
+                $emm->persist($trick);
+                $emm->flush();
                 $this->addFlash('success', 'Votre vidéo à bien été modifié !!!');
             } catch (FileException $e) {
                 $this->addFlash('error', "La vidéo n'a pas pu être modifié.");
