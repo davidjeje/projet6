@@ -137,7 +137,7 @@ class TricksController extends AbstractController
     /**
      * @Route("/{slug}/{page}/show/one/trick", name="tricks_show", methods="GET|POST")
      */
-    public function show(Tricks $trick, Request $request, CommentairesRepository $CommentairesRepository, $page, Paginator $pagina): Response
+    public function show(Tricks $trick, Request $request, CommentairesRepository $CommentairesRepo, $page, Paginator $pagina): Response
     {
         $user = $this->getUser();
         $commentaires = new Commentaires();
@@ -146,10 +146,10 @@ class TricksController extends AbstractController
         $nombreMaxParPage = 2;
         $nombreMax = 2;
         $firstResult = ($page-1) * $nombreMaxParPage;
-        $commentaireAffichage = $CommentairesRepository->nombreCommentaire($firstResult, $nombreMax, $trick->getId());
+        $commentaireAffichage = $CommentairesRepo->nombreCommentaire($firstResult, $nombreMax, $trick->getId());
 
         
-        $commentairePagi = $CommentairesRepository->paginationCommentaire($page, $nombreMaxParPage, $trick->getId());
+        $commentairePagi = $CommentairesRepo->paginationCommentaire($page, $nombreMaxParPage, $trick->getId());
         
         $pagination = array(
             'page' => $page,

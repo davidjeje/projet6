@@ -5,20 +5,7 @@
         display: none;
     }
 }
-/*@media screen and (max-width: 1024px)
-{
-    .footer
-    {
-        display: none;
-    }
-}
-@media screen and (min-width: 1024px)
-{
-    .foot
-    {
-        display: none;
-    }
-}*/
+
 @media screen and (min-width: 100px) and (max-width: 1024px)
 {
     .video
