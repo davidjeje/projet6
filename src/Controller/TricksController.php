@@ -46,24 +46,27 @@ class TricksController extends AbstractController
      */
     public function ajaxAction(Request $request, TricksRepository $tricksRepository)
     {
-        $id = $request->request->get('id');
-        $tricks = $tricksRepository->nombreTrick($id, 4);
+        // Récupère l'id du premier trick de la page demandé.
+        $FirstResultId = $request->request->get('id');
+        // Cette variable stock la fonction située dans le repository trick et qui elle même stock des valeurs pour lui permettre d'afficher un nombre de figure par figure lorsqu'on clic sur le bouton voir plus.
+        $tricks = $tricksRepository->nombreTrick($FirstResultId, 4);
         return $this->render('tricks/blockTrick.html.twig', ['tricks' => $tricks]);
         return new JsonResponse($tricks);
     }
 
     public function slugify($text)
     {
+        //expression régulière qui permet de rechercher et remplacer par expression rationnelle standard.
         $text = preg_replace('~[^\pL\d]+~u', '-', $text);
-
+        //Retourne la chaîne de caractères convertie ou FALSE si une erreur survient.
         $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
-
+        //expression régulière qui permet de rechercher et remplacer par expression rationnelle standard.
         $text = preg_replace('~[^-\w]+~', '', $text);
-
+        //trim — Supprime les espaces (ou d'autres caractères) en début et fin de chaîne
         $text = trim($text, '-');
-
+        //expression régulière qui permet de rechercher et remplacer par expression rationnelle standard.
         $text = preg_replace('~-+~', '-', $text);
-
+        // strtolower — Renvoie une chaîne en minuscules.
         $text = strtolower($text);
 
         if (empty($text)) {
@@ -98,14 +101,14 @@ class TricksController extends AbstractController
                     
                 $trick->setImage($fileName);
                 $trick->setSecondeImage($fileNam);
-                $em = $this->getDoctrine()->getManager();
+                $orm = $this->getDoctrine()->getManager();
                 $date = new \DateTime();
                 $trick->setDateCreation($date->format("d-m-Y h:i"));
                 $trick->addAuteur($this->getUser());
                 $trick->setSlug($this->slugify($trick->getName()));
 
-                $em->persist($trick);
-                $em->flush();
+                $orm->persist($trick);
+                $orm->flush();
                 $this->addFlash('success', 'Votre figure à bien été enregistré.');
             } catch (FileException $e) {
                 $this->addFlash('error', "La figure n'a pas pu être enregistré.");
@@ -137,7 +140,7 @@ class TricksController extends AbstractController
     /**
      * @Route("/{slug}/{page}/show/one/trick", name="tricks_show", methods="GET|POST")
      */
-    public function show(Tricks $trick, Request $request, CommentairesRepository $CommentairesRepository, $page, Paginator $pagina): Response
+    public function show(Tricks $trick, Request $request, CommentairesRepository $CommentairesRepo, $page, Paginator $pagina): Response
     {
         $user = $this->getUser();
         $commentaires = new Commentaires();
@@ -146,14 +149,15 @@ class TricksController extends AbstractController
         $nombreMaxParPage = 2;
         $nombreMax = 2;
         $firstResult = ($page-1) * $nombreMaxParPage;
-        $commentaireAffichage = $CommentairesRepository->nombreCommentaire($firstResult, $nombreMax, $trick->getId());
+        //Cette variable stock la fonction située dans le repository commentaire et qui elle même stock des valeurs pour lui permettre d'afficher un nombre de commentaire par figure et par page.
+        $commentaireAffichage = $CommentairesRepo->nombreCommentaire($firstResult, $nombreMax, $trick->getId());
 
-        
-        $commentairePagination = $CommentairesRepository->paginationCommentaire($page, $nombreMaxParPage, $trick->getId());
+        //Cette variable stock la fonction située dans le repository paginator et qui elle même stock des valeurs pour lui permettre d'afficher un nombre de commentaire par figure et par page.
+        $commentairePagi = $CommentairesRepo->paginationCommentaire($page, $nombreMaxParPage, $trick->getId());
         
         $pagination = array(
             'page' => $page,
-            'nbPages' => ceil(count($commentairePagination) / $nombreMaxParPage),
+            'nbPages' => ceil(count($commentairePagi) / $nombreMaxParPage),
             'nomRoute' => 'tricks_show',
             'paramsRoute' => array('id' => $trick->getId())
         );
@@ -168,9 +172,9 @@ class TricksController extends AbstractController
             $pagina->addCommentaireId($commentaires);
 
             try {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($trick, $user, $commentaires);
-                $em->flush();
+                $orm = $this->getDoctrine()->getManager();
+                $orm->persist($trick, $user, $commentaires);
+                $orm->flush();
                 $this->addFlash('success', 'Votre commentaire à bien été envoyé !!!');
             } catch (FileException $e) {
                 $this->addFlash('error', "Le commentaire n'a pas pu être envoyé.");
@@ -180,7 +184,7 @@ class TricksController extends AbstractController
         }
         
         
-        return $this->render('tricks/show.html.twig', ['trick' => $trick, 'form' => $form->createView(),'commentaireAffichage' => $commentaireAffichage, 'commentairePagination' => $commentairePagination,'user' => $user,'pagination' => $pagination]);
+        return $this->render('tricks/show.html.twig', ['trick' => $trick, 'form' => $form->createView(),'commentaireAffichage' => $commentaireAffichage, 'commentairePagination' => $commentairePagi,'user' => $user,'pagination' => $pagination]);
     }
 
     /**
@@ -230,7 +234,7 @@ class TricksController extends AbstractController
             $method="setSecondeImage";
             $getter="getSecondeImage";
         }
-
+        //Dans le cas de ou je souhaite modifier l'image de la figure alors on récupère l'ancienne image et on la modifie grace au formulaire.
         $trick->$method(
             new File($this->getParameter('images_directory').'/'.$trick->$getter())
         );
@@ -246,7 +250,7 @@ class TricksController extends AbstractController
             } else {
                 $file = $trick->getImage();
             }
-            
+            //Dans le cas ou on souhaite modifier la seconde image il faut faire exactement comme pour la première image lorsqu'on l'ajoute avec la variable $fileName.
             $fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();
             
             $date = new \DateTime();
@@ -256,13 +260,15 @@ class TricksController extends AbstractController
                 $file->move($this->getParameter('images_directory'), $fileName);
                 if ($file == $trick->getSecondeImage()) {
                     $trick->setSecondeImage($fileName);
-                } else {
+                } 
+                else 
+                {
                     $trick->setImage($fileName);
                 }
                 
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($trick);
-                $em->flush();
+                $orm = $this->getDoctrine()->getManager();
+                $orm->persist($trick);
+                $orm->flush();
                 $this->addFlash('success', 'Votre image à bien été modifié !!!');
             } catch (FileException $e) {
                 $this->addFlash('error', "L'image n'a pas pu être modifié.");
@@ -293,6 +299,7 @@ class TricksController extends AbstractController
         if ($numberVideo== 3) {
             $entityField="troisiemeVideo";
         }
+        // Dans le cas ou $entityField vaut video, secondeVideo ou troisiemeVideo alors on identifie clairement quelle video ou doit modifier dans la base de donnée.
         $form = $this->createForm(VideoType::class, $trick, ["video" =>$entityField]);
         
         $form->handleRequest($request);
@@ -302,9 +309,9 @@ class TricksController extends AbstractController
             $trick->setDateModification($date->format("d-m-Y H:i"));
             
             try {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($trick);
-                $em->flush();
+                $orm = $this->getDoctrine()->getManager();
+                $orm->persist($trick);
+                $orm->flush();
                 $this->addFlash('success', 'Votre vidéo à bien été modifié !!!');
             } catch (FileException $e) {
                 $this->addFlash('error', "La vidéo n'a pas pu être modifié.");
@@ -328,9 +335,9 @@ class TricksController extends AbstractController
      */
     public function delete(Tricks $trick): Response
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($trick);
-        $em->flush();
+        $orm = $this->getDoctrine()->getManager();
+        $orm->remove($trick);
+        $orm->flush();
         
         return $this->redirectToRoute('tricks_index');
     }

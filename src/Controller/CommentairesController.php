@@ -32,22 +32,27 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class CommentairesController extends AbstractController
 {
+    // Cette fonction permet de retourner tous les commentaires du site.
     /**
      * @Route("/", name="commentaires_index", methods="GET")
      */
-    public function index(CommentairesRepository $commentairesRepository): Response
+    public function index(CommentairesRepository $commentairesRepo): Response
     {
-        return $this->render('commentaires/index.html.twig', ['commentaires' => $commentairesRepository->findAll()]);
+        return $this->render('commentaires/index.html.twig', ['commentaires' => $commentairesRepo->findAll()]);
     }
 
     /**
      * @Route("/commentaire/ajax", name="commentaire_ajax", methods="GET|POST")
      */
-    public function ajaxEnAction(Request $request, CommentairesRepository $commentairesRepository)
+    public function ajaxEnAction(Request $request, CommentairesRepository $commentairesRepo)
     {
-        $id = $request->request->get('id');
+        //Récupère l'id du premier commentaire de la page demandé.
+        $firstResultId = $request->request->get('id');
+        //Récupère l'id de la figure.
         $trickId = $request->request->get('trickId');
-        $commentaireAffichage = $commentairesRepository->nombreCommentaire($id, 2, $trickId);
+        //Cette variable stock la fonction située dans le repository commentaire et qui elle même stock des valeurs pour lui permettre d'afficher un nombre de commentaire par figure et par page.
+        $commentaireAffichage = $commentairesRepo->nombreCommentaire($firstResultId, 2, $trickId);
+        
         return $this->render('commentaires/blockCommentaire.html.twig', ['commentaireAffichage' => $commentaireAffichage]);
     }
      
@@ -60,10 +65,11 @@ class CommentairesController extends AbstractController
         $form = $this->createForm(CommentairesType::class, $commentaire);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($commentaire);
-            $em->flush();
+        if ($form->isSubmitted() && $form->isValid()) 
+        {
+            $orm = $this->getDoctrine()->getManager();
+            $orm->persist($commentaire);
+            $orm->flush();
 
             return $this->redirectToRoute('commentaires_index');
         }
@@ -113,9 +119,9 @@ class CommentairesController extends AbstractController
      */
     public function delete(Commentaires $commentaire): Response
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($commentaire);
-        $em->flush();
+        $orm = $this->getDoctrine()->getManager();
+        $orm->remove($commentaire);
+        $orm->flush();
         
 
         return $this->redirectToRoute('commentaires_index');
