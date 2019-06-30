@@ -32,6 +32,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class CommentairesController extends AbstractController
 {
+    // Cette fonction permet de retourner tous les commentaires du site.
     /**
      * @Route("/", name="commentaires_index", methods="GET")
      */
@@ -40,15 +41,18 @@ class CommentairesController extends AbstractController
         return $this->render('commentaires/index.html.twig', ['commentaires' => $commentairesRepo->findAll()]);
     }
 
-
     /**
      * @Route("/commentaire/ajax", name="commentaire_ajax", methods="GET|POST")
      */
     public function ajaxEnAction(Request $request, CommentairesRepository $commentairesRepo)
     {
+        //Récupère l'id du premier commentaire de la page demandé.
         $firstResultId = $request->request->get('id');
+        //Récupère l'id de la figure.
         $trickId = $request->request->get('trickId');
+        //Cette variable stock la fonction située dans le repository commentaire et qui elle même stock des valeurs pour lui permettre d'afficher un nombre de commentaire par figure et par page.
         $commentaireAffichage = $commentairesRepo->nombreCommentaire($firstResultId, 2, $trickId);
+        
         return $this->render('commentaires/blockCommentaire.html.twig', ['commentaireAffichage' => $commentaireAffichage]);
     }
      
@@ -61,7 +65,8 @@ class CommentairesController extends AbstractController
         $form = $this->createForm(CommentairesType::class, $commentaire);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) 
+        {
             $orm = $this->getDoctrine()->getManager();
             $orm->persist($commentaire);
             $orm->flush();

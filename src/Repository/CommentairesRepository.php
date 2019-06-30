@@ -29,7 +29,7 @@ class CommentairesRepository extends ServiceEntityRepository
     public function nombreCommentaire($firstResult, $maxResult, $trickId)
     {
         return
-            $this->createQueryBuilder('c')
+            $this->createQueryBuilder('cde')
             ->setfirstResult($firstResult)
             ->where('cde.figureId = :val')
             ->setParameter('val', $trickId)

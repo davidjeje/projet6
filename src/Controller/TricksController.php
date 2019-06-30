@@ -46,7 +46,9 @@ class TricksController extends AbstractController
      */
     public function ajaxAction(Request $request, TricksRepository $tricksRepository)
     {
+        // Récupère l'id du premier trick de la page demandé.
         $FirstResultId = $request->request->get('id');
+        // Cette variable stock la fonction située dans le repository trick et qui elle même stock des valeurs pour lui permettre d'afficher un nombre de figure par figure lorsqu'on clic sur le bouton voir plus.
         $tricks = $tricksRepository->nombreTrick($FirstResultId, 4);
         return $this->render('tricks/blockTrick.html.twig', ['tricks' => $tricks]);
         return new JsonResponse($tricks);
@@ -54,16 +56,17 @@ class TricksController extends AbstractController
 
     public function slugify($text)
     {
+        //expression régulière qui permet de rechercher et remplacer par expression rationnelle standard.
         $text = preg_replace('~[^\pL\d]+~u', '-', $text);
-
+        //Retourne la chaîne de caractères convertie ou FALSE si une erreur survient.
         $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
-
+        //expression régulière qui permet de rechercher et remplacer par expression rationnelle standard.
         $text = preg_replace('~[^-\w]+~', '', $text);
-
+        //trim — Supprime les espaces (ou d'autres caractères) en début et fin de chaîne
         $text = trim($text, '-');
-
+        //expression régulière qui permet de rechercher et remplacer par expression rationnelle standard.
         $text = preg_replace('~-+~', '-', $text);
-
+        // strtolower — Renvoie une chaîne en minuscules.
         $text = strtolower($text);
 
         if (empty($text)) {
@@ -146,9 +149,10 @@ class TricksController extends AbstractController
         $nombreMaxParPage = 2;
         $nombreMax = 2;
         $firstResult = ($page-1) * $nombreMaxParPage;
+        //Cette variable stock la fonction située dans le repository commentaire et qui elle même stock des valeurs pour lui permettre d'afficher un nombre de commentaire par figure et par page.
         $commentaireAffichage = $CommentairesRepo->nombreCommentaire($firstResult, $nombreMax, $trick->getId());
 
-        
+        //Cette variable stock la fonction située dans le repository paginator et qui elle même stock des valeurs pour lui permettre d'afficher un nombre de commentaire par figure et par page.
         $commentairePagi = $CommentairesRepo->paginationCommentaire($page, $nombreMaxParPage, $trick->getId());
         
         $pagination = array(
@@ -230,7 +234,7 @@ class TricksController extends AbstractController
             $method="setSecondeImage";
             $getter="getSecondeImage";
         }
-
+        //Dans le cas de ou je souhaite modifier l'image de la figure alors on récupère l'ancienne image et on la modifie grace au formulaire.
         $trick->$method(
             new File($this->getParameter('images_directory').'/'.$trick->$getter())
         );
@@ -246,7 +250,7 @@ class TricksController extends AbstractController
             } else {
                 $file = $trick->getImage();
             }
-            
+            //Dans le cas ou on souhaite modifier la seconde image il faut faire exactement comme pour la première image lorsqu'on l'ajoute avec la variable $fileName.
             $fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();
             
             $date = new \DateTime();
@@ -295,6 +299,7 @@ class TricksController extends AbstractController
         if ($numberVideo== 3) {
             $entityField="troisiemeVideo";
         }
+        // Dans le cas ou $entityField vaut video, secondeVideo ou troisiemeVideo alors on identifie clairement quelle video ou doit modifier dans la base de donnée.
         $form = $this->createForm(VideoType::class, $trick, ["video" =>$entityField]);
         
         $form->handleRequest($request);

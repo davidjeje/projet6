@@ -54,6 +54,7 @@ class UsersController extends AbstractController
             $orm = $this->getDoctrine()->getManager();
             $orm->persist($user);
             $orm->flush();
+            // Message qui s'affiche sur la boîte mail de l'utilisateur qui souhaite ouvrir un compte utilisateur.
             $message = (new \Swift_Message('Nous vous souhaitons la bienvenu. Clic sur le lien pour valider ton inscription ! A bientôt !!!'))
                 ->setFrom('dada.pepe.alal@gmail.com')
                 ->setTo($email)
@@ -87,11 +88,12 @@ class UsersController extends AbstractController
     public function validateAccount($token, UsersRepository $usersRepository)
     {
         $user = $usersRepository->findOneBy(array("token"=>$token));
-
+        //Son compte utilisateur est actif.
         $user->setIsActive(true);
         $orm = $this->getDoctrine()->getManager();
         $orm->persist($user);
         $orm->flush();
+        //Sa nouvelle session est donc active.
         $session = new Session();
         $session->start();
         return $this->redirectToRoute('login');
