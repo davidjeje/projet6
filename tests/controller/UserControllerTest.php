@@ -88,9 +88,9 @@ class UserControllerTest extends WebTestCase
             ->getManager();
 		
 
-        $user = $this->entityManager
+        /*$user = $this->entityManager
             ->getRepository(User::class)
-            ->findAll();
+            ->findAll();*/
 		
     	return [
         ['/'],

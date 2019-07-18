@@ -69,13 +69,13 @@ class CommentairesRepository extends ServiceEntityRepository
             );
         }
     
-        $qb = $this->createQueryBuilder('abc')
+        $orm = $this->createQueryBuilder('abc')
             ->where('CURRENT_DATE() >= abc.dateCommentaire')
             ->andWhere('abc.figureId = :val')
             ->setParameter('val', $trick)
             ->orderBy('abc.dateCommentaire', 'DESC');
         
-        $query = $qb->getQuery();
+        $query = $orm->getQuery();
 
         $premierResultat = ($page - 1) * $nbMaxParPage;
         $query->setFirstResult($premierResultat)->setMaxResults($nbMaxParPage);

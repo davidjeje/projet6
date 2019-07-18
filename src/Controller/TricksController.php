@@ -201,9 +201,9 @@ class TricksController extends AbstractController
             $trick->setDateModification($date->format("d-m-Y H:i"));
             
             try {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($trick);
-                $em->flush();
+                $orm = $this->getDoctrine()->getManager();
+                $orm->persist($trick);
+                $orm->flush();
                 $this->addFlash('success', 'Votre figure à bien été modifié !!!');
             } catch (FileException $e) {
                 $this->addFlash('error', "La figure n'a pas pu être modifié.");
