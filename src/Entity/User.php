@@ -24,7 +24,7 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $idd;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
@@ -158,7 +158,7 @@ class User implements UserInterface, \Serializable
     {
         return serialize(
             array(
-            $this->idd,
+            $this->id,
             $this->email,
             $this->password,
             $this->isActive,
@@ -174,7 +174,7 @@ class User implements UserInterface, \Serializable
     public function unserialize($serialized)
     {
         list(
-                $this->idd,
+                $this->id,
                 $this->email,
                 $this->password,
                 $this->isActive,
@@ -183,9 +183,9 @@ class User implements UserInterface, \Serializable
                 ) = unserialize($serialized);
     }
 
-    public function getIdd()
+    public function getId()
     {
-        return $this->idd;
+        return $this->id;
     }
 
     public function getEmail()
@@ -203,9 +203,9 @@ class User implements UserInterface, \Serializable
         return $this->isActive;
     }
 
-    public function setIdd($idd)
+    public function setId($id)
     {
-        $this->idd = $idd;
+        $this->id = $id;
     }
 
     public function setEmail($email)
