@@ -4,12 +4,12 @@
 
 > Symfony is a set of PHP components and a free MVC framework written in PHP. It provides flexible and adaptable features that facilitate and accelerate the development of a website.
 
-**Requirements :**
-*       Git
-*       Local server with PHP
-*       PHP 7.2 or Higher
-*       Composer
-*       Symfony
+**Requirements:**
+*   Git
+*   Local server with PHP
+*   PHP 7.2 or Higher
+*   Composer
+*   Symfony
 
 **Download composer:**
 
