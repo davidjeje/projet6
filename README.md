@@ -11,7 +11,7 @@
 *   Composer
 *   Symfony
 
-**Download composer:**
+## Download composer:
 
 Normally, PHP 7.2 or the latest version of PHP must already be installed on our working environment, as this is a prerequisite for installing composer and symfony.
 
