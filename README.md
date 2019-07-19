@@ -50,11 +50,8 @@ Example with mysql who is relational database management system :
 ## Starting the application
 
 If in production we use a web server like Apache or Nginx, in development, we can use the PHP local server. For this, the framework provides a dedicated console:
-
     php bin/console server:run
 
 If the port is not busy, the application will be available at this address: 
-
 <http://localhost:8000>
-
 To stop this local server, use the command  Ctrl + C  in your command prompt.
