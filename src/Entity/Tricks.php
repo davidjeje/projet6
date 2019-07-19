@@ -19,7 +19,7 @@ class Tricks
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private $idd;
 
     /**
      * @ORM\Column(type="string", length=255, unique = true)
@@ -120,7 +120,7 @@ class Tricks
 
     public function getId(): ?int
     {
-        return $this->id;
+        return $this->idd;
     }
 
     public function getName(): ?string
