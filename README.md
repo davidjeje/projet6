@@ -11,7 +11,7 @@
 *   Composer
 *   Symfony
 
-1. Download composer:
+> Download composer:
 
 Normally, PHP 7.2 or the latest version of PHP must already be installed on our working environment, as this is a prerequisite for installing composer and symfony.
 
@@ -27,7 +27,7 @@ Then quickly check that PHP and Composer are available in your command prompt:
     php -v
     composer –version
 
-## Installation:
+> Installation:
 
     git clone  https://github.com/davidjeje/projet6
     cd projet6
@@ -55,7 +55,7 @@ If in production we use a web server like Apache or Nginx, in development, we ca
 
 If the port is not busy, the application will be available at this address: 
 
-http://localhost:8000
+<http://localhost:8000>
 
 To stop this local server, use the command  Ctrl + C  in your command prompt.
 
