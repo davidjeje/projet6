@@ -14,13 +14,13 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class UsersType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder)
     {
         $builder
             ->add('prenom')
             ->add('nom')
             ->add('email', EmailType::class)
-                /*->add('photo', FileType::class, array('label' => 'Users (jpeg, jpg, png image)','data_class' => null))*/
+                
             ->add(
                 'plainPassword',
                 RepeatedType::class,
@@ -30,8 +30,7 @@ class UsersType extends AbstractType
                     'second_options' => array('label' => 'Confirmation du mot de passe'),
                 )
             )
-                /* ->add('password', PasswordType::class, array('label' => 'Confirmation du mot de passe'))
-                /*->add('submit', SubmitType::class, ['label'=>'Envoyer', 'attr'=>['class'=>'btn-primary btn-block']])*/
+                
         ;
     }
 
