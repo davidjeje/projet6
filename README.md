@@ -58,6 +58,3 @@ If the port is not busy, the application will be available at this address:
 <http://localhost:8000>
 
 To stop this local server, use the command  Ctrl + C  in your command prompt.
-
-
-
