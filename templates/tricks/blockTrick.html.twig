@@ -22,7 +22,7 @@
                         {% if  trick.auteur[0] and app.user == trick.auteur[0] %}
                             <a href="{{ path('tricks_edit', {'slug': trick.slug}) }}"><i class="fas fa-pen"></i></a>
                                 
-                            <a href="{{ path('tricks_delete', {'slug': trick.slug}) }}"><i class="fas fa-trash"></i></a>
+                            {{ include('tricks/_delete_trick_get.html.twig') }}
                              
                         {% endif %}
 

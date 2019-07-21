@@ -331,15 +331,28 @@ class TricksController extends AbstractController
     }
 
     /**
-     * @Route("/{slug}/deleteTrick", name="tricks_delete", methods="GET/DELETE")
+     * @Route("/{id}/deleteTrickGet", name="tricks_delete_get", methods="POST")
      */
-    public function delete(Request $request,Tricks $trick): Response
+    public function delete(Request $request, Tricks $trick): Response
     {
-        $trick = $request->request->get('slug');
-        $orm = $this->getDoctrine()->getManager();
-        $orm->remove($trick);
-        $orm->flush();
+        //$trick = $request->request->get('id');
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($trick);
+        $em->flush();
         
-        return $this->redirectToRoute('tricks_index');
+        return $this->redirectToRoute('tricks_index', ['id' => $trick]);
+    }
+
+    /**
+     * @Route("/{id}/deleteTrickPost", name="tricks_delete_post", methods="POST")
+     */
+    public function delet(Request $request, Tricks $trick): Response
+    {
+        //$trick = $request->request->get('id');
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($trick);
+        $em->flush();
+        
+        return $this->redirectToRoute('tricks_index', ['id' => $trick]);
     }
 }
