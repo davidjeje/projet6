@@ -19,7 +19,7 @@
                             {% if  trick.auteur[0] and app.user == trick.auteur[0] %}
                                 <a href="{{ path('edit_image', {'slug': trick.slug, 'numberImage': '1'}) }}"><i class="fas fa-pen"></i></a>
                                 
-                                <a href="{{ path('tricks_delete', {'id': trick.id}) }}"><i class="fas fa-trash"></i></a> 
+                                <a href="{{ path('tricks_delete_get', {'id': trick.id}) }}"><i class="fas fa-trash"></i></a> 
                             {% endif %}
 
                         {% endif %}

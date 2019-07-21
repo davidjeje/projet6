@@ -331,14 +331,20 @@ class TricksController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/deleteTrickGet", name="tricks_delete_get", methods="POST")
+     * @Route("/{id}/deleteTrickGet", name="tricks_delete_get", methods="GET")
      */
     public function delete(Request $request, Tricks $trick): Response
     {
         //$trick = $request->request->get('id');
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($trick);
-        $em->flush();
+        
+        try {
+                $orm = $this->getDoctrine()->getManager();
+                $orm->remove($trick);
+                $orm->flush();
+                $this->addFlash('success', 'Votre figure à bien été supprimé !!!');
+            } catch (FileException $e) {
+                $this->addFlash('error', "La figure n'a pas pu être supprimé !!!");
+            }
         
         return $this->redirectToRoute('tricks_index', ['id' => $trick]);
     }
