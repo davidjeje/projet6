@@ -46,9 +46,9 @@ class Tricks
      *
      * @Assert\Image(
      *     minWidth = 400,
-     *     maxWidth = 900,
-     *     minHeight = 400,
-     *     maxHeight = 857
+     *     maxWidth = 500,
+     *     minHeight = 300,
+     *     maxHeight = 400
      * )
      */
     private $image;
@@ -58,9 +58,9 @@ class Tricks
      *
      * @Assert\Image(
      *     minWidth = 400,
-     *     maxWidth = 900,
-     *     minHeight = 400,
-     *     maxHeight = 857
+     *     maxWidth = 500,
+     *     minHeight = 300,
+     *     maxHeight = 400
      * )
      */
     private $secondeImage;

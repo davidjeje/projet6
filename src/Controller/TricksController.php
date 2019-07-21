@@ -134,7 +134,7 @@ class TricksController extends AbstractController
      */
     private function generateUniqueFileName()
     {
-        return SHA256(uniqid());
+        return md5(uniqid());
     }
 
     /**
@@ -331,10 +331,11 @@ class TricksController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/deleteTrick", name="tricks_delete", methods="DELETE")
+     * @Route("/{slug}/deleteTrick", name="tricks_delete", methods="GET/DELETE")
      */
-    public function delete(Tricks $trick): Response
+    public function delete(Request $request,Tricks $trick): Response
     {
+        $trick = $request->request->get('slug');
         $orm = $this->getDoctrine()->getManager();
         $orm->remove($trick);
         $orm->flush();
