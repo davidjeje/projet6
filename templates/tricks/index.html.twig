@@ -1,7 +1,8 @@
 {% extends 'base.html.twig' %}
 {% block content1 %}
-                 
-    <h2>Toutes les figures</h2>
+    
+    <h2 class="title h1 my-4">Toutes les figures</h2>            
+    
         <div class="main">
             <div class="shop_top">
                 <div class="m-5">
@@ -46,5 +47,28 @@
         lastId = $('.ex_box > div').length;
         });
     })
+
+    $(document).ready(function () {
+    var theHREF;
+
+    $(".confirmModalLink").click(function(e) {
+        e.preventDefault();
+        
+        $("#confirmModal").modal("show");
+    });
+
+    $("#confirmModalNo").click(function(e) {
+        $("#confirmModal").modal("hide");
+    });
+
+    $("#confirmModalYes").click(function(e) {
+        theHREF = $(this).attr("href");
+        window.location.href = theHREF;
+    });
+});
 </script>
+<script>
+
+</script>   
+
 {% endblock %}
