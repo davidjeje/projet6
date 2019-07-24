@@ -361,4 +361,31 @@ class TricksController extends AbstractController
         
         return $this->redirectToRoute('tricks_index', ['id' => $trick]);
     }
+
+    /**
+     * @Route("/{slug}/valideSupTrick", name="tricks_valide_sup", methods="GET")
+     */
+    public function valideSupTrick(Request $request,Tricks $trick): Response
+    {
+        $form = $this->createForm(TricksType::class, $trick);
+        
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $date = new \DateTime();
+            $trick->setDateModification($date->format("d-m-Y H:i"));
+            
+            try {
+                $orm = $this->getDoctrine()->getManager();
+                $orm->persist($trick);
+                $orm->flush();
+                $this->addFlash('success', 'Votre figure à bien été modifié !!!');
+            } catch (FileException $e) {
+                $this->addFlash('error', "La figure n'a pas pu être modifié.");
+            }
+            
+        }
+        return $this->render('tricks/validesup.html.twig', ['trick' => $trick,'form' => $form->createView(),]);
+
+    }
 }

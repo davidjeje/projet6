@@ -48,12 +48,12 @@
         });
     })
 
-    $(document).ready(function () {
-    var theHREF;
 
-    $(".confirmModalLink").click(function(e) {
-        e.preventDefault();
-        
+</script>
+<script>
+
+    $(".confirmModalLink").click(function() 
+    {
         $("#confirmModal").modal("show");
     });
 
@@ -65,9 +65,6 @@
         theHREF = $(this).attr("href");
         window.location.href = theHREF;
     });
-});
-</script>
-<script>
 
 </script>   
 

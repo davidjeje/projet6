@@ -22,9 +22,7 @@
                         {% if  trick.auteur[0] and app.user == trick.auteur[0] %}
                             <a href="{{ path('tricks_edit', {'slug': trick.slug}) }}"><i class="fas fa-pen"></i></a>
                                 
-                            
-                            <button type="button" class="confirmModalLink" class="btn btn-info">sup</button>
-        
+                            <a  href="{{ path('tricks_valide_sup', {'slug': trick.slug}) }}"><i class="fas fa-trash"></i></a>
                             
                         {% endif %}
 
@@ -49,6 +47,7 @@
 
         </div>
     </div>
+            <!-- Card -->
 
 {% endfor %}
 
