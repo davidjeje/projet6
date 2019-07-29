@@ -1,19 +1,21 @@
 # Project 6 Openclassrooms
 
+
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f08a8a372b7943a895ec89a87ca0c730)](https://www.codacy.com/app/davidjeje/projet6?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=davidjeje/projet6&amp;utm_campaign=Badge_Grade)
+
 
 **Symfony definition:**
 
 > Symfony is a set of PHP components and a free MVC framework written in PHP. It provides flexible and adaptable features that facilitate and accelerate the development of a website.
 
-**Requirements :**
-*  Git
-*  Local server with PHP
-*  PHP 7.2 or Higher
-*  Composer
-*  Symfony
+**Requirements:**
+*   Git
+*   Local server with PHP
+*   PHP 7.2 or Higher
+*   Composer
+*   Symfony
 
-**Download composer:**
+> Download composer:
 
 Normally, PHP 7.2 or the latest version of PHP must already be installed on our working environment, as this is a prerequisite for installing composer and symfony.
 
@@ -29,7 +31,7 @@ Then quickly check that PHP and Composer are available in your command prompt:
     php -v
     composer –version
 
-## Installation:
+> Installation:
 
     git clone  https://github.com/davidjeje/projet6
     cd projet6
@@ -52,14 +54,8 @@ Example with mysql who is relational database management system :
 ## Starting the application
 
 If in production we use a web server like Apache or Nginx, in development, we can use the PHP local server. For this, the framework provides a dedicated console:
-
     php bin/console server:run
 
 If the port is not busy, the application will be available at this address: 
-
-http://localhost:8000
-
+<http://localhost:8000>
 To stop this local server, use the command  Ctrl + C  in your command prompt.
-
-
-
