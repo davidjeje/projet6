@@ -134,7 +134,8 @@ class TricksController extends AbstractController
      */
     private function generateUniqueFileName()
     {
-        return md5(uniqid());
+         return bin2hex(random_bytes(16));
+
     }
 
     /**
@@ -356,9 +357,9 @@ class TricksController extends AbstractController
     public function delet(Request $request, Tricks $trick): Response
     {
         //$trick = $request->request->get('id');
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($trick);
-        $em->flush();
+        $orm = $this->getDoctrine()->getManager();
+        $orm->remove($trick);
+        $orm->flush();
         
         return $this->redirectToRoute('tricks_index', ['id' => $trick]);
     }
