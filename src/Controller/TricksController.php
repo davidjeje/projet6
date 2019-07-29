@@ -335,7 +335,7 @@ class TricksController extends AbstractController
     /**
      * @Route("/{id}/deleteTrickGet", name="tricks_delete_get", methods="GET")
      */
-    public function delete(Request $request, Tricks $trick): Response
+    public function delete(Tricks $trick): Response
     {
         //$trick = $request->request->get('id');
         
@@ -354,7 +354,7 @@ class TricksController extends AbstractController
     /**
      * @Route("/{id}/deleteTrickPost", name="tricks_delete_post", methods="POST")
      */
-    public function delet(Request $request, Tricks $trick): Response
+    public function delet(Tricks $trick): Response
     {
         //$trick = $request->request->get('id');
         $orm = $this->getDoctrine()->getManager();
