@@ -196,7 +196,8 @@ class TricksController extends AbstractController
         
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) 
+        {
             $date = new \DateTime();
             $trick->setDateModification($date->format("d-m-Y H:i"));
             
@@ -367,7 +368,7 @@ class TricksController extends AbstractController
      */
     public function valideSupTrick(Request $request,Tricks $trick): Response
     {
-        $form = $this->createForm(TricksType::class, $trick);
+        $form = $this->createForm(TricksEditType::class, $trick);
         
         $form->handleRequest($request);
 
