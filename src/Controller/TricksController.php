@@ -134,7 +134,8 @@ class TricksController extends AbstractController
      */
     private function generateUniqueFileName()
     {
-        return SHA256(uniqid());
+         return bin2hex(random_bytes(16));
+
     }
 
     /**
@@ -196,14 +197,15 @@ class TricksController extends AbstractController
         
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) 
+        {
             $date = new \DateTime();
             $trick->setDateModification($date->format("d-m-Y H:i"));
             
             try {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($trick);
-                $em->flush();
+                $orm = $this->getDoctrine()->getManager();
+                $orm->persist($trick);
+                $orm->flush();
                 $this->addFlash('success', 'Votre figure à bien été modifié !!!');
             } catch (FileException $e) {
                 $this->addFlash('error', "La figure n'a pas pu être modifié.");
@@ -331,14 +333,61 @@ class TricksController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/deleteTrick", name="tricks_delete", methods="DELETE")
+     * @Route("/{id}/deleteTrickGet", name="tricks_delete_get", methods="GET")
      */
-    public function delete(Tricks $trick): Response
+    public function delete(Request $request, Tricks $trick): Response
     {
+        //$trick = $request->request->get('id');
+        
+        try {
+                $orm = $this->getDoctrine()->getManager();
+                $orm->remove($trick);
+                $orm->flush();
+                $this->addFlash('success', 'Votre figure à bien été supprimé !!!');
+            } catch (FileException $e) {
+                $this->addFlash('error', "La figure n'a pas pu être supprimé !!!");
+            }
+        
+        return $this->redirectToRoute('tricks_index', ['id' => $trick]);
+    }
+
+    /**
+     * @Route("/{id}/deleteTrickPost", name="tricks_delete_post", methods="POST")
+     */
+    public function delet(Request $request, Tricks $trick): Response
+    {
+        //$trick = $request->request->get('id');
         $orm = $this->getDoctrine()->getManager();
         $orm->remove($trick);
         $orm->flush();
         
-        return $this->redirectToRoute('tricks_index');
+        return $this->redirectToRoute('tricks_index', ['id' => $trick]);
+    }
+
+    /**
+     * @Route("/{slug}/valideSupTrick", name="tricks_valide_sup", methods="GET")
+     */
+    public function valideSupTrick(Request $request,Tricks $trick): Response
+    {
+        $form = $this->createForm(TricksEditType::class, $trick);
+        
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $date = new \DateTime();
+            $trick->setDateModification($date->format("d-m-Y H:i"));
+            
+            try {
+                $orm = $this->getDoctrine()->getManager();
+                $orm->persist($trick);
+                $orm->flush();
+                $this->addFlash('success', 'Votre figure à bien été modifié !!!');
+            } catch (FileException $e) {
+                $this->addFlash('error', "La figure n'a pas pu être modifié.");
+            }
+            
+        }
+        return $this->render('tricks/validesup.html.twig', ['trick' => $trick,'form' => $form->createView(),]);
+
     }
 }

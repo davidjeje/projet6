@@ -114,7 +114,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	<div class="banner">
 	<!-- start slider -->
        <div id="fwslider">
-         <div class="slider_container">
+         <div class="slider_container"> 
          	{% block slide1 %}
             <div class="slide">
              
@@ -142,7 +142,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                <img src="{{ asset('images/slider2.jpg') }}" class="img-responsive" alt=""/>
                 <div class="slide_content">
                     <div class="slide_content_wrap">
-                        <h1 class="title">La montagne nous offre le décor ...<br>A nous d'inventer l'histoire qui va avec !</h1>
+                        <h1 class="title">La montagne nous offre le décor !</h1>
                        	
                        	<div class="n" style="font-size: 24px;"><a href="#ancre"> <i class="fas fa-arrow-down fa-2x"></i></a></div>
                     </div>
@@ -188,20 +188,24 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	<div class="features">
 		<div class="container">
 			{% block container %}
-			        <div  class="foot hidden-sm hidden-md hidden-lg hidden-xl">
+			<div  class="foot hidden-sm hidden-md hidden-lg hidden-xl">
 	    	
-	    	<div class="center" style="font-size: 24px;"><a href="{{ path('tricks_index')}}"><i class="fas fa-bars fa-lg"></i></div>
+	    		<div class="center" style="font-size: 24px;"><a href="{{ path('tricks_index')}}"><i class="fas fa-bars fa-lg"></i>
+	    		</div>
 
-	    	<div class="center" style="font-size: 24px;"><a href="{{ path('tricks_index')}}"><i class="fas fa-bookmark fa-lg"></i></div>
+	    		<div class="center" style="font-size: 24px;"><a href="{{ path('tricks_index')}}"><i class="fas fa-bookmark fa-lg"></i>
+	    		</div>
 	    			{% if is_granted('ROLE_USER')  %}
 	    			
-	    	<div style="font-size: 24px;"><a href="{{ path('logout')}}" id="deconecte"><i class="fas fa-power-off fa-lg"></i></a></div>
+	    		<div style="font-size: 24px;"><a href="{{ path('logout')}}" id="deconecte"><i class="fas fa-power-off fa-lg"></i></a>
+	    		</div>
 	    			{% else %}
 	    			
-	    	<div style="font-size: 24px;"><a href="{{ path('login')}}"><i class="fas fa-sign-in-alt fa-lg"></i></a></div>
+	    		<div style="font-size: 24px;"><a href="{{ path('login')}}"><i class="fas fa-sign-in-alt fa-lg"></i></a>
+	    		</div>
 	    			{% endif %}
 	    	
-	    </div>
+	    	</div>
 		 	{% endblock %}
 	    </div>
 	   	
