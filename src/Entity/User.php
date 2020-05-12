@@ -69,7 +69,6 @@ class User implements UserInterface, \Serializable
      */
     private $token;
 
-     
     /**
      * Un utilisateur a potentiellement plusieurs commentaires
      *

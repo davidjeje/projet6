@@ -3,7 +3,7 @@
 {% block slide1 %}
 {% set image = trick.image|default('2.jpeg') %}
 
-    <div class="slide">
+    <div class="slide"> 
              
         <!-- Slide image -->
         <img src="{{ asset('images/'~trick.image) }}" class="img-responsive" alt=""/>
@@ -20,7 +20,7 @@
                         {% if  trick.auteur[0] and app.user == trick.auteur[0] %}
                             <a href="{{ path('tricks_edit', {'slug': trick.slug}) }}"><i class="fas fa-pen"></i></a>
                                 
-                            <a href="{{ path('tricks_delete', {'id': trick.id}) }}"><i class="fas fa-trash"></i></a>
+                            <a href="{{ path('tricks_delete_get', {'id': trick.id}) }}"><i class="fas fa-trash"></i></a>
                              
                         {% endif %}
 
@@ -120,7 +120,7 @@
     {% include 'paginator/show.html.twig' %}
   
 
-    {% if is_granted('ROLE_USER') and trick.auteur|length > 0 %}
+    {% if is_granted('ROLE_USER') and trick.auteur|length > 0 %} 
         {% if  trick.auteur[0] and app.user == trick.auteur[0] %}
             <a href="{{ path('tricks_edit', {'slug': trick.slug}) }}" class="btn btn-secondary">Modifier</a>
             {{ include('tricks/_delete_form.html.twig') }}

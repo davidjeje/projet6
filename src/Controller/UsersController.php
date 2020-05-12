@@ -45,7 +45,7 @@ class UsersController extends AbstractController
         $email = $user->getEmail();
         $token = $user->getToken();
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid())  {
             $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
             $user->setPassword($password);
             
@@ -140,14 +140,14 @@ class UsersController extends AbstractController
             ->createNamedBuilder(null)
             ->add('_username', null, ['label' => 'Email'])
             ->add('_password', \Symfony\Component\Form\Extension\Core\Type\PasswordType::class, ['label' => 'Mot de passe'])
-                
+                 
             ->getForm();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $session = new Session();
             $session->start();
             return $this->redirectToRoute('tricks_index');
-        }
+        } 
         return $this->render(
             'users/connexion.html.twig',
             [
@@ -242,12 +242,15 @@ class UsersController extends AbstractController
             
             $fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();
             
-            try {
+            try 
+            {
                 $file->move($this->getParameter('images_directory'), $fileName);
                 $user->setPhoto($fileName);
                 $this->getDoctrine()->getManager()->flush();
                 $this->addFlash('success', 'Vos modifications ont bien été prise en compte.');
-            } catch (FileException $e) {
+            } 
+            catch (FileException $e) 
+            {
                 $this->addFlash('error', "Vos modifications n'ont pas été prise en compte.");
             }
             

@@ -27,6 +27,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+
 /**
  * @Route("/commentaires")
  */
@@ -82,6 +83,7 @@ class CommentairesController extends AbstractController
             ]
         );
     }
+    
 
     /**
      * @Route("/{id}", name="commentaires_show", methods="GET")

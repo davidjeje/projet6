@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 /**
  * @Route("/users")
  */
-class UserControllerTest extends WebTestCase
+class UserControllerTest extends WebTestCase 
 {
 	/**
     * @var \Doctrine\ORM\EntityManager

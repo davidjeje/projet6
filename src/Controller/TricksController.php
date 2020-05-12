@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller; 
 
 use App\Entity\Tricks;
 use App\Form\TricksType;
@@ -79,7 +79,7 @@ class TricksController extends AbstractController
     /**
      * @Route("/new/trick", name="tricks_new", methods="GET|POST")
      */
-    public function new(Request $request): Response
+    public function new(Request $request): Response 
     {
         $user = $this->getUser();
 
@@ -88,7 +88,8 @@ class TricksController extends AbstractController
         $form = $this->createForm(TricksType::class, $trick);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) 
+        {
             $file = $trick->getImage();
             $fil = $trick->getSecondeImage();
             
@@ -96,8 +97,10 @@ class TricksController extends AbstractController
             $fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();
             $fileNam = $this->generateUniqueFileName().'.'.$fil->guessExtension();
 
-            try {
-                $file->move($this->getParameter('images_directory'), $fileName, $fileNam);
+            try 
+            {
+                $file->move($this->getParameter('images_directory'), $fileName);
+                $fil->move($this->getParameter('images_directory'), $fileNam);
                     
                 $trick->setImage($fileName);
                 $trick->setSecondeImage($fileNam);
@@ -114,7 +117,7 @@ class TricksController extends AbstractController
                 $this->addFlash('error', "La figure n'a pas pu être enregistré.");
             }
 
-            
+    
 
             return $this->redirectToRoute('tricks_index');
         }

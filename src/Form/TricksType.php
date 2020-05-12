@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form;
+namespace App\Form; 
 
 use App\Entity\Tricks;
 use Symfony\Component\Form\AbstractType;
